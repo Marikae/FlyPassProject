@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.flypass.ControllerSingin">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerSingin">
    <children>
       <Button fx:id="registerButton" layoutX="300.0" layoutY="312.0" mnemonicParsing="false" text="Register" />
       <Button fx:id="undoButton" layoutX="194.0" layoutY="312.0" mnemonicParsing="false" onAction="#backToFirstScene" text="Undo" />
