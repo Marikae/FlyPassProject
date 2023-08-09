@@ -27,6 +27,7 @@ public class ControllerMainScene implements Initializable {
             for (Service service : services) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("service.fxml"));
+
                 Pane pane = fxmlLoader.load();
                 ControllerService controllerService = fxmlLoader.getController();
                 controllerService.setData(service);

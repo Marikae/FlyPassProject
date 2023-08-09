@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -13,94 +14,70 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" styleClass="ocean-background" stylesheets="@../../../../java/css/styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerMainScene">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerMainScene">
    <top>
-      <HBox prefHeight="125.0" prefWidth="200.0" spacing="20.0" styleClass="border-bottom" stylesheets="@../../../../java/css/styles.css" BorderPane.alignment="CENTER">
+      <HBox prefHeight="97.0" prefWidth="1247.0" spacing="20.0" styleClass="border-bottom" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="125.0" prefWidth="177.0" spacing="20.0">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../../../Downloads/3920905.png" />
+                        <Image url="@../../../img/logo.png" />
                      </image>
                   </ImageView>
-                  <Label prefHeight="17.0" prefWidth="56.0" text="FlyPass" textFill="WHITE">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
+                  <Label prefHeight="17.0" prefWidth="56.0" text="FlyPass" textFill="WHITE" />
                </children>
             </HBox>
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../img/services.png" />
+                        <Image url="@../../../icon/servizi.png" />
                      </image>
                   </ImageView>
-                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="56.0" text="Services" textFill="WHITE">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="56.0" text="Services" textFill="WHITE" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../img/prenotation.png" />
+                        <Image url="@../../../icon/appuntamento.png" />
                      </image>
                   </ImageView>
-                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="95.0" text="Prenotation" textFill="WHITE">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
+                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="95.0" text="Prenotation" textFill="WHITE" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../img/info.png" />
+                        <Image url="@../../../icon/icons8-supporto-16.png" />
                      </image>
                   </ImageView>
-                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="95.0" text="Info" textFill="WHITE">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
+                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="95.0" text="Info" textFill="WHITE" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../img/remember.png" />
+                        <Image url="@../../../icon/ricorda.png" />
                      </image>
                   </ImageView>
-                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="95.0" text="Remember" textFill="WHITE">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
+                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="95.0" text="Remember" textFill="WHITE" />
                </children>
             </VBox>
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../img/account.png" />
+                        <Image url="@../../../icon/profilo.png" />
                      </image>
                   </ImageView>
-                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="95.0" text="Profile" textFill="WHITE">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
+                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="95.0" text="Profile" textFill="WHITE" />
                </children>
             </VBox>
          </children>
@@ -112,28 +89,26 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="ocean-background" stylesheets="@style.css">
                <children>
-                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="160.0">
+                  <VBox alignment="CENTER" prefHeight="69.0" prefWidth="160.0">
                      <children>
                         <Label prefHeight="0.0" prefWidth="106.0" text="Services" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="8.0" prefWidth="106.0" text="8 Found" textFill="WHITE">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
                      </children>
                   </VBox>
-                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <Pane prefHeight="70.0" prefWidth="1140.0" styleClass="ocean-background" stylesheets="@style.css" HBox.hgrow="ALWAYS">
+                     <effect>
+                        <ColorAdjust />
+                     </effect></Pane>
                </children>
             </HBox>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="ocean-background" stylesheets="@../../../../java/css/styles.css" VBox.vgrow="ALWAYS">
+            <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="ocean-background" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <content>
-                  <GridPane fx:id="serviceGrid" prefHeight="0.0" prefWidth="0.0">
+                  <GridPane fx:id="serviceGrid" prefHeight="0.0" prefWidth="0.0" styleClass="ocean-background" stylesheets="@style.css">
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
