@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.lez5.ControllerService"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="380.0" styleClass="shadow" stylesheets="@../../../../java/css/styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerService">
+   <children>
+      <ImageView fx:id="img" fitHeight="240.0" fitWidth="380.0" pickOnBounds="true" smooth="false" />
+      <HBox prefHeight="240.0" prefWidth="380.0" styleClass="gradient" stylesheets="@../../../../java/css/styles.css">
+         <children>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="220.0" prefWidth="347.0">
+               <children>
+                  <Label fx:id="name" prefHeight="35.0" prefWidth="362.0" text="Service:" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="description" layoutX="10.0" layoutY="219.0" prefHeight="13.0" prefWidth="415.0" text="Description" textFill="WHITE">
+                     <font>
+                        <Font size="9.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</Pane>
