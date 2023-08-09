@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerLogin">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerLoginScene">
    <children>
-      <Button layoutX="321.0" layoutY="275.0" mnemonicParsing="false" text="Enter" />
-      <Button fx:id="undoButton" layoutX="216.0" layoutY="275.0" mnemonicParsing="false" onAction="#backToFirstScene" text="Undo" />
+      <Button layoutX="321.0" layoutY="275.0" mnemonicParsing="false" onAction="#enterMainScene" text="Enter" />
+      <Button fx:id="undoButton" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToFirstScene" text="&lt;Back" />
       <TextField fx:id="usernameLoginTF" layoutX="217.0" layoutY="161.0" />
       <TextField fx:id="passwordLoginTF" layoutX="217.0" layoutY="223.0" />
       <Label fx:id="usernameLoginLabel" layoutX="217.0" layoutY="136.0" text="Username:" />
@@ -20,6 +20,6 @@
             <Font name="Berlin Sans FB Demi Bold" size="43.0" />
          </font>
       </Label>
-      <Hyperlink fx:id="createAcciuntHL" layoutX="190.0" layoutY="312.0" onAction="#EnterSinginScene" text="You don't have any account? create one" underline="true" />
+      <Hyperlink fx:id="createAcciuntHL" layoutX="190.0" layoutY="312.0" onAction="#enterSinginScene" text="You don't have any account? create one" underline="true" />
    </children>
 </AnchorPane>

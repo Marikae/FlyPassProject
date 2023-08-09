@@ -8,10 +8,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerSingin">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerSinginScene">
    <children>
       <Button fx:id="registerButton" layoutX="300.0" layoutY="312.0" mnemonicParsing="false" text="Register" />
-      <Button fx:id="undoButton" layoutX="194.0" layoutY="312.0" mnemonicParsing="false" onAction="#backToFirstScene" text="Undo" />
+      <Button fx:id="undoButton" layoutX="28.0" layoutY="25.0" mnemonicParsing="false" onAction="#backToFirstScene" text="&lt;Back" />
       <Label fx:id="nameSinginLabel" layoutX="193.0" layoutY="94.0" text="Name" />
       <Label fx:id="surnameSinginLabel" layoutX="193.0" layoutY="142.0" text="Surname" />
       <TextField fx:id="nameSinginTF" layoutX="193.0" layoutY="111.0" />
