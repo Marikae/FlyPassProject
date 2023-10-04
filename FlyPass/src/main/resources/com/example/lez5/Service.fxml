@@ -11,10 +11,10 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="380.0" styleClass="shadow" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerService">
    <children>
-      <ImageView fx:id="img" fitHeight="240.0" fitWidth="380.0" pickOnBounds="true" smooth="false" />
-      <HBox prefHeight="240.0" prefWidth="380.0" stylesheets="@style.css">
+      <ImageView fx:id="img" fitHeight="240.0" fitWidth="380.0" pickOnBounds="true" preserveRatio="true" />
+      <HBox onMouseClicked="#printfMsg" prefHeight="240.0" prefWidth="380.0" stylesheets="@style.css">
          <children>
-            <VBox alignment="BOTTOM_LEFT" prefHeight="220.0" prefWidth="347.0">
+            <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="347.0">
                <children>
                   <Label fx:id="name" prefHeight="35.0" prefWidth="362.0" text="Service:" textFill="WHITE">
                      <font>

@@ -1,5 +1,5 @@
 .ocean-background{
-    -fx-background-color: #174f64;
+    -fx-background-color: #071952;
 }
 .dark-background{
     -fx-background-color: #222222;
@@ -11,6 +11,7 @@
 .bottom{
     -fx-background-color: #16627e;
     -fx-background-radius: 50;
+    -fx-text-fill: white;
 }
 .gradient{
     -fx-background-color: linear-gradient(to top, #222222, transparent);
@@ -20,5 +21,8 @@
 }
 
 .middleocean-background{
-    -fx-background-color: #134074;
+    -fx-background-color: #F6AE2D;
+}
+.text-background{
+    -fx-text-fill: white;
 }

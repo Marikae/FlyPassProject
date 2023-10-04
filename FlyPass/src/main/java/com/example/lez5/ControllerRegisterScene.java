@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class ControllerSinginScene {
+public class ControllerRegisterScene {
     private Stage stage;
     private Scene scene;
     @FXML
