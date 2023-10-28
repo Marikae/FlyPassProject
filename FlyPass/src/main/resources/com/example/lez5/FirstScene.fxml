@@ -32,7 +32,7 @@
             <HBox alignment="CENTER" prefHeight="107.0" prefWidth="600.0" spacing="50.0">
                <children>
                   <Button fx:id="loginbutton" mnemonicParsing="false" onAction="#enterLoginScene" prefHeight="50.0" prefWidth="150.0" styleClass="bottom" stylesheets="@style.css" text="Login" />
-                  <Button fx:id="registerButton" mnemonicParsing="false" onAction="#enterSinginScene" prefHeight="50.0" prefWidth="150.0" styleClass="bottom" stylesheets="@style.css" text="Register" />
+                  <Button fx:id="registerButton" mnemonicParsing="false" onAction="#enterRegisterScene" prefHeight="50.0" prefWidth="150.0" styleClass="bottom" stylesheets="@style.css" text="Register" />
                </children>
             </HBox>
          </children>

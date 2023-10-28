@@ -38,7 +38,7 @@ public class ControllerLoginScene {
         stage.show();
     }
     @FXML
-    void enterSinginScene(ActionEvent event) throws IOException {
+    void enterRegisterScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("RegisterScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
