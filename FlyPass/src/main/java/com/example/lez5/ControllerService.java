@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class ControllerService {
     @FXML
@@ -19,6 +20,10 @@ public class ControllerService {
         img.setImage(image);
         name.setText(service.getName());
         description.setText(service.getDescription());
+    }
+    @FXML
+    void printfMsg(MouseEvent event) {
+
     }
 
 }
