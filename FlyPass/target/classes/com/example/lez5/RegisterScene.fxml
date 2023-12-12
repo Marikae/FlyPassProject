@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="676.0" prefWidth="600.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerRegisterScene">
+<AnchorPane prefHeight="676.0" prefWidth="600.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerRegisterScene">
    <children>
       <Button fx:id="registerButton" layoutX="284.0" layoutY="473.0" mnemonicParsing="false" onAction="#registration" prefHeight="25.0" prefWidth="89.0" styleClass="bottom" stylesheets="@style.css" text="Register" />
       <Button fx:id="undoButton" layoutX="28.0" layoutY="25.0" mnemonicParsing="false" onAction="#backToFirstScene" prefHeight="25.0" prefWidth="73.0" styleClass="bottom" stylesheets="@style.css" text="&lt;Back" />
