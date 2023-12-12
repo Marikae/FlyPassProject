@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerLoginScene">
+   <left>
+      <Pane prefHeight="230.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
+   </left>
+   <bottom>
+      <Pane prefHeight="63.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+   </bottom>
+   <top>
+      <Pane prefHeight="62.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="undoButton" layoutX="27.0" layoutY="16.0" mnemonicParsing="false" onAction="#backToFirstScene" prefHeight="25.0" prefWidth="56.0" styleClass="bottom" stylesheets="@style.css" text="&lt;Back" />
+         </children>
+      </Pane>
+   </top>
+   <right>
+      <Pane prefHeight="239.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
+   </right>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="64.0" prefWidth="440.0">
+               <children>
+                  <Label fx:id="loginLabel" prefHeight="23.0" prefWidth="127.0" styleClass="text-background" stylesheets="@style.css" text="Login">
+                     <font>
+                        <Font name="Berlin Sans FB Demi Bold" size="43.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="60.0" prefWidth="440.0">
+               <children>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <left>
+                        <VBox prefHeight="55.0" prefWidth="189.0" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <VBox prefHeight="55.0" prefWidth="203.0" BorderPane.alignment="CENTER" />
+                     </right>
+                     <center>
+                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label fx:id="usernameLoginLabel" alignment="CENTER" styleClass="text-background" stylesheets="@style.css" text="Username:" />
+                              <TextField fx:id="usernameLoginTF" prefHeight="25.0" prefWidth="385.0" />
+                           </children>
+                        </VBox>
+                     </center>
+                  </BorderPane>
+               </children>
+            </VBox>
+            <VBox prefHeight="59.0" prefWidth="440.0">
+               <children>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <left>
+                        <VBox prefHeight="55.0" prefWidth="189.0" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <VBox prefHeight="55.0" prefWidth="195.0" BorderPane.alignment="CENTER" />
+                     </right>
+                     <center>
+                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label fx:id="passwordLoginLabel1" alignment="CENTER" styleClass="text-background" text="Password:" />
+                              <TextField fx:id="passwordLoginTF1" alignment="CENTER" prefHeight="25.0" prefWidth="286.0" />
+                           </children>
+                        </VBox>
+                     </center>
+                  </BorderPane>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_RIGHT" prefHeight="47.0" prefWidth="440.0">
+               <children>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <left>
+                        <VBox prefHeight="55.0" prefWidth="189.0" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <VBox prefHeight="55.0" prefWidth="195.0" BorderPane.alignment="CENTER" />
+                     </right>
+                     <center>
+                        <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER_LEFT">
+                           <children>
+                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#enterMainScene" prefHeight="25.0" prefWidth="76.0" styleClass="bottom" stylesheets="@style.css" text="Enter" />
+                           </children>
+                        </VBox>
+                     </center>
+                  </BorderPane>
+               </children>
+            </VBox>
+            <VBox prefHeight="31.0" prefWidth="440.0">
+               <children>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <left>
+                        <VBox prefHeight="27.0" prefWidth="177.0" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="27.0" prefWidth="147.0" BorderPane.alignment="CENTER" />
+                     </right>
+                     <center>
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Hyperlink fx:id="createAcciuntHL" onAction="#enterRegisterScene" prefHeight="24.0" prefWidth="252.0" text="You don't have any account? create one" underline="true" />
+                           </children>
+                        </VBox>
+                     </center>
+                  </BorderPane>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
