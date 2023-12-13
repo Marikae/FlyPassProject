@@ -28,7 +28,10 @@ public class ControllerMainScene implements Initializable {
     @FXML
     private GridPane serviceGrid;
     private List<Service> services;
+    @FXML
     private Button logOutM;
+    @FXML
+    private Button profileButton;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         services = new ArrayList<>(getServices());
@@ -113,8 +116,6 @@ public class ControllerMainScene implements Initializable {
         service.setImgSrc("/img/minori.jpg");
         ls.add(service);
 
-
-
         return ls;
     }
     @FXML
@@ -125,6 +126,15 @@ public class ControllerMainScene implements Initializable {
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    @FXML
+    void goToProfileScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ProfileScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
 }

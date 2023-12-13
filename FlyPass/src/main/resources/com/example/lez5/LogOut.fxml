@@ -100,7 +100,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="87.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Profile">
+                  <Button fx:id="profileButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToProfileScene" prefHeight="87.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Profile">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
