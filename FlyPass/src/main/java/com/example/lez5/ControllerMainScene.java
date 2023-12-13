@@ -4,20 +4,31 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.event.ActionEvent;
+
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ControllerMainScene implements Initializable {
     @FXML
+    private Stage stage;
+    private Scene scene;
+    @FXML
     private GridPane serviceGrid;
-
     private List<Service> services;
+    private Button logOutM;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         services = new ArrayList<>(getServices());
@@ -106,4 +117,14 @@ public class ControllerMainScene implements Initializable {
 
         return ls;
     }
+    @FXML
+    void goToLogOutScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LogOut.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
 }
