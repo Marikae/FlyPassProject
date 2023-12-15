@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Objects;
 
+import com.example.lez5.DatabaseConnection;
+
 
 
 public class ControllerRegisterScene {
@@ -97,7 +99,8 @@ public class ControllerRegisterScene {
     }
 
     @FXML
-    void registration(ActionEvent event) throws IOException {
+    void registration(ActionEvent event) throws IOException, SQLException {
+
 
         //TODO controllare consistenza dei dati
         //TODO creare metodo di scrittura utenti su db in model
@@ -119,6 +122,20 @@ public class ControllerRegisterScene {
 
 
         if(check == true){
+
+            try {
+                Connection connection = DatabaseConnection.databaseConnection();
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("INSERT INTO `citizen` (`id`, `name`, `surname`, `tax_code`, `num_health_card`, `place_of_birth`, `date_of_birth`, `cat`, `email`, `password`) " +
+                        "VALUES (NULL, name, surname, '1234567890', '1234567890', 'New York', '1975-12-15', 'cittadino con passaporto diplomatico', email, password);");
+
+                resultSet.next();
+                System.out.println(resultSet.getString(2));
+            }catch (SQLException e) {
+                System.out.println(e);
+            }
+
+
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainScene.fxml")));
             stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
