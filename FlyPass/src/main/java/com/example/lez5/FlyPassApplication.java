@@ -7,10 +7,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.*;
 
 
 public class FlyPassApplication extends Application {
     public void start(Stage stage) throws IOException {
+
         FXMLLoader fxmlLoader = new FXMLLoader(FlyPassApplication.class.getResource("FirstScene.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
@@ -18,9 +20,8 @@ public class FlyPassApplication extends Application {
 
     }
 
-    public static void main(String[] args) {
-
-        launch(args);
-    }
 
 }
+
+
+//prova

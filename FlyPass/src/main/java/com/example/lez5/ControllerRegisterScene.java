@@ -14,9 +14,15 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.*;
 import java.util.Objects;
 
+import com.example.lez5.DatabaseConnection;
+
+
+
 public class ControllerRegisterScene {
+
     private Stage stage;
     private Scene scene;
     @FXML
@@ -93,7 +99,18 @@ public class ControllerRegisterScene {
     }
 
     @FXML
-    void registration(ActionEvent event) throws IOException {
+    void registration(ActionEvent event) throws IOException, SQLException {
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM worker");
+
+            resultSet.next();
+            System.out.println(resultSet.getString(2));
+        }catch (SQLException e) {
+            System.out.println(e);
+        }
+
         //TODO controllare consistenza dei dati
         //TODO creare metodo di scrittura utenti su db in model
         boolean check = false;
@@ -103,9 +120,8 @@ public class ControllerRegisterScene {
             if(checkEmptyFields(newUser) == true && checkPasswordConfirm() == true)
                 check = true;
             // checkDataConsistence(newUser); //TODO
-            }else
-               error.setText("Field empty");
-
+        }else
+            error.setText("Field empty");
 
 
         if(check == true){
@@ -118,7 +134,8 @@ public class ControllerRegisterScene {
             double windowWidth = screenWidth + 30; // Larghezza della finestra
             double windowHeight = screenHeight + 1; // Altezza della finestra
             stage.setX((screenWidth - windowWidth) / 2);
-            stage.setY((screenHeight - windowHeight) / 2);            stage.setScene(scene);
+            stage.setY((screenHeight - windowHeight) / 2);
+            stage.setScene(scene);
             stage.show();
         }
 
@@ -135,10 +152,18 @@ public class ControllerRegisterScene {
         String email = user.getEmail();
         String password = user.getPassword();
 
-        if(user.getName().isEmpty() || user.getSurname().isEmpty() || user.getBirthday().isEmpty() || user.getBirthPlace().isEmpty() || user.getCodiceFiscale().isEmpty() || user.getEmail().isEmpty() || confirmPassword.getText().isEmpty()){
+        if(user.getName().isEmpty() || user.getSurname().isEmpty() ||
+                user.getBirthday().isEmpty()  || user.getBirthPlace().isEmpty()
+                || user.getCodiceFiscale().isEmpty() || user.getEmail().isEmpty()  || confirmPassword.getText().isEmpty()){
+
             error.setText("there is a empty fields");
+
+
+
             return false;
         }
+
+
         return true;
 
     }
@@ -155,4 +180,3 @@ public class ControllerRegisterScene {
         return true;
     }
 }
-
