@@ -17,7 +17,7 @@ public class DatabaseConnection {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
+        }s
 
 
     }*/
