@@ -18,45 +18,71 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
+
+
 
 public class ControllerRegisterScene {
-    public static boolean isCodiceFiscaleValid(String codiceFiscale, String nome, String cognome, LocalDate dataDiNascita) {
+
+    public static boolean HealthCardNumberCheck(String heathCardNumber) {
+        // Verifica se la lunghezza della stringa è esattamente 20
+        if (heathCardNumber.length() != 20) {
+            return false;
+        }
+
+        // Verifica se ogni carattere della stringa è una cifra da '0' a '9'
+        for (char carattere : heathCardNumber.toCharArray()) {
+            if (carattere < '0' || carattere > '9') {
+                return false; // La stringa contiene un carattere non valido
+            }
+        }
+
+        // La stringa è valida se ha lunghezza 20 e contiene solo cifre da '0' a '9'
+        return true;
+    }
+    public static boolean verificaEmail(String email) {
+
+        String regexPattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+
+        Pattern pattern = Pattern.compile(regexPattern);
+
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
+    }
+
+    public static boolean isCodiceFiscaleValid(String codiceFiscale, String nome, String cognome) {
         // Verifica della lunghezza del codice fiscale
         if (codiceFiscale.length() != 16) {
             return false;
         }
 
         // Estrazione delle parti dal codice fiscale
-        String parteCognome = codiceFiscale.substring(0, 3);
-        String parteNome = codiceFiscale.substring(3, 6);
-        String dataDiNascitaCodice = codiceFiscale.substring(6, 12);
+        String parteNomeCognome = codiceFiscale.substring(0, 6);
 
-        // Verifica delle corrispondenze con nome, cognome e data di nascita
-        if (!parteCognome.equals(generaParteNomeCognome(cognome)) ||
-                !parteNome.equals(generaParteNomeCognome(nome)) ||
-                !dataDiNascitaCodice.equals(generaDataDiNascitaCodice(dataDiNascita))) {
-            return false;
-        }
+
+        if(isSoloMaiuscole(parteNomeCognome))
+            return  true;
 
         // Aggiungi ulteriori verifiche, ad esempio i caratteri di controllo
 
-        return true;
+    return  false;
     }
 
-    private static String generaParteNomeCognome(String input) {
-        String result = input.toUpperCase().replaceAll("[^A-Z]", "");
 
-        if (result.length() >= 3) {
-            return result.substring(0, 3);
-        } else {
-            return result + "XXX".substring(0, 3 - result.length());
-        }
+
+    public static boolean isSoloMaiuscole(String input) {
+        return input.matches("^[A-Z]+$");
     }
 
-    private static String generaDataDiNascitaCodice(LocalDate dataDiNascita) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
-        return dataDiNascita.format(formatter);
-    }
+
+
+
+
+
     private Stage stage;
     private Scene scene;
     @FXML
@@ -151,25 +177,32 @@ public class ControllerRegisterScene {
         String aus7 = tax_code.getText();
         String aus8 = place_of_birth.getText();
         String aus9 = surname.getText();
-        //TODO controllare consistenza dei dati
-        //TODO creare metodo di scrittura utenti su db in model
+
+
         boolean check = false;
 
         if(date_of_birth.getValue() != null){
             User newUser = new User(name.getText(),num_health_card.getText() ,cat.getText(), surname.getText(), date_of_birth.getValue().toString(), place_of_birth.getText(), tax_code.getText(), email.getText(), password.getText());
-            if(checkEmptyFields(newUser) == true && checkPasswordConfirm() == true )
+
+            if(!verificaEmail(email.getText())){
+                error.setText("Invalid mail format");
+                return;
+            }
+
+            if (!isCodiceFiscaleValid(aus7, aus1, aus9)){
+                error.setText("Invalid tax code format");
+                return;
+            }
+
+            if(!HealthCardNumberCheck(aus4)){
+                error.setText("Invalid health card number format");
+                return;
+            }
+            if(checkEmptyFields(newUser) && checkPasswordConfirm())
                 check = true;
-            // checkDataConsistence(newUser); //TODO
+
         }else
              error.setText("Field empty");
-        if(isCodiceFiscaleValid(aus7 ,name.getText(),surname.getText(), aus5)){
-            check = true;
-        }else{
-            error.setText("Invalid tax code");
-        }
-
-
-
 
 
 
@@ -252,9 +285,5 @@ public class ControllerRegisterScene {
         return true;
     }
 
-    public boolean checkDataConsistence(User user){
-        //TODO
-        return true;
-    }
 }
 
