@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="676.0" prefWidth="600.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerRegisterScene">
+<AnchorPane prefHeight="676.0" prefWidth="600.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerRegisterScene">
    <children>
       <Button fx:id="registerButton" layoutX="284.0" layoutY="473.0" mnemonicParsing="false" onAction="#registration" prefHeight="25.0" prefWidth="89.0" styleClass="bottom" stylesheets="@style.css" text="Register" />
       <Button fx:id="undoButton" layoutX="28.0" layoutY="25.0" mnemonicParsing="false" onAction="#backToFirstScene" prefHeight="25.0" prefWidth="73.0" styleClass="bottom" stylesheets="@style.css" text="&lt;Back" />
@@ -16,12 +16,12 @@
       <Label fx:id="surnameSinginLabel" layoutX="356.0" layoutY="94.0" text="Surname" textFill="WHITE" />
       <TextField fx:id="name" layoutX="193.0" layoutY="111.0" />
       <TextField fx:id="surname" layoutX="356.0" layoutY="111.0" />
-      <TextField fx:id="birthPlace" layoutX="193.0" layoutY="166.0" />
+      <TextField fx:id="place_of_birth" layoutX="193.0" layoutY="166.0" />
       <Label fx:id="birthplaceLabel" layoutX="195.0" layoutY="149.0" text="Birth place" textFill="WHITE" />
       <Label fx:id="birthdayLabel" layoutX="356.0" layoutY="149.0" text="day of birth" textFill="WHITE" />
-      <DatePicker fx:id="birthday" layoutX="356.0" layoutY="166.0" />
-      <Label fx:id="codfisLabel" layoutX="195.0" layoutY="208.0" text="Codice fiscale" textFill="WHITE" />
-      <TextField fx:id="codiceFiscale" layoutX="193.0" layoutY="226.0" />
+      <DatePicker fx:id="date_of_birth" layoutX="356.0" layoutY="166.0" />
+      <Label fx:id="codfisLabel" layoutX="195.0" layoutY="208.0" text="Tax code" textFill="WHITE" />
+      <TextField fx:id="tax_code" layoutX="193.0" layoutY="226.0" />
       <Label fx:id="singinLabel" layoutX="225.0" layoutY="38.0" styleClass="ocean-background" stylesheets="@style.css" text="Register" textFill="WHITE">
          <font>
             <Font name="Berlin Sans FB" size="36.0" />
@@ -35,5 +35,9 @@
       <Label layoutX="195.0" layoutY="321.0" text="Password" textFill="WHITE" />
       <Label layoutX="195.0" layoutY="378.0" text="Confirm password" textFill="WHITE" />
       <Label fx:id="error" layoutX="211.0" layoutY="433.0" text="Errore" textFill="RED" />
+      <TextField fx:id="num_health_card" layoutX="356.0" layoutY="226.0" />
+      <Label layoutX="359.0" layoutY="208.0" styleClass="text-background" stylesheets="@style.css" text="Health card number" />
+      <TextField fx:id="cat" layoutX="356.0" layoutY="286.0" />
+      <Label layoutX="356.0" layoutY="269.0" styleClass="text-background" stylesheets="@style.css" text="Category" />
    </children>
 </AnchorPane>

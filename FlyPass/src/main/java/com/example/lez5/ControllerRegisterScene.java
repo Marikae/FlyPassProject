@@ -15,21 +15,62 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Objects;
-
-import com.example.lez5.DatabaseConnection;
-
-
+import java.time.format.DateTimeFormatter;
 
 public class ControllerRegisterScene {
+    public static boolean isCodiceFiscaleValid(String codiceFiscale, String nome, String cognome, LocalDate dataDiNascita) {
+        // Verifica della lunghezza del codice fiscale
+        if (codiceFiscale.length() != 16) {
+            return false;
+        }
 
+        // Estrazione delle parti dal codice fiscale
+        String parteCognome = codiceFiscale.substring(0, 3);
+        String parteNome = codiceFiscale.substring(3, 6);
+        String dataDiNascitaCodice = codiceFiscale.substring(6, 12);
+
+        // Verifica delle corrispondenze con nome, cognome e data di nascita
+        if (!parteCognome.equals(generaParteNomeCognome(cognome)) ||
+                !parteNome.equals(generaParteNomeCognome(nome)) ||
+                !dataDiNascitaCodice.equals(generaDataDiNascitaCodice(dataDiNascita))) {
+            return false;
+        }
+
+        // Aggiungi ulteriori verifiche, ad esempio i caratteri di controllo
+
+        return true;
+    }
+
+    private static String generaParteNomeCognome(String input) {
+        String result = input.toUpperCase().replaceAll("[^A-Z]", "");
+
+        if (result.length() >= 3) {
+            return result.substring(0, 3);
+        } else {
+            return result + "XXX".substring(0, 3 - result.length());
+        }
+    }
+
+    private static String generaDataDiNascitaCodice(LocalDate dataDiNascita) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
+        return dataDiNascita.format(formatter);
+    }
     private Stage stage;
     private Scene scene;
     @FXML
-    private TextField birthPlace;
+    private TextField place_of_birth;
 
     @FXML
-    private DatePicker birthday;
+    private TextField cat;
+
+    @FXML
+    private TextField num_health_card;
+
+    @FXML
+    private DatePicker date_of_birth;
+
 
     @FXML
     private Label birthdayLabel;
@@ -41,7 +82,7 @@ public class ControllerRegisterScene {
     private Label codfisLabel;
 
     @FXML
-    private TextField codiceFiscale;
+    private TextField tax_code;
 
     @FXML
     private TextField confirmPassword;
@@ -101,20 +142,31 @@ public class ControllerRegisterScene {
     @FXML
     void registration(ActionEvent event) throws IOException, SQLException {
 
-
+        String aus1 = name.getText();
+        String aus2 = password.getText();
+        String aus3 = email.getText();
+        String aus4 = num_health_card.getText();
+        LocalDate aus5 = date_of_birth.getValue();
+        String aus6 = cat.getText();
+        String aus7 = tax_code.getText();
+        String aus8 = place_of_birth.getText();
+        String aus9 = surname.getText();
         //TODO controllare consistenza dei dati
         //TODO creare metodo di scrittura utenti su db in model
         boolean check = false;
 
-        if(birthday.getValue() != null){
-            User newUser = new User(name.getText(), surname.getText(), birthday.getValue().toString(), birthPlace.getText(), codiceFiscale.getText(), email.getText(), password.getText());
-            if(checkEmptyFields(newUser) == true && checkPasswordConfirm() == true)
+        if(date_of_birth.getValue() != null){
+            User newUser = new User(name.getText(),num_health_card.getText() ,cat.getText(), surname.getText(), date_of_birth.getValue().toString(), place_of_birth.getText(), tax_code.getText(), email.getText(), password.getText());
+            if(checkEmptyFields(newUser) == true && checkPasswordConfirm() == true )
                 check = true;
             // checkDataConsistence(newUser); //TODO
         }else
-            error.setText("Field empty");
-
-
+             error.setText("Field empty");
+        if(isCodiceFiscaleValid(aus7 ,name.getText(),surname.getText(), aus5)){
+            check = true;
+        }else{
+            error.setText("Invalid tax code");
+        }
 
 
 
@@ -126,11 +178,29 @@ public class ControllerRegisterScene {
             try {
                 Connection connection = DatabaseConnection.databaseConnection();
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("INSERT INTO `citizen` (`id`, `name`, `surname`, `tax_code`, `num_health_card`, `place_of_birth`, `date_of_birth`, `cat`, `email`, `password`) " +
-                        "VALUES (NULL, name, surname, '1234567890', '1234567890', 'New York', '1975-12-15', 'cittadino con passaporto diplomatico', email, password);");
 
-                resultSet.next();
-                System.out.println(resultSet.getString(2));
+                String query = ("INSERT INTO `citizen` (`id`, `name`, `surname`, `tax_code`, `num_health_card`, `place_of_birth`, `date_of_birth`, `cat`, `email`, `password`) " +
+                        "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+                preparedStatement.setString(1, aus1);
+                preparedStatement.setString(2, aus9);
+                preparedStatement.setString(3, aus7);
+                preparedStatement.setString(4, aus4);
+                preparedStatement.setString(5, aus8);
+                preparedStatement.setObject(6, aus5);  // Considera che date_of_birth è un LocalDate
+                preparedStatement.setString(7, aus6);
+                preparedStatement.setString(8, aus3);
+                preparedStatement.setString(9, aus2);
+
+                preparedStatement.executeUpdate();
+
+                //ResultSet resultSet = statement.executeQuery("INSERT INTO `citizen` (`id`, `name`, `surname`, `tax_code`, `num_health_card`, `place_of_birth`, `date_of_birth`, `cat`, `email`, `password`) " +
+                 //       "VALUES (NULL, name, surname, '1234567890', '1234567890', 'New York', '1975-12-15', 'cittadino con passaporto diplomatico', email, password);");
+
+
+                //System.out.println(resultSet.getString(2));
             }catch (SQLException e) {
                 System.out.println(e);
             }

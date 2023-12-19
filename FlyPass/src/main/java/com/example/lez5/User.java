@@ -3,16 +3,20 @@ package com.example.lez5;
 public class User {
     public String name;
     public String surname;
+
+    public String category;
     public String birthday;
     public String birthPlace;
     public String codiceFiscale;
     public String email;
+    public String num_health_card;
     public String phone;
     public String password;
 
-    public User(String name, String surname, String birthday, String birthPlace, String codiceFiscale, String email, String phone){
+    public User(String name, String num_health_card, String category, String surname, String birthday, String birthPlace, String codiceFiscale, String email, String phone){
         this.name = name;
         this.surname = surname;
+        this.category = category;
         this.birthday = birthday;
         this.birthPlace = birthPlace;
         this.codiceFiscale = codiceFiscale;
