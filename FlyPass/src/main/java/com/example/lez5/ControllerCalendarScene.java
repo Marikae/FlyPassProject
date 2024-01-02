@@ -8,40 +8,40 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class ControllerProfile extends Controller implements Initializable {
+public class ControllerCalendarScene extends Controller implements Initializable {
+
+    @FXML
+    private Label serviceType;
+    @FXML
+    private Button undo;
     private Stage stage;
     private Scene scene;
-    @FXML
-    private Button logOutM;
+    private String service;
 
-    @FXML
-    private Button serviceButton;
-    @FXML
-    private Label nameLabel;
-    @FXML
-    private Label surnameLabel;
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        //model.getUser();
-        //nameLabel.setText(model.getNameService());
-        //settare tutte le label con gli elementi dell'user
-        //TODO
-    }
-    public ControllerProfile(){
+    public ControllerCalendarScene(){
         super();
     }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        if (serviceType != null) {
+            serviceType.setText(model.getNameService());
+        } else {
+            System.out.println("serviceType is null!");
+            // Investigate why serviceType is null and ensure proper initialization
+        }
+    }
     @FXML
-    void goToMainScene(ActionEvent event) throws IOException {
+    void returnMainScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -54,15 +54,6 @@ public class ControllerProfile extends Controller implements Initializable {
         stage.setY((screenHeight - windowHeight) / 2);
         stage.setScene(scene);
         //stage.setFullScreen(true);
-        stage.show();
-    }
-
-    @FXML
-    void goToLogOutScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LogOut.fxml")));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
         stage.show();
     }
 

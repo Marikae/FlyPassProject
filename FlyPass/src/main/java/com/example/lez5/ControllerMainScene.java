@@ -7,13 +7,14 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class ControllerMainScene implements Initializable {
+public class ControllerMainScene extends Controller implements Initializable {
     @FXML
     private Stage stage;
     private Scene scene;
@@ -35,6 +36,7 @@ public class ControllerMainScene implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         services = new ArrayList<>(getServices());
+
         int column = 0;
         int row = 1;
         try {
@@ -57,6 +59,10 @@ public class ControllerMainScene implements Initializable {
             throw new RuntimeException(e);
         }
 
+
+    }
+    public ControllerMainScene(){
+        super();
     }
     private List<Service> getServices(){
         List<Service> ls = new ArrayList<Service>();
@@ -136,5 +142,6 @@ public class ControllerMainScene implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
 
 }

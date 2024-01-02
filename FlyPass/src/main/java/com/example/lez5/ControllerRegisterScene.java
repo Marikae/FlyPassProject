@@ -21,7 +21,7 @@ import com.example.lez5.DatabaseConnection;
 
 
 
-public class ControllerRegisterScene {
+public class ControllerRegisterScene extends Controller {
 
     private Stage stage;
     private Scene scene;

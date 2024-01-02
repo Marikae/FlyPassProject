@@ -145,7 +145,7 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
                      <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="Giuseppina" />
+                        <Label fx:id="nameLabel" styleClass="text-background" stylesheets="@style.css" text="Giuseppina" />
                      </children>
                   </VBox>
                </children></HBox>
@@ -162,7 +162,7 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
                      <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="Rossi" />
+                        <Label fx:id="surnameLabel" styleClass="text-background" stylesheets="@style.css" text="Rossi" />
                      </children>
                   </VBox>
                </children>
