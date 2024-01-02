@@ -33,12 +33,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        if (serviceType != null) {
-            serviceType.setText(model.getNameService());
-        } else {
-            System.out.println("serviceType is null!");
-            // Investigate why serviceType is null and ensure proper initialization
-        }
+
     }
     @FXML
     void returnMainScene(ActionEvent event) throws IOException {

@@ -48,15 +48,12 @@ public class ControllerService extends Controller implements Initializable {
     public String getServiceName(){
         return name.getText();
     }
-    public String getServiceDescription(){
-        return description.getText();
-    }
 
     @FXML
     void click(MouseEvent event) throws IOException {
-        model.setNameService(getServiceName());
+        model.setService(getServiceName());
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarScene.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarCitizenScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
