@@ -180,14 +180,14 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
                      <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="RSSGIUA039EU0AHD0A" />
+                        <Label fx:id="taxCodeLabel" styleClass="text-background" stylesheets="@style.css" text="RSSGIUA039EU0AHD0A" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="315.0">
+                  <VBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="320.0">
                      <children>
                         <Label styleClass="text-background" stylesheets="@style.css" text="Date of Birth:  " textFill="WHITE">
                            <font>
@@ -198,7 +198,7 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
                      <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="03/01/1947" />
+                        <Label fx:id="birthdayLabel" styleClass="text-background" stylesheets="@style.css" text="03/01/1947" />
                      </children>
                   </VBox>
                </children>
@@ -216,86 +216,32 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
                      <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="Vittorio Veneto" />
+                        <Label fx:id="placeOfBirthLabel" styleClass="text-background" stylesheets="@style.css" text="Vittorio Veneto" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="269.0">
+                  <VBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="371.0">
                      <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="Comune:  " textFill="WHITE">
+                        <Label prefHeight="38.0" prefWidth="217.0" styleClass="text-background" stylesheets="@style.css" text="Number heal card:" textFill="WHITE">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Label>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
+                  <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="809.0" styleClass="text-background" stylesheets="@style.css">
                      <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="Pieve di soligo" />
+                        <Label fx:id="healtCardLabel" styleClass="text-background" stylesheets="@style.css" text="Via peron " />
                      </children>
                   </VBox>
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="221.0">
-                     <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="CAP:  " textFill="WHITE">
-                           <font>
-                              <Font size="26.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
-                     <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="31053" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="217.0">
-                     <children>
-                        <Label prefHeight="38.0" prefWidth="59.0" styleClass="text-background" stylesheets="@style.css" text="Via:  " textFill="WHITE">
-                           <font>
-                              <Font size="26.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
-                     <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="Via peron " />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="274.0">
-                     <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="Number:  " textFill="WHITE">
-                           <font>
-                              <Font size="26.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
-                     <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="7" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="243.0">
+                  <VBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="233.0">
                      <children>
                         <Label styleClass="text-background" stylesheets="@style.css" text="Email:  " textFill="WHITE">
                            <font>
@@ -306,7 +252,25 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
                      <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="giuseppinarossi@gmail.com" />
+                        <Label fx:id="emailLabel" styleClass="text-background" stylesheets="@style.css" text="giuseppinarossi@gmail.com" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="287.0">
+                     <children>
+                        <Label prefHeight="38.0" prefWidth="131.0" styleClass="text-background" stylesheets="@style.css" text="Category:" textFill="WHITE">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
+                     <children>
+                        <Label fx:id="categoryLabel" prefHeight="18.0" prefWidth="161.0" styleClass="text-background" stylesheets="@style.css" text="giuseppinarossi@gmail.com" />
                      </children>
                   </VBox>
                </children>
