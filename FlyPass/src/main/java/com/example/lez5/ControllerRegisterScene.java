@@ -15,21 +15,26 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
-import com.example.lez5.DatabaseConnection;
+public class ControllerRegisterScene extends Controller{
 
-
-
-public class ControllerRegisterScene extends Controller {
 
     private Stage stage;
     private Scene scene;
     @FXML
-    private TextField birthPlace;
+    private TextField place_of_birth;
 
     @FXML
-    private DatePicker birthday;
+    private TextField cat;
+
+    @FXML
+    private TextField num_health_card;
+
+    @FXML
+    private DatePicker date_of_birth;
+
 
     @FXML
     private Label birthdayLabel;
@@ -41,7 +46,7 @@ public class ControllerRegisterScene extends Controller {
     private Label codfisLabel;
 
     @FXML
-    private TextField codiceFiscale;
+    private TextField tax_code;
 
     @FXML
     private TextField confirmPassword;
@@ -100,31 +105,46 @@ public class ControllerRegisterScene extends Controller {
 
     @FXML
     void registration(ActionEvent event) throws IOException, SQLException {
-        try {
-            Connection connection = DatabaseConnection.databaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM worker");
 
-            resultSet.next();
-            System.out.println(resultSet.getString(2));
-        }catch (SQLException e) {
-            System.out.println(e);
-        }
+        String aus1 = name.getText();
+        String aus2 = password.getText();
+        String aus3 = email.getText();
+        String aus4 = num_health_card.getText();
+        LocalDate aus5 = date_of_birth.getValue();
+        String aus6 = cat.getText();
+        String aus7 = tax_code.getText();
+        String aus8 = place_of_birth.getText();
+        String aus9 = surname.getText();
 
-        //TODO controllare consistenza dei dati
-        //TODO creare metodo di scrittura utenti su db in model
+
         boolean check = false;
 
-        if(birthday.getValue() != null){
-            User newUser = new User(name.getText(), surname.getText(), birthday.getValue().toString(), birthPlace.getText(), codiceFiscale.getText(), email.getText(), password.getText());
-            if(checkEmptyFields(newUser) == true && checkPasswordConfirm() == true)
+        if(date_of_birth.getValue() != null){
+            User newUser = new User(name.getText(), num_health_card.getText(), cat.getText(), surname.getText(), date_of_birth.getValue().toString(), place_of_birth.getText(), tax_code.getText(), email.getText(), password.getText());
+
+            if(!model.checkEmail(email.getText())){
+                error.setText("Invalid mail format");
+                return;
+            }
+
+            if (!model.isCodiceFiscaleValid(aus7, aus1, aus9)){
+                error.setText("Invalid tax code format");
+                return;
+            }
+
+            if(!model.HealthCardNumberCheck(aus4)){
+                error.setText("Invalid health card number format");
+                return;
+            }
+            if(checkEmptyFields(newUser) && checkPasswordConfirm())
                 check = true;
-            // checkDataConsistence(newUser); //TODO
+
         }else
             error.setText("Field empty");
 
 
         if(check == true){
+            model.databaseInsertion(aus5,aus1,aus2,aus3,aus4,aus6,aus7,aus8,aus9);
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainScene.fxml")));
             stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
@@ -138,34 +158,14 @@ public class ControllerRegisterScene extends Controller {
             stage.setScene(scene);
             stage.show();
         }
-
-
-
     }
 
     public boolean checkEmptyFields(User user){
-        String name = user.getName();
-        String surname = user.getSurname();
-        String birthday = user.getBirthday();
-        String birthPlace = user.getBirthPlace();
-        String codiceFiscale = user.getCodiceFiscale();
-        String email = user.getEmail();
-        String password = user.getPassword();
-
-        if(user.getName().isEmpty() || user.getSurname().isEmpty() ||
-                user.getBirthday().isEmpty()  || user.getBirthPlace().isEmpty()
-                || user.getCodiceFiscale().isEmpty() || user.getEmail().isEmpty()  || confirmPassword.getText().isEmpty()){
-
+        if(user.getName().isEmpty() || user.getSurname().isEmpty() || user.getBirthday().isEmpty() || user.getBirthPlace().isEmpty() || user.getCodiceFiscale().isEmpty() || user.getEmail().isEmpty() || confirmPassword.getText().isEmpty()){
             error.setText("there is a empty fields");
-
-
-
             return false;
         }
-
-
         return true;
-
     }
     public boolean checkPasswordConfirm(){
         if(!password.getText().equals(confirmPassword.getText())){
@@ -175,8 +175,4 @@ public class ControllerRegisterScene extends Controller {
         return true;
     }
 
-    public boolean checkDataConsistence(User user){
-        //TODO
-        return true;
-    }
 }

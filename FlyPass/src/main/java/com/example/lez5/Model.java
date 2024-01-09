@@ -12,7 +12,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class Model implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -39,6 +42,8 @@ public class Model implements Initializable {
         connection.close();
         preparedStatement.close();
     }
+
+
     //-----------------------------SERVICE DATA SET-----------------------------------
     public void setService(String nameNewService){
         for (Service s : getServices() ) {
@@ -109,6 +114,7 @@ public class Model implements Initializable {
 
         return ls;
     }
+
     //-------------------------LOGIN----------------------------------
     public Boolean workerLogin(String username, String password) throws IOException {
         try {
@@ -117,26 +123,21 @@ public class Model implements Initializable {
             Connection connection = DatabaseConnection.databaseConnection();
             String query = "SELECT * FROM worker WHERE email = ? AND password = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-
             // Imposta i valori dei parametri per email e password
             preparedStatement.setString(1, loginUserName);
             preparedStatement.setString(2, loginPassword);
-
             ResultSet resultSet = preparedStatement.executeQuery();
-
             if (resultSet.next()) {
                 // Se esiste almeno una riga nel risultato, l'accesso è stato effettuato con successo
                // System.out.println("Accesso consentito per l'utente con email: " + resultSet.getString("email"));
                 worker = true;
+                //setUser(loginUserName);
                 return true;
             } else {
                return false;
             }
-
             // Chiudi le risorse
-
         } catch (SQLException e) {
-
             System.out.println(e);
             //return false;
         }
@@ -160,6 +161,7 @@ public class Model implements Initializable {
                 // Se esiste almeno una riga nel risultato, l'accesso è stato effettuato con successo
                 // System.out.println("Accesso consentito per l'utente con email: " + resultSet.getString("email"));
                 worker = false;
+                setUser(loginUserName);
                 return true;
             } else {
                 return false;
@@ -177,14 +179,101 @@ public class Model implements Initializable {
         return false;
     }
 
+    //REGISTER @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    public boolean HealthCardNumberCheck(String heathCardNumber) {
+        // Verifica se la lunghezza della stringa è esattamente 20
+        if (heathCardNumber.length() != 20) {
+            return false;
+        }
+        // Verifica se ogni carattere della stringa è una cifra da '0' a '9'
+        for (char carattere : heathCardNumber.toCharArray()) {
+            if (carattere < '0' || carattere > '9') {
+                return false; // La stringa contiene un carattere non valido
+            }
+        }
+        // La stringa è valida se ha lunghezza 20 e contiene solo cifre da '0' a '9'
+        return true;
+    }
+
+    public boolean checkEmail(String email) {
+
+        String regexPattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+
+        Pattern pattern = Pattern.compile(regexPattern);
+
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
+    }
+
+    public boolean isCodiceFiscaleValid(String codiceFiscale, String nome, String cognome) {
+        // Verifica della lunghezza del codice fiscale
+        if (codiceFiscale.length() != 16) {
+            return false;
+        }
+        // Estrazione delle parti dal codice fiscale
+        String parteNomeCognome = codiceFiscale.substring(0, 6);
+        if(isSoloMaiuscole(parteNomeCognome))
+            return  true;
+        // Aggiungi ulteriori verifiche, ad esempio i caratteri di controllo
+        return  false;
+    }
+
+    public boolean isSoloMaiuscole(String input) {
+        return input.matches("^[A-Z]+$");
+    }
+
+
+    public void databaseInsertion (LocalDate aus5,String aus1, String aus2, String aus3, String aus4,
+                                   String aus6, String aus7, String aus8, String aus9){
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+
+            String query = ("INSERT INTO `citizen` (`id`, `name`, `surname`, `tax_code`, `num_health_card`, `place_of_birth`, `date_of_birth`, `cat`, `email`, `password`) " +
+                    "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, aus1);
+            preparedStatement.setString(2, aus9);
+            preparedStatement.setString(3, aus7);
+            preparedStatement.setString(4, aus4);
+            preparedStatement.setString(5, aus8);
+            preparedStatement.setObject(6, aus5);  // Considera che date_of_birth è un LocalDate
+            preparedStatement.setString(7, aus6);
+            preparedStatement.setString(8, aus3);
+            preparedStatement.setString(9, aus2);
+
+            preparedStatement.executeUpdate();
+
+        }catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     //-----------------------USER DATA SET------------------------------
     public User getUser(){
         return this.user;
     }
-    private void setUser(){
-        //chiamata a database che ritorna tutti i dati dell'user e lo salva in una classe
-        //user = new User(loginUserName...);
-        //TODO
+
+    private void setUser(String userEmail) throws SQLException {
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT * FROM citizen WHERE email = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+        // Imposta i valori dei parametri per email
+        preparedStatement.setString(1, userEmail);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            user = new User(resultSet.getString("name"), resultSet.getString("num_health_card"), resultSet.getString("cat"), resultSet.getString("surname"), resultSet.getString("date_of_birth"), resultSet.getString("place_of_birth"), resultSet.getString("tax_code"), resultSet.getString("email"), resultSet.getString("password"));
+        }
+        //User(String name, String num_health_card, String category, String surname,
+        //String birthday, String birthPlace, String codiceFiscale, String email, String phone)
+
+
     }
 
 }

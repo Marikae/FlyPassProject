@@ -20,22 +20,37 @@ public class ControllerProfile extends Controller implements Initializable {
     private Stage stage;
     private Scene scene;
     @FXML
-    private Button logOutM;
-
+    private Label birthdayLabel;
     @FXML
-    private Button serviceButton;
+    private Label emailLabel;
+    @FXML
+    private Label healtCardLabel;
+    @FXML
+    private Label surnameLabel;
+    @FXML
+    private Label taxCodeLabel;
     @FXML
     private Label nameLabel;
     @FXML
-    private Label surnameLabel;
-
+    private Label placeOfBirthLabel;
+    @FXML
+    private Button serviceButton;
+    @FXML
+    private Button logOutM;
+    @FXML
+    private Label categoryLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //model.getUser();
-        //nameLabel.setText(model.getNameService());
-        //settare tutte le label con gli elementi dell'user
-        //TODO
+        User user = model.getUser();
+        nameLabel.setText(user.getName());
+        surnameLabel.setText(user.getSurname());
+        taxCodeLabel.setText(user.getCodiceFiscale());
+        placeOfBirthLabel.setText(user.getBirthPlace());
+        emailLabel.setText(user.getEmail());
+        birthdayLabel.setText(user.getBirthday());
+        healtCardLabel.setText(user.getHealCard());
+        categoryLabel.setText(user.getCategory());
     }
     public ControllerProfile(){
         super();
