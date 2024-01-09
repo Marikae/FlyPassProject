@@ -204,6 +204,25 @@ public class ControllerRegisterScene {
         }else
              error.setText("Field empty");
 
+            if(!model.checkEmail(email.getText())){
+                error.setText("Invalid mail format");
+                return;
+            }
+
+            if (!model.isCodiceFiscaleValid(aus7, aus1, aus9)){
+                error.setText("Invalid tax code format");
+                return;
+            }
+
+            if(!model.HealthCardNumberCheck(aus4)){
+                error.setText("Invalid health card number format");
+                return;
+            }
+            if(checkEmptyFields(newUser) && checkPasswordConfirm())
+                check = true;
+
+        }else
+            error.setText("Field empty");
 
 
         if(check == true){
@@ -251,20 +270,9 @@ public class ControllerRegisterScene {
             stage.setY((screenHeight - windowHeight) / 2);            stage.setScene(scene);
             stage.show();
         }
-
-
-
     }
 
     public boolean checkEmptyFields(User user){
-        String name = user.getName();
-        String surname = user.getSurname();
-        String birthday = user.getBirthday();
-        String birthPlace = user.getBirthPlace();
-        String codiceFiscale = user.getCodiceFiscale();
-        String email = user.getEmail();
-        String password = user.getPassword();
-
         if(user.getName().isEmpty() || user.getSurname().isEmpty() || user.getBirthday().isEmpty() || user.getBirthPlace().isEmpty() || user.getCodiceFiscale().isEmpty() || user.getEmail().isEmpty() || confirmPassword.getText().isEmpty()){
             error.setText("there is a empty fields");
 
@@ -275,7 +283,6 @@ public class ControllerRegisterScene {
 
 
         return true;
-
     }
     public boolean checkPasswordConfirm(){
         if(!password.getText().equals(confirmPassword.getText())){

@@ -21,14 +21,14 @@ public class User {
         this.birthPlace = birthPlace;
         this.codiceFiscale = codiceFiscale;
         this.email = email;
-        this.phone = phone;
+        this.num_health_card = num_health_card;
         this.password = password;
     }
 
     public String getName(){
         return name;
     }
-
+    public String getCategory(){return category;}
     public String getSurname(){
         return surname;
     }
@@ -44,7 +44,7 @@ public class User {
     public String getEmail(){
         return email;
     }
-    public String getPassword(){
-        return password;
+    public String getHealCard(){
+        return this.num_health_card;
     }
 }
