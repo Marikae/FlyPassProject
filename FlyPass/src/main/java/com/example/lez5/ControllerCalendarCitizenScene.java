@@ -31,6 +31,14 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
     private Button profileButton;
     @FXML
     private Button returnMainScene;
+    @FXML
+    private Button PadovaButton;
+    @FXML
+    private Button TrevisoButton;
+    @FXML
+    private Button VeronaButton;
+    @FXML
+    private Button VeneziaButton;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (serviceName != null && descriptionLabel != null) {
@@ -76,6 +84,43 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
         stage.setY((screenHeight - windowHeight) / 2);
         stage.setScene(scene);
         //stage.setFullScreen(true);
+        stage.show();
+    }
+
+    @FXML
+    void PadovaSetAndGo(ActionEvent event) throws IOException{
+        model.setPadovaAsSede();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    @FXML
+    void TrevisoSetAndGo(ActionEvent event) throws IOException{
+        model.setTrevisoAsSede();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    @FXML
+    void VeneziaSetAndGo(ActionEvent event) throws IOException{
+        model.setVeneziaAsSede();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    @FXML
+    private void VeronaSetAndGo(ActionEvent event) throws IOException{
+        model.setVeronaAsSede();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
         stage.show();
     }
 }

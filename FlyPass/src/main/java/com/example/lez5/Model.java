@@ -21,6 +21,8 @@ public class Model implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
+
+    Evento evento = new Evento();
     private static Model modelInstance; // statico e protetto da accesso esterno
     private String loginPassword;
     private String loginUserName;
@@ -274,6 +276,22 @@ public class Model implements Initializable {
         //String birthday, String birthPlace, String codiceFiscale, String email, String phone)
 
 
+    }
+
+
+    //------------------------------ControllerCitizenScene--------------------------------------------
+    public void setPadovaAsSede(){
+        evento.setSede(Evento.Sede.Padova);
+    }
+
+    public void setTrevisoAsSede(){
+        evento.setSede(Evento.Sede.Treviso);
+    }
+    public void setVeneziaAsSede(){
+        evento.setSede(Evento.Sede.Venezia);
+    }
+    public void setVeronaAsSede(){
+        evento.setSede(Evento.Sede.Verona);
     }
 
 }

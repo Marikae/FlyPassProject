@@ -84,5 +84,7 @@ public class ControllerMainScene extends Controller implements Initializable {
         stage.show();
     }
 
-
+    void goToPrenotationScene(){
+        //TODO l'if con la prenotazione
+    }
 }

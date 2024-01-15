@@ -5,6 +5,5 @@ public abstract class Controller {
     Model model;
     public Controller(){
         model = getModel();
-
     }
 }
