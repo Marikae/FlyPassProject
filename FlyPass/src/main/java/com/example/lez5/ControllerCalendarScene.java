@@ -1,5 +1,6 @@
 package com.example.lez5;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -48,6 +49,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
     @FXML
     private Label ErrorePrenotazione;
 
+
+    ArrayList<ZonedDateTime> checkInserimentoPrenotazione = new ArrayList<>();
     @FXML
     private Button undo;
     @FXML
@@ -57,7 +60,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
     private String service;
 
     @FXML
-    private ComboBox TimePicker;
+    private ComboBox<LocalTime> TimePicker;
 
     @FXML
     private DatePicker EventDatePicker;
@@ -75,7 +78,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
     ZonedDateTime auxDate2 = dateFocus;
 
-    ArrayList<ZonedDateTime> listaEventi = new ArrayList<>();
 
     int currentDate;
 
@@ -90,11 +92,20 @@ public class ControllerCalendarScene extends Controller implements Initializable
     @FXML
     private FlowPane calendar;
 
+    LocalTime primoTurno = LocalTime.of(8,0,0);
+    LocalTime secondoTurno = LocalTime.of(9,0,0);
+    LocalTime terzoTurno = LocalTime.of(10,0,0);
+    LocalTime quartoTurno = LocalTime.of(11,0,0);
+    LocalTime quintoTurno = LocalTime.of(12,0,0);
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dateFocus = ZonedDateTime.now();
         today = ZonedDateTime.now();
         numberOfWeek = today.getDayOfMonth() / 5;
+        TimePicker.setItems(FXCollections.observableArrayList(primoTurno, secondoTurno, terzoTurno, quartoTurno, quintoTurno));
         drawCalendar();
     }
 
@@ -115,12 +126,129 @@ public class ControllerCalendarScene extends Controller implements Initializable
         else if(dateFocus.getMonth() != auxDate2.getMonth()){
             dateFocus = ZonedDateTime.of(auxDate2.getYear(),auxDate2.getMonthValue(),1,0,0,0,0,dateFocus.getZone());
         }
+        checkInserimentoPrenotazione.clear();
         calendar.getChildren().clear();
         drawCalendar();
     }
 
     @FXML
     private void prenotaEvento (ActionEvent event){
+        boolean isInside = false;
+        for(ZonedDateTime auxDateCheck : checkInserimentoPrenotazione){
+            if (auxDateCheck.toLocalDate().isEqual(EventDatePicker.getValue())){
+                isInside = true;
+                break;
+            }
+        }
+        if(isInside == false){
+            ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+            ErrorePrenotazione.setText("La data che hai selezionato\n non è presente nella schermata");
+            return;
+        }
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+
+
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, Date.valueOf(EventDatePicker.getValue()));
+            preparedStatement.setObject(2, TimePicker.getValue());
+            preparedStatement.setString(3, model.evento.sede.name());
+            preparedStatement.setString(4, model.getService().getName());
+
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                ErrorePrenotazione.setText("Non è stato possibile rilevare l'appuntamento.\n" +
+                        "Cambiare data ed orario e riprovare");
+                return;
+            }
+
+            if(!resultSet.getBoolean("Disponibile")){
+                ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                ErrorePrenotazione.setText("L'appuntamento da lei selezionato\n" +
+                        " non è al momento disponibile");
+                //TODO Aggiungere una variabile alla classe User inserendo Sede e Tipo servizio e fare il pop up di avviso quando viene inserito
+                // un nuovo appuntamento dal personale
+                return;
+
+            }else if((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))){
+                try {
+
+                    String query1 = ("UPDATE eventi SET Prenotato = 1, Id_utente_prenotazione = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
+                    Connection connection1 = DatabaseConnection.databaseConnection();
+                    Statement statement1 = connection1.createStatement();
+
+                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setInt(1, model.Id_utente);
+                    preparedStatement1.setDate(2, Date.valueOf(EventDatePicker.getValue()));
+                    preparedStatement1.setObject(3, TimePicker.getValue());
+                    preparedStatement1.setString(4, model.evento.sede.name());
+                    preparedStatement1.setString(5, model.getService().getName());
+
+                    preparedStatement1.executeUpdate();
+
+                    connection1.close();
+                    statement1.close();
+                    preparedStatement1.close();
+
+                    calendar.getChildren().clear();
+                    drawCalendar();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                ErrorePrenotazione.setText("Prenotazione andata a buon fine\n" +
+                        "Ri prenota lo stesso evento per annullare la prenotazione");
+
+            }else if((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))){
+                if(resultSet.getInt("Id_utente_prenotazione") == model.Id_utente){
+                    try {
+                        String query2 = ("UPDATE eventi SET Prenotato = 0 AND Id_utente_prenotazione = 0 WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
+                        Connection connection2 = DatabaseConnection.databaseConnection();
+                        Statement statement2 = connection2.createStatement();
+
+                        PreparedStatement preparedStatement2 = connection2.prepareStatement(query2);
+                        preparedStatement2.setDate(1, Date.valueOf(EventDatePicker.getValue()));
+                        preparedStatement2.setObject(2, TimePicker.getValue());
+                        preparedStatement2.setString(3, model.evento.sede.name());
+                        preparedStatement2.setString(4, model.getService().getName());
+
+                        preparedStatement2.executeUpdate();
+
+
+                        connection2.close();
+                        statement2.close();
+                        preparedStatement2.close();
+
+                        calendar.getChildren().clear();
+                        drawCalendar();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else{
+                    ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                    ErrorePrenotazione.setText("Errore di prenotazione.\n" +
+                            "Evento Già prenotato da un altro utente");
+                }
+            }
+
+
+            preparedStatement.close();
+
+        }catch (SQLException e) {
+            System.out.println(e);
+        }
+
 
     }
 
@@ -141,7 +269,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
             }
             dateFocus = ZonedDateTime.of(dateFocus.getYear(),dateFocus.getMonthValue(),1,0,0,0,0,dateFocus.getZone());
         }
-
+        checkInserimentoPrenotazione.clear();
         calendar.getChildren().clear();
         drawCalendar();
     }
@@ -180,7 +308,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
         if(auxDate.getDayOfMonth() == 1) {
             for (int j = 0; j < 7; j++) {
                 StackPane stackPane = new StackPane();
-                final int[] finalJ = {j};
+
 
                 Rectangle rectangle = new Rectangle();
                 rectangle.setFill(Color.TRANSPARENT);
@@ -197,6 +325,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                 if (auxDate.getDayOfWeek().getValue() == (j + 1)) {
                     int i = 0;
+                    checkInserimentoPrenotazione.add(auxDate);
                     VBox vBoxContainer = new VBox(); // Creare un VBox principale per contenere le VBox
                     vBoxContainer.setAlignment(Pos.CENTER);
                     vBoxContainer.setSpacing(20);
@@ -244,7 +373,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                         "AND TipoServizio = ? ");
 
 
-                                listaEventi.add(auxDate);
+
 
                                 preparedStatement = connection.prepareStatement(query);
                                 preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
@@ -269,9 +398,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                 calendarActivityBox.setStyle("-fx-background-color:RED");
                                 calendarActivityBox.getChildren().add(text);
 
-                                calendarActivityBox.setOnMouseClicked(event -> {
-
-                                });
                             }else if((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))){
                                 String endTime = resultSet.getTime(2).toString();
                                 Text text = new Text(time + "\nClicca qui\nPer prenotare!");
@@ -280,56 +406,27 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                 calendarActivityBox.setStyle("-fx-background-color:LIGHTGREEN");
                                 calendarActivityBox.getChildren().add(text);
 
-                                LocalTime finalLocalTime = localTime;
 
-
-
-                                calendarActivityBox.setOnMouseClicked(event -> {
-
-                                    try {
-
-                                        String query1 = ("UPDATE eventi SET Prenotato = 1 WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
-                                        Connection connection1 = DatabaseConnection.databaseConnection();
-                                        Statement statement1 = connection1.createStatement();
-
-                                        PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
-                                        preparedStatement1.setDate(1, Date.valueOf(auxDate.toLocalDate()));
-                                        preparedStatement1.setObject(2, finalLocalTime);
-                                        preparedStatement1.setString(3, model.evento.sede.name());
-                                        preparedStatement1.setString(4, model.getService().getName());
-
-                                        preparedStatement1.executeUpdate();
-
-
-                                        connection1.close();
-                                        statement1.close();
-                                        preparedStatement1.close();
-
-                                        calendar.getChildren().clear();
-                                        drawCalendar();
-                                    } catch (SQLException e) {
-                                        throw new RuntimeException(e);
-                                    }
-
-                                });
                             }else if((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))){
-                                String endTime = resultSet.getTime(2).toString();
-                                Text text = new Text(time + "\nSlot già\nPrenotato!");
-                                calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
-                                calendarActivityBox.setMaxHeight(rectangleHeight * 0.05);
-                                calendarActivityBox.setStyle("-fx-background-color:LIGHTBLUE");
-                                calendarActivityBox.getChildren().add(text);
-
-                                calendarActivityBox.setOnMouseClicked(event -> {
-                                    //TODO
-                                });
+                                if(resultSet.getInt("Id_utente_prenotazione") == model.Id_utente) {
+                                    String endTime = resultSet.getTime(2).toString();
+                                    Text text = new Text(time + "\nSlot prenotato\n da te!");
+                                    calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
+                                    calendarActivityBox.setMaxHeight(rectangleHeight * 0.05);
+                                    calendarActivityBox.setStyle("-fx-background-color:#da4cee");
+                                    calendarActivityBox.getChildren().add(text);
+                                }
+                                else{
+                                    String endTime = resultSet.getTime(2).toString();
+                                    Text text = new Text(time + "\nSlot già\nprenotato!");
+                                    calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
+                                    calendarActivityBox.setMaxHeight(rectangleHeight * 0.05);
+                                    calendarActivityBox.setStyle("-fx-background-color:LIGHTBLUE");
+                                    calendarActivityBox.getChildren().add(text);
+                                }
                             }
 
-
-
                             vBoxContainer.getChildren().add(calendarActivityBox); // Aggiungere la VBox al contenitore principale
-
-
 
                             localTime = localTime.plusHours(1);
 
@@ -340,13 +437,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         }catch (SQLException e) {
                             System.out.println(e);
                         }
-
-
-
                     }
 
                     stackPane.getChildren().add(vBoxContainer);
-
 
 
 
@@ -357,7 +450,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     stackPane.getChildren().add(date);
                     auxDate = auxDate.plusDays(1);
                 }
-
 
                 if(today.getYear() == dateFocus.getYear() && today.getMonth() == dateFocus.getMonth() && today.getDayOfMonth() == currentDate){
                     rectangle.setStroke(Color.BLUE);

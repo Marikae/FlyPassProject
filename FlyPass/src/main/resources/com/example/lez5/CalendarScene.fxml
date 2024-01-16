@@ -43,11 +43,11 @@
          <Insets right="9.0" />
       </padding>
    </HBox>
-   <Button fx:id="prenotaEvento" layoutX="542.0" layoutY="721.0" mnemonicParsing="false" onAction="#prenotaEvento" prefHeight="25.0" prefWidth="134.0" text="Prenota" />
+   <Button fx:id="prenotaEvento" layoutX="543.0" layoutY="649.0" mnemonicParsing="false" onAction="#prenotaEvento" prefHeight="25.0" prefWidth="134.0" text="Prenota" />
    <DatePicker fx:id="EventDatePicker" layoutX="53.0" layoutY="649.0" />
    <Label layoutX="53.0" layoutY="625.0" prefHeight="17.0" prefWidth="91.0" text="Seleziona la data" />
-   <ComboBox fx:id="TimePicker" editable="true" layoutX="53.0" layoutY="721.0" onAction="#timeSelector" prefWidth="150.0" promptText="Seleziona un orario" visibleRowCount="5" />
+   <ComboBox fx:id="TimePicker" editable="true" layoutX="53.0" layoutY="721.0" prefWidth="150.0" promptText="Seleziona un orario" visibleRowCount="5" />
    <Label layoutX="53.0" layoutY="694.0" prefHeight="17.0" prefWidth="111.0" text="Seleziona l'orario" />
-   <Label fx:id="ErrorePrenotazione" layoutX="542.0" layoutY="761.0" prefHeight="17.0" prefWidth="91.0" />
+   <Label fx:id="ErrorePrenotazione" layoutX="480.0" layoutY="689.0" prefHeight="97.0" prefWidth="261.0" />
 
 </AnchorPane>

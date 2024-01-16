@@ -31,6 +31,7 @@ public class Model implements Initializable {
     private String descriptionService;
     private Service service;
     private boolean worker;
+    public int Id_utente;
 
     private Model() {
     }
@@ -164,6 +165,7 @@ public class Model implements Initializable {
                 // System.out.println("Accesso consentito per l'utente con email: " + resultSet.getString("email"));
                 worker = false;
                 setUser(loginUserName);
+                Id_utente = resultSet.getInt("id");
                 return true;
             } else {
                 return false;
@@ -250,9 +252,17 @@ public class Model implements Initializable {
 
             preparedStatement.executeUpdate();
 
+
+
         }catch (SQLException e) {
             System.out.println(e);
         }
+
+        /*try{
+            //TODO da settare l'id prima di far entrare il nuovo utente
+        } catch (SQLException e) {
+            System.out.println(e);
+        }*/
     }
 
     //-----------------------USER DATA SET------------------------------
