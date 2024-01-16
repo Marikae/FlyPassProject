@@ -338,7 +338,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                 Rectangle rectangle = new Rectangle();
                 rectangle.setFill(Color.TRANSPARENT);
-                rectangle.setStroke(Color.BLACK);
+                rectangle.setStroke(Color.WHITE);
                 rectangle.setStrokeWidth(strokeWidth);
                 double rectangleWidth = (calendarWidth / 7) - strokeWidth - spacingH;
                 rectangle.setWidth(rectangleWidth);
@@ -355,6 +355,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     VBox vBoxContainer = new VBox(); // Creare un VBox principale per contenere le VBox
                     vBoxContainer.setAlignment(Pos.CENTER);
                     vBoxContainer.setSpacing(20);
+
 
                     for (i = 0; i < 5; i++) {
 
@@ -418,16 +419,19 @@ public class ControllerCalendarScene extends Controller implements Initializable
                             String time = resultSet.getTime(2).toString();
                             if(!resultSet.getBoolean("Disponibile")){
                                 String endTime = resultSet.getTime(2).toString();
-                                Text text = new Text(time + "\nNon prenotabile\nClicca per essere\navvisato");
+                                Text text = new Text(time + "\nNon prenotabile\n\n");
+                                calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
+                                calendarActivityBox.setMaxHeight(rectangleWidth * 0.8);
                                 calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                 calendarActivityBox.setMaxHeight(rectangleHeight * 0.05);
-                                calendarActivityBox.setStyle("-fx-background-color:RED");
+                                calendarActivityBox.setStyle("-fx-background-color:#e36363");
                                 calendarActivityBox.getChildren().add(text);
 
                             }else if((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))){
                                 String endTime = resultSet.getTime(2).toString();
-                                Text text = new Text(time + "\nClicca qui\nPer prenotare!");
+                                Text text = new Text(time + "\nSlot prenotabile!\n\n");
                                 calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
+                                calendarActivityBox.setMaxHeight(rectangleWidth * 0.8);
                                 calendarActivityBox.setMaxHeight(rectangleHeight * 0.05);
                                 calendarActivityBox.setStyle("-fx-background-color:LIGHTGREEN");
                                 calendarActivityBox.getChildren().add(text);
@@ -436,15 +440,17 @@ public class ControllerCalendarScene extends Controller implements Initializable
                             }else if((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))){
                                 if(resultSet.getInt("Id_utente_prenotazione") == model.Id_utente) {
                                     String endTime = resultSet.getTime(2).toString();
-                                    Text text = new Text(time + "\nSlot prenotato\n da te!");
+                                    Text text = new Text(time + "\nSlot prenotato   \n da te!\n");
+                                    calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
+                                    calendarActivityBox.setMaxHeight(rectangleWidth * 0.8);
                                     calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                     calendarActivityBox.setMaxHeight(rectangleHeight * 0.05);
-                                    calendarActivityBox.setStyle("-fx-background-color:#da4cee");
+                                    calendarActivityBox.setStyle("-fx-background-color:#F6AE2D");
                                     calendarActivityBox.getChildren().add(text);
                                 }
                                 else{
                                     String endTime = resultSet.getTime(2).toString();
-                                    Text text = new Text(time + "\nSlot già\nprenotato!");
+                                    Text text = new Text(time + "\nSlot già\nprenotato!         \n");
                                     calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                     calendarActivityBox.setMaxHeight(rectangleHeight * 0.05);
                                     calendarActivityBox.setStyle("-fx-background-color:LIGHTBLUE");
@@ -470,9 +476,11 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
 
                     Text date = new Text(String.valueOf(dayWrite));
+
                     dayWrite += 1;
                     double textTranslationY = -(rectangleHeight / 2) * 0.9;
                     date.setTranslateY(textTranslationY);
+                    date.setFill(Color.WHITE);
                     stackPane.getChildren().add(date);
                     auxDate = auxDate.plusDays(1);
                 }
