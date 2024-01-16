@@ -181,8 +181,15 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 return;
 
             }else if((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))){
+                if(model.passaportoPrenotato == true){
+                    ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                    ErrorePrenotazione.setText("Sembra che tu abbia già\n" +
+                            "prenotato un passaporto.\n" +
+                            "Togli l'altra prenotazione per aggiungerne\n" +
+                            "una nuova");
+                    return;
+                }
                 try {
-
                     String query1 = ("UPDATE eventi SET Prenotato = 1, Id_utente_prenotazione = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
                     Connection connection1 = DatabaseConnection.databaseConnection();
                     Statement statement1 = connection1.createStatement();
@@ -196,9 +203,19 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                     preparedStatement1.executeUpdate();
 
+
+                    query1 = "UPDATE citizen SET PassaportoPrenotato = 1 WHERE id = ?";
+
+                    preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setInt(1, model.Id_utente);
+
+                    preparedStatement1.executeUpdate();
+
                     connection1.close();
                     statement1.close();
                     preparedStatement1.close();
+
+                    model.passaportoPrenotato = true;
 
                     calendar.getChildren().clear();
                     drawCalendar();
@@ -213,7 +230,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
             }else if((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))){
                 if(resultSet.getInt("Id_utente_prenotazione") == model.Id_utente){
                     try {
-                        String query2 = ("UPDATE eventi SET Prenotato = 0 AND Id_utente_prenotazione = 0 WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
+                        String query2 = ("UPDATE eventi SET Prenotato = 0, Id_utente_prenotazione = 0 WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
                         Connection connection2 = DatabaseConnection.databaseConnection();
                         Statement statement2 = connection2.createStatement();
 
@@ -225,6 +242,14 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                         preparedStatement2.executeUpdate();
 
+                        query2 = "UPDATE citizen SET PassaportoPrenotato = 0 WHERE id = ?";
+
+                        preparedStatement2 = connection2.prepareStatement(query2);
+                        preparedStatement2.setInt(1, model.Id_utente);
+
+                        preparedStatement2.executeUpdate();
+
+                        model.passaportoPrenotato = false;
 
                         connection2.close();
                         statement2.close();
@@ -242,7 +267,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 }
             }
 
-
+            connection.close();
+            statement.close();
             preparedStatement.close();
 
         }catch (SQLException e) {

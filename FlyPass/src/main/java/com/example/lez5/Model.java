@@ -23,6 +23,8 @@ public class Model implements Initializable {
     }
 
     Evento evento = new Evento();
+
+
     private static Model modelInstance; // statico e protetto da accesso esterno
     private String loginPassword;
     private String loginUserName;
@@ -32,6 +34,8 @@ public class Model implements Initializable {
     private Service service;
     private boolean worker;
     public int Id_utente;
+
+    public boolean passaportoPrenotato;
 
     private Model() {
     }
@@ -166,6 +170,7 @@ public class Model implements Initializable {
                 worker = false;
                 setUser(loginUserName);
                 Id_utente = resultSet.getInt("id");
+                passaportoPrenotato = resultSet.getBoolean("PassaportoPrenotato");
                 return true;
             } else {
                 return false;
