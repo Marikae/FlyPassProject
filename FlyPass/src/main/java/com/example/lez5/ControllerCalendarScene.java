@@ -1,14 +1,14 @@
 package com.example.lez5;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -23,7 +23,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -47,10 +46,21 @@ public class ControllerCalendarScene extends Controller implements Initializable
     @FXML
     private Label serviceType;
     @FXML
+    private Label ErrorePrenotazione;
+
+    @FXML
     private Button undo;
+    @FXML
+    private Button prenotaEvento;
     private Stage stage;
     private Scene scene;
     private String service;
+
+    @FXML
+    private ComboBox TimePicker;
+
+    @FXML
+    private DatePicker EventDatePicker;
 
     public ControllerCalendarScene(){
         super();
@@ -64,6 +74,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
     ZonedDateTime auxDate;
 
     ZonedDateTime auxDate2 = dateFocus;
+
+    ArrayList<ZonedDateTime> listaEventi = new ArrayList<>();
 
     int currentDate;
 
@@ -105,6 +117,11 @@ public class ControllerCalendarScene extends Controller implements Initializable
         }
         calendar.getChildren().clear();
         drawCalendar();
+    }
+
+    @FXML
+    private void prenotaEvento (ActionEvent event){
+
     }
 
     @FXML
@@ -163,6 +180,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
         if(auxDate.getDayOfMonth() == 1) {
             for (int j = 0; j < 7; j++) {
                 StackPane stackPane = new StackPane();
+                final int[] finalJ = {j};
 
                 Rectangle rectangle = new Rectangle();
                 rectangle.setFill(Color.TRANSPARENT);
@@ -226,6 +244,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                         "AND TipoServizio = ? ");
 
 
+                                listaEventi.add(auxDate);
+
                                 preparedStatement = connection.prepareStatement(query);
                                 preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
                                 preparedStatement.setObject(2, localTime);
@@ -250,7 +270,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                 calendarActivityBox.getChildren().add(text);
 
                                 calendarActivityBox.setOnMouseClicked(event -> {
-                                        System.out.println("DIO LEBBRA");
+
                                 });
                             }else if((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))){
                                 String endTime = resultSet.getTime(2).toString();
@@ -261,11 +281,14 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                 calendarActivityBox.getChildren().add(text);
 
                                 LocalTime finalLocalTime = localTime;
+
+
+
                                 calendarActivityBox.setOnMouseClicked(event -> {
 
                                     try {
 
-                                        String query1 = "UPDATE eventi SET Prenotato = 1 WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?";
+                                        String query1 = ("UPDATE eventi SET Prenotato = 1 WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
                                         Connection connection1 = DatabaseConnection.databaseConnection();
                                         Statement statement1 = connection1.createStatement();
 
