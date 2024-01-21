@@ -80,5 +80,12 @@ public class ControllerProfile extends Controller implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
+    @FXML
+    void goToInfoScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("InfoScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 }

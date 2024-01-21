@@ -21,9 +21,6 @@ import java.util.ResourceBundle;
 
 
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -33,12 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -48,16 +40,29 @@ public class ControllerCalendarScene extends Controller implements Initializable
     private Label serviceType;
     @FXML
     private Label ErrorePrenotazione;
+    @FXML
+    private Label descriptionLabel;
+
+    @FXML
+    private Button logOutM;
+    @FXML
+    private Button prenotaEvento;
+
+    @FXML
+    private Button profileButton;
+
+    @FXML
+    private Button returnMainScene;
 
 
     ArrayList<ZonedDateTime> checkInserimentoPrenotazione = new ArrayList<>();
     @FXML
     private Button undo;
-    @FXML
-    private Button prenotaEvento;
     private Stage stage;
     private Scene scene;
     private String service;
+    @FXML
+    private Label serviceName;
 
     @FXML
     private ComboBox<LocalTime> TimePicker;
@@ -107,6 +112,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
         numberOfWeek = today.getDayOfMonth() / 5;
         TimePicker.setItems(FXCollections.observableArrayList(primoTurno, secondoTurno, terzoTurno, quartoTurno, quintoTurno));
         drawCalendar();
+        descriptionLabel.setText(model.getService().getDescription());
+        serviceName.setText(model.getService().getName());
     }
 
     @FXML
@@ -562,5 +569,53 @@ public class ControllerCalendarScene extends Controller implements Initializable
         //stage.setFullScreen(true);
         stage.show();
     }
+
+
+
+    @FXML
+    void goToLogOutScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LogOut.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    @FXML
+    void goToProfileScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ProfileScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    void returnSedeScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarCitizenScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        // stage.initStyle(StageStyle.TRANSPARENT); // Rimuovi i bordi della finestra
+        double screenWidth = Screen.getPrimary().getBounds().getWidth();
+        double screenHeight = Screen.getPrimary().getBounds().getHeight();
+        double windowWidth = screenWidth + 30; // Larghezza della finestra
+        double windowHeight = screenHeight + 1; // Altezza della finestra
+        stage.setX((screenWidth - windowWidth) / 2);
+        stage.setY((screenHeight - windowHeight) / 2);
+        stage.setScene(scene);
+        //stage.setFullScreen(true);
+        stage.show();
+    }
+
+    @FXML
+    void goToInfoScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("InfoScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
 
 }

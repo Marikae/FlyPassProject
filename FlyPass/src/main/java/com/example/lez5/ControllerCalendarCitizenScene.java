@@ -90,7 +90,7 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
     @FXML
     void PadovaSetAndGo(ActionEvent event) throws IOException{
         model.setPadovaAsSede();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarScene.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("newCalendarScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -99,7 +99,7 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
     @FXML
     void TrevisoSetAndGo(ActionEvent event) throws IOException{
         model.setTrevisoAsSede();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarScene.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("newCalendarScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -108,7 +108,7 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
     @FXML
     void VeneziaSetAndGo(ActionEvent event) throws IOException{
         model.setVeneziaAsSede();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarScene.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("newCalendarScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -117,7 +117,16 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
     @FXML
     private void VeronaSetAndGo(ActionEvent event) throws IOException{
         model.setVeronaAsSede();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarScene.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("newCalendarScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    void goToInfoScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("InfoScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

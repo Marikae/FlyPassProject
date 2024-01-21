@@ -11,8 +11,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="821.0" prefWidth="744.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerCalendarScene">
-   <FlowPane fx:id="calendar" hgap="10.0" layoutX="14.0" layoutY="116.0" prefHeight="498.0" prefWidth="716.0" vgap="5.0" />
+<AnchorPane prefHeight="821.0" prefWidth="744.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <FlowPane fx:id="calendar" hgap="10.0" layoutX="14.0" layoutY="119.0" prefHeight="425.0" prefWidth="716.0" vgap="5.0" />
    <HBox alignment="CENTER" layoutX="163.0" layoutY="14.0" prefHeight="44.0" prefWidth="419.0" spacing="5.0">
       <children>
          <Button mnemonicParsing="false" onAction="#backOneWeek" text="&lt;" />
@@ -43,7 +43,7 @@
          <Insets right="9.0" />
       </padding>
    </HBox>
-   <Button fx:id="prenotaEvento" layoutX="543.0" layoutY="649.0" mnemonicParsing="false" onAction="#prenotaEvento" prefHeight="25.0" prefWidth="134.0" text="Prenota" />
+   <Button fx:id="prenotaEvento" layoutX="543.0" layoutY="649.0" mnemonicParsing="false" onAction="#prenotaEvento" prefHeight="25.0" prefWidth="134.0" styleClass="bottom" stylesheets="@style.css" text="Prenota" />
    <DatePicker fx:id="EventDatePicker" layoutX="53.0" layoutY="649.0" />
    <Label layoutX="53.0" layoutY="625.0" prefHeight="17.0" prefWidth="91.0" styleClass="text-background" stylesheets="@style.css" text="Seleziona la data" />
    <ComboBox fx:id="TimePicker" editable="true" layoutX="53.0" layoutY="721.0" prefWidth="150.0" promptText="Seleziona un orario" visibleRowCount="5" />

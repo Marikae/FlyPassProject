@@ -26,3 +26,7 @@
 .text-background{
     -fx-text-fill: white;
 }
+
+.calendar-background{
+    -fx-background-color: #850a36;
+}
