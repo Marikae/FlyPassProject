@@ -51,11 +51,6 @@ public class ControllerLogOutScene extends Controller implements Initializable{
             //stage.setFullScreen(true);
             stage.show();
     }
-
-    public void goToLogOutScene(ActionEvent actionEvent) {
-
-    }
-
     @FXML
     void goToProfileScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ProfileScene.fxml")));

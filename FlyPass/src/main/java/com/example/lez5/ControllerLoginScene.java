@@ -13,10 +13,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.Objects;
 
 public class ControllerLoginScene extends Controller implements Initializable {
@@ -26,19 +23,9 @@ public class ControllerLoginScene extends Controller implements Initializable {
     @FXML
     private Label errorLabel;
     @FXML
-    private Label loginLabel;
-    @FXML
-    private Label passwordLoginLabel;
-    @FXML
     private PasswordField passwordF;
     @FXML
-    private Button undoButton;
-    @FXML
-    private Label usernameLoginLabel;
-    @FXML
     private TextField usernameLoginTF;
-    @FXML
-    private CheckBox showPass;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

@@ -17,10 +17,6 @@ import java.util.ResourceBundle;
 public class ControllerFirstScene extends Controller implements Initializable{
     private Stage stage;
     private Scene scene;
-    @FXML
-    private Button loginbutton;
-    @FXML
-    private Button singinbutton;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

@@ -18,24 +18,13 @@ public class ControllerInfoScene {
     private Stage stage;
     private Scene scene;
     @FXML
-    private Button logOut;
-
-    @FXML
-    private Button profileButton;
-
-    @FXML
-    private Button servicesButton;
-
-    @FXML
     void goToLogOutScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LogOut.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
     }
-
     @FXML
     void goToProfileScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ProfileScene.fxml")));
@@ -44,7 +33,6 @@ public class ControllerInfoScene {
         stage.setScene(scene);
         stage.show();
     }
-
     @FXML
     void returnMainScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainScene.fxml")));
@@ -61,7 +49,6 @@ public class ControllerInfoScene {
         //stage.setFullScreen(true);
         stage.show();
     }
-
     @FXML
     void goToPrenotationScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("PrenotationScene.fxml")));
@@ -70,5 +57,4 @@ public class ControllerInfoScene {
         stage.setScene(scene);
         stage.show();
     }
-
 }

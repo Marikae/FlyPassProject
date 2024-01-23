@@ -20,7 +20,7 @@
     -fx-effect: dropShadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 10);
 }
 
-.middleocean-background{
+.orange-background{
     -fx-background-color: #F6AE2D;
 }
 .text-background{

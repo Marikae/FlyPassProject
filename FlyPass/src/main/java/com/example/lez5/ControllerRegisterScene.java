@@ -17,40 +17,28 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class ControllerRegisterScene extends Controller{
-
-
     private Stage stage;
     private Scene scene;
     @FXML
     private TextField place_of_birth;
-
     @FXML
     private TextField cat;
-
     @FXML
     private TextField num_health_card;
-
     @FXML
     private DatePicker date_of_birth;
-
     @FXML
     private TextField tax_code;
-
     @FXML
     private TextField confirmPassword;
-
     @FXML
     private TextField email;
-
     @FXML
     private Label error;
-
     @FXML
     private TextField name;
-
     @FXML
     private TextField password;
-
     @FXML
     private TextField surname;
 

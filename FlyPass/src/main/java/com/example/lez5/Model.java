@@ -28,10 +28,8 @@ public class Model implements Initializable {
     private String loginPassword;
     private String loginUserName;
     private User user;
-    private String nameService;
-    private String descriptionService;
     private Service service;
-    private boolean worker;
+    private boolean worker = false;
     public int Id_utente;
 
     public boolean passaportoPrenotato;

@@ -27,20 +27,12 @@ public class ControllerProfile extends Controller implements Initializable {
     private Label healtCardLabel;
     @FXML
     private Label surnameLabel;
-
-    @FXML
-    private Button prenotationButton;
-
     @FXML
     private Label taxCodeLabel;
     @FXML
     private Label nameLabel;
     @FXML
     private Label placeOfBirthLabel;
-    @FXML
-    private Button serviceButton;
-    @FXML
-    private Button logOutM;
     @FXML
     private Label categoryLabel;
 

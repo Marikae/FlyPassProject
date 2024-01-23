@@ -2,7 +2,6 @@ package com.example.lez5;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,21 +11,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
-
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
-
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -35,49 +29,36 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.*;
 public class ControllerCalendarScene extends Controller implements Initializable {
-
     @FXML
     private Label ErrorePrenotazione;
     @FXML
     private Label descriptionLabel;
+    @FXML
+    private Label serviceName;
+    @FXML
+    private ComboBox<LocalTime> TimePicker;
+    @FXML
+    private DatePicker EventDatePicker;
+    @FXML
+    private Text year;
+    @FXML
+    private Text month;
+    @FXML
+    private FlowPane calendar;
     ArrayList<ZonedDateTime> checkInserimentoPrenotazione = new ArrayList<>();
     private Stage stage;
     private Scene scene;
-    @FXML
-    private Label serviceName;
-
-    @FXML
-    private ComboBox<LocalTime> TimePicker;
-
-    @FXML
-    private DatePicker EventDatePicker;
-
     public ControllerCalendarScene(){
         super();
     }
 
-
-
     ZonedDateTime dateFocus;
     ZonedDateTime today;
-
     ZonedDateTime auxDate;
-
     ZonedDateTime auxDate2 = dateFocus;
 
-
     int currentDate;
-
     int numberOfWeek;
-
-    @FXML
-    private Text year;
-
-    @FXML
-    private Text month;
-
-    @FXML
-    private FlowPane calendar;
 
     LocalTime primoTurno = LocalTime.of(8,0,0);
     LocalTime secondoTurno = LocalTime.of(9,0,0);
