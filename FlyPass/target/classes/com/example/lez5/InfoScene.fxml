@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerInfoScene">
+   <top>
+      <HBox prefHeight="97.0" prefWidth="1269.0" spacing="20.0" styleClass="border-bottom" stylesheets="@style.css" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="125.0" prefWidth="177.0" spacing="20.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../img/logo.png" />
+                     </image>
+                  </ImageView>
+                  <Label prefHeight="17.0" prefWidth="56.0" text="FlyPass" textFill="WHITE" />
+               </children>
+            </HBox>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button fx:id="servicesButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#returnMainScene" prefHeight="91.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Services">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/services.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#goToPrenotationScene" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Prenotation">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/booking.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="106.0" prefWidth="90.0" styleClass="middleocean-background" stylesheets="@style.css" text="Info">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/info.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Remember">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/remember.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button fx:id="logOut" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToLogOutScene" prefHeight="93.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="LogOut">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/logoutIcon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button fx:id="profileButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToProfileScene" prefHeight="87.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Profile">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/profile.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets left="23.0" right="30.0" />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+   <left>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="ocean-background" stylesheets="@style.css">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="809.0">
+                     <children>
+                        <Label prefHeight="35.0" prefWidth="141.0" text="Information" textFill="WHITE">
+                           <font>
+                              <Font name="System Italic" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Pane prefHeight="100.0" prefWidth="233.0" styleClass="ocean-background" stylesheets="@style.css" HBox.hgrow="ALWAYS">
+                     <effect>
+                        <ColorAdjust />
+                     </effect>
+                  </Pane>
+               </children>
+            </HBox>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <HBox prefHeight="371.0" prefWidth="900.0">
+                           <children>
+                              <Label prefHeight="325.0" prefWidth="900.0" styleClass="text-background" stylesheets="@style.css" text="Benvenuti nel sistema di prenotazione online per il rilascio del passaporto.  Questa guida vi accompagnerà attraverso il processo di registrazione, prenotazione dei servizi e tutte le fasi necessarie per ottenere il vostro passaporto in modo efficiente.**1. Registrazione:**   - Accedete al sito ufficiale del sistema di prenotazione.   - Cliccate su &quot;Registrazione&quot; e fornite i vostri dati personali: nome, cognome, data e luogo di nascita, e codice fiscale.   - Verificate attentamente i dati inseriti e procedete con la registrazione.**2. Verifica Anagrafica:**   - Il sistema verifica i vostri dati rispetto all'anagrafica disponibile.   - In caso di anomalie, il sistema vi indicherà l'anomalia e fornirà un'email per domande di chiarimento.**3. Accesso al Sistema:**   - Una volta registrati, effettuate il login con le credenziali fornite durante la registrazione.**4. Scelta del Servizio:**   - Nella dashboard, selezionate il tipo di servizio desiderato (ritiro, rilascio per varie ragioni).   - Visualizzerete gli orari e le sedi disponibili per il servizio scelto.**5. Prenotazione:**   - Scegliete il giorno, l'orario e la sede che preferite.   - Assicuratevi che la prenotazione sia consistente con le regole del sistema (es. ritiro dopo almeno un mese dalla richiesta di rilascio).**6. Conferma e Documenti Necessari:**   - Confermate la prenotazione e il sistema vi mostrerà i documenti e le ricevute necessari al momento della richiesta.   - Assicuratevi di avere tutti i documenti richiesti prima della visita.**7. Visualizzazione Temporale:**   - Utilizzate la visualizzazione temporale per distinguere slot occupati, liberi e non ancora gestiti.   - Se avete richiesto di essere avvisati quando nuovi slot saranno disponibili, il sistema vi informerà.**8. Gestione Profilo:**   - Potete gestire il vostro profilo, aggiornando i dati personali o le preferenze di notifica.**9. Fine della Procedura:**   - Una volta completata la prenotazione e preparati i documenti, presentatevi alla sede indicata al momento programmato.Seguendo questa guida passo dopo passo, sarete in grado di utilizzare il sistema di prenotazione in modo efficace e ottenere il vostro passaporto senza intoppi. Per ulteriori domande o chiarimenti, potete sempre contattare il supporto clienti tramite l'email fornita dal sistema." wrapText="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </Pane>
+               </center>
+               <left>
+                  <Pane prefHeight="200.0" prefWidth="192.0" BorderPane.alignment="CENTER" />
+               </left>
+               <right>
+                  <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+         </children>
+      </VBox>
+   </left>
+</BorderPane>

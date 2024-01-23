@@ -37,30 +37,12 @@ import java.util.*;
 public class ControllerCalendarScene extends Controller implements Initializable {
 
     @FXML
-    private Label serviceType;
-    @FXML
     private Label ErrorePrenotazione;
     @FXML
     private Label descriptionLabel;
-
-    @FXML
-    private Button logOutM;
-    @FXML
-    private Button prenotaEvento;
-
-    @FXML
-    private Button profileButton;
-
-    @FXML
-    private Button returnMainScene;
-
-
     ArrayList<ZonedDateTime> checkInserimentoPrenotazione = new ArrayList<>();
-    @FXML
-    private Button undo;
     private Stage stage;
     private Scene scene;
-    private String service;
     @FXML
     private Label serviceName;
 

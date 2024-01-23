@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerPrenotation">
+   <top>
+      <HBox prefHeight="97.0" prefWidth="1247.0" spacing="20.0" styleClass="border-bottom" stylesheets="@style.css" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="125.0" prefWidth="177.0" spacing="20.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../img/logo.png" />
+                     </image>
+                  </ImageView>
+                  <Label prefHeight="17.0" prefWidth="56.0" text="FlyPass" textFill="WHITE" />
+               </children>
+            </HBox>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button fx:id="serviceButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToMainScene" prefHeight="84.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Services">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/services.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="113.0" prefWidth="90.0" styleClass="middleocean-background" stylesheets="@style.css" text="Prenotation">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/booking.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#goToInfoScene" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Info">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/info.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="91.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Remember">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/remember.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button fx:id="logOutM" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToLogOutScene" prefHeight="88.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="LogOut">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/logoutIcon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#goToProfileScene" prefHeight="91.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Profile">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/profile.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets left="23.0" right="30.0" />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+   <center>
+      <VBox prefHeight="731.0" prefWidth="1295.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="ocean-background" stylesheets="@style.css">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="211.0">
+                     <children>
+                        <Label prefHeight="35.0" prefWidth="127.0" text="Prenotation" textFill="WHITE">
+                           <font>
+                              <Font name="System Italic" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Pane prefHeight="70.0" prefWidth="1140.0" styleClass="ocean-background" stylesheets="@style.css" HBox.hgrow="ALWAYS">
+                     <effect>
+                        <ColorAdjust />
+                     </effect></Pane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <VBox prefHeight="248.0" prefWidth="1300.0" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

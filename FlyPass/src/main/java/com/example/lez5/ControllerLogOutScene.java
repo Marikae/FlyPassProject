@@ -6,10 +6,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -18,14 +16,6 @@ import java.util.ResourceBundle;
 public class ControllerLogOutScene extends Controller implements Initializable{
     private Stage stage;
     private Scene scene;
-    @FXML
-    private Button undoLogOut;
-    @FXML
-    private Button logOut;
-    @FXML
-    private Button yesLogOut;
-    @FXML
-    private Button servicesButton;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

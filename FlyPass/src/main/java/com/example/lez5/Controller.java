@@ -1,4 +1,5 @@
 package com.example.lez5;
+
 import static com.example.lez5.Model.getModel;
 
 public abstract class Controller {
@@ -6,4 +7,5 @@ public abstract class Controller {
     public Controller(){
         model = getModel();
     }
+
 }

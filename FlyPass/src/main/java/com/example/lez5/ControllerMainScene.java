@@ -7,12 +7,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.event.ActionEvent;
-
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -29,12 +26,6 @@ public class ControllerMainScene extends Controller implements Initializable {
     @FXML
     private GridPane serviceGrid;
     private List<Service> services;
-    @FXML
-    private Button prenotationButton;
-    @FXML
-    private Button logOutM;
-    @FXML
-    private Button profileButton;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         services = new ArrayList<>(model.getServices());

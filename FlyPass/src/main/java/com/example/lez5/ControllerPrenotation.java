@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -20,15 +19,6 @@ public class ControllerPrenotation extends Controller implements Initializable {
     @FXML
     private Stage stage;
     private Scene scene;
-    @FXML
-    private Button logOutM;
-
-    @FXML
-    private Button prenotationButton;
-    @FXML
-    private Button serviceButton;
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -74,6 +64,4 @@ public class ControllerPrenotation extends Controller implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
-
 }
