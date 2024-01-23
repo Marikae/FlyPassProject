@@ -42,7 +42,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Prenotation">
+                  <Button fx:id="prenotationButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToPrenotationScene" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Prenotation">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -55,7 +55,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Info">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#goToInfoScene" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Info">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>

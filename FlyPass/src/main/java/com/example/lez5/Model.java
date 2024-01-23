@@ -1,7 +1,6 @@
 package com.example.lez5;
 
 import javafx.fxml.Initializable;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.net.URL;

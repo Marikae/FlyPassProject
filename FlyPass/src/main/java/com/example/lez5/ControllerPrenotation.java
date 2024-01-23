@@ -10,54 +10,29 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class ControllerProfile extends Controller implements Initializable {
+public class ControllerPrenotation extends Controller implements Initializable {
+    @FXML
     private Stage stage;
     private Scene scene;
     @FXML
-    private Label birthdayLabel;
-    @FXML
-    private Label emailLabel;
-    @FXML
-    private Label healtCardLabel;
-    @FXML
-    private Label surnameLabel;
+    private Button logOutM;
 
     @FXML
     private Button prenotationButton;
-
-    @FXML
-    private Label taxCodeLabel;
-    @FXML
-    private Label nameLabel;
-    @FXML
-    private Label placeOfBirthLabel;
     @FXML
     private Button serviceButton;
-    @FXML
-    private Button logOutM;
-    @FXML
-    private Label categoryLabel;
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        User user = model.getUser();
-        nameLabel.setText(user.getName());
-        surnameLabel.setText(user.getSurname());
-        taxCodeLabel.setText(user.getCodiceFiscale());
-        placeOfBirthLabel.setText(user.getBirthPlace());
-        emailLabel.setText(user.getEmail());
-        birthdayLabel.setText(user.getBirthday());
-        healtCardLabel.setText(user.getHealCard());
-        categoryLabel.setText(user.getCategory());
-    }
-    public ControllerProfile(){
-        super();
+
     }
     @FXML
     void goToMainScene(ActionEvent event) throws IOException {
@@ -75,7 +50,6 @@ public class ControllerProfile extends Controller implements Initializable {
         //stage.setFullScreen(true);
         stage.show();
     }
-
     @FXML
     void goToLogOutScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LogOut.fxml")));
@@ -93,11 +67,13 @@ public class ControllerProfile extends Controller implements Initializable {
         stage.show();
     }
     @FXML
-    void goToPrenotationScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("PrenotationScene.fxml")));
+    void goToProfileScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ProfileScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
+
 }
