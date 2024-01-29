@@ -30,3 +30,16 @@
 .calendar-background{
     -fx-background-color: #850a36;
 }
+/* Stile del testo */
+.text-stylish {
+    font-family: impact;
+    -fx-text-fill: white;
+}
+
+/* Sfondo opaco */
+.background-opaque {
+    background-color: #ecf0f1; /* Colore di sfondo */
+    padding: 10px; /* Spaziatura interna */
+    border-radius: 5px; /* Bordi arrotondati */
+}
+

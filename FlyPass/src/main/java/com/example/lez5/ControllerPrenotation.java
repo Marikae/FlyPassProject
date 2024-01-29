@@ -7,10 +7,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -18,10 +21,27 @@ public class ControllerPrenotation extends Controller implements Initializable {
     @FXML
     private Stage stage;
     private Scene scene;
-
+    @FXML
+    private Label prenotationLabel;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if(model.isWorker()){
+            workerPrenotation();
+        }else{
+            try {
+                citizenPrenotation();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    private void citizenPrenotation() throws SQLException {
+        String prenotation = model.getCitizenPrenotation();
+        prenotationLabel.setText(prenotation);
+    }
 
+    private void workerPrenotation() {
+        prenotationLabel.setText("lavoratore");
     }
     @FXML
     void goToMainScene(ActionEvent event) throws IOException {

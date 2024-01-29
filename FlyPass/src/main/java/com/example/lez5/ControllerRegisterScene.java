@@ -79,7 +79,7 @@ public class ControllerRegisterScene extends Controller{
         boolean check = false;
 
         if(date_of_birth.getValue() != null){
-            User newUser = new User(name.getText(), num_health_card.getText(), cat.getText(), surname.getText(), date_of_birth.getValue().toString(), place_of_birth.getText(), tax_code.getText(), email.getText(), password.getText());
+            Citizen newUser = new Citizen(name.getText(), num_health_card.getText(), cat.getText(), surname.getText(), date_of_birth.getValue().toString(), place_of_birth.getText(), tax_code.getText(), email.getText(), password.getText());
 
             if(!model.checkEmail(email.getText())){
                 error.setText("Invalid mail format");
@@ -119,7 +119,7 @@ public class ControllerRegisterScene extends Controller{
         }
     }
 
-    public boolean checkEmptyFields(User user){
+    public boolean checkEmptyFields(Citizen user){
         if(user.getName().isEmpty() || user.getSurname().isEmpty() || user.getBirthday().isEmpty() || user.getBirthPlace().isEmpty() || user.getCodiceFiscale().isEmpty() || user.getEmail().isEmpty() || confirmPassword.getText().isEmpty()){
             error.setText("there is a empty fields");
             return false;

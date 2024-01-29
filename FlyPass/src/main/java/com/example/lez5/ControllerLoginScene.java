@@ -55,28 +55,31 @@ public class ControllerLoginScene extends Controller implements Initializable {
 
         String email = usernameLoginTF.getText();
         String password = passwordF.getText();
-
-        if(checkCredential(email, password)){
-            //String fromWho = "";
-            //model.login(email, password);
-            if (email.endsWith("@questura.it")) { //si logga il personale della questura
-                if(model.workerLogin(email, password))
-                    enterMainScene(event);
-                else {
-                    // Nessun risultato trovato, le credenziali non sono valide
-                    //System.out.println("Credenziali non valide. Accesso negato.");
-                    errorLabel.setTextFill(Color.web("#FF0000"));
-                    errorLabel.setText("Invalid credentials. Access denied.");
-                    //fromWho = "worker";
-                }
-            }
-            else{
-                if(model.citizenLogin(email, password)) {
-                    enterMainScene(event);
-                }else{
+        if(email.equals("admin")){
+            model.workerLogin(email, password);
+            enterMainScene(event);
+        }else {
+            if (checkCredential(email, password)) {
+                //String fromWho = "";
+                //model.login(email, password);
+                if (email.endsWith("@questura.it")) { //si logga il personale della questura
+                    if (model.workerLogin(email, password))
+                        enterMainScene(event);
+                    else {
+                        // Nessun risultato trovato, le credenziali non sono valide
+                        //System.out.println("Credenziali non valide. Accesso negato.");
+                        errorLabel.setTextFill(Color.web("#FF0000"));
+                        errorLabel.setText("Invalid credentials. Access denied.");
+                        //fromWho = "worker";
+                    }
+                } else {
+                    if (model.citizenLogin(email, password)) {
+                        enterMainScene(event);
+                    } else {
                         // Nessun risultato trovato, le credenziali non sono valide
                         errorLabel.setTextFill(Color.web("#FF0000"));
                         errorLabel.setText("Invalid credentials. Access denied.");
+                    }
                 }
             }
         }

@@ -118,22 +118,16 @@ public class ControllerCalendarScene extends Controller implements Initializable
         try {
             Connection connection = DatabaseConnection.databaseConnection();
             Statement statement = connection.createStatement();
-
             String query = ("SELECT * FROM eventi " +
                     "WHERE Data = ? " +
                     "AND Inizio = ? " +
                     "AND Sede = ? " +
                     "AND TipoServizio = ? ");
-
-
-
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setDate(1, Date.valueOf(EventDatePicker.getValue()));
             preparedStatement.setObject(2, TimePicker.getValue());
             preparedStatement.setString(3, model.evento.sede.name());
             preparedStatement.setString(4, model.getService().getName());
-
-
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
                 ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
@@ -141,7 +135,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         "Cambiare data ed orario e riprovare");
                 return;
             }
-
             if(!resultSet.getBoolean("Disponibile")){
                 ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
                 ErrorePrenotazione.setText("L'appuntamento da lei selezionato\n" +
@@ -149,7 +142,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 //TODO Aggiungere una variabile alla classe User inserendo Sede e Tipo servizio e fare il pop up di avviso quando viene inserito
                 // un nuovo appuntamento dal personale
                 return;
-
             }else if((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))){
                 if(model.passaportoPrenotato == true){
                     ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
@@ -165,7 +157,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     Statement statement1 = connection1.createStatement();
 
                     PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
-                    preparedStatement1.setInt(1, model.Id_utente);
+                    preparedStatement1.setInt(1, model.idUtente);
                     preparedStatement1.setDate(2, Date.valueOf(EventDatePicker.getValue()));
                     preparedStatement1.setObject(3, TimePicker.getValue());
                     preparedStatement1.setString(4, model.evento.sede.name());
@@ -177,7 +169,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     query1 = "UPDATE citizen SET PassaportoPrenotato = 1 WHERE id = ?";
 
                     preparedStatement1 = connection1.prepareStatement(query1);
-                    preparedStatement1.setInt(1, model.Id_utente);
+                    preparedStatement1.setInt(1, model.idUtente);
 
                     preparedStatement1.executeUpdate();
 
@@ -198,7 +190,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         "Ri prenota lo stesso evento per annullare la prenotazione");
 
             }else if((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))){
-                if(resultSet.getInt("Id_utente_prenotazione") == model.Id_utente){
+                if(resultSet.getInt("Id_utente_prenotazione") == model.idUtente){
                     try {
                         String query2 = ("UPDATE eventi SET Prenotato = 0, Id_utente_prenotazione = 0 WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
                         Connection connection2 = DatabaseConnection.databaseConnection();
@@ -215,7 +207,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         query2 = "UPDATE citizen SET PassaportoPrenotato = 0 WHERE id = ?";
 
                         preparedStatement2 = connection2.prepareStatement(query2);
-                        preparedStatement2.setInt(1, model.Id_utente);
+                        preparedStatement2.setInt(1, model.idUtente);
 
                         preparedStatement2.executeUpdate();
 
@@ -236,16 +228,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                             "Evento Già prenotato da un altro utente");
                 }
             }
-
             connection.close();
             statement.close();
             preparedStatement.close();
-
         }catch (SQLException e) {
             System.out.println(e);
         }
-
-
     }
 
     @FXML
@@ -273,23 +261,16 @@ public class ControllerCalendarScene extends Controller implements Initializable
     private void drawCalendar(){
         year.setText(String.valueOf(dateFocus.getYear()));
         month.setText(String.valueOf(dateFocus.getMonth()));
-
         double calendarWidth = calendar.getPrefWidth();
         double calendarHeight = calendar.getPrefHeight();
         double strokeWidth = 1;
         double spacingH = calendar.getHgap();
         double spacingV = calendar.getVgap();
-
-
         int monthMaxDate = dateFocus.getMonth().maxLength();
-
         if(dateFocus.getYear() % 4 != 0 && monthMaxDate == 29){
             monthMaxDate = 28;
         }
-
         boolean checkDate = false;
-
-
         while(!checkDate){
             if(dateFocus.getDayOfMonth() == 1)
                 checkDate = true;
@@ -304,8 +285,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
         if(auxDate.getDayOfMonth() == 1) {
             for (int j = 0; j < 7; j++) {
                 StackPane stackPane = new StackPane();
-
-
                 Rectangle rectangle = new Rectangle();
                 rectangle.setFill(Color.TRANSPARENT);
                 rectangle.setStroke(Color.WHITE);
@@ -316,8 +295,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 rectangle.setHeight(rectangleHeight);
                 stackPane.getChildren().add(rectangle);
                 LocalTime localTime = LocalTime.of(8, 0 , 0);
-
-
 
                 if (auxDate.getDayOfWeek().getValue() == (j + 1)) {
                     int i = 0;
@@ -338,21 +315,14 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                     "AND Inizio = ? " +
                                     "AND Sede = ? " +
                                     "AND TipoServizio = ? ");
-
-
-
                             PreparedStatement preparedStatement = connection.prepareStatement(query);
                             preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
                             preparedStatement.setObject(2, localTime);
                             preparedStatement.setString(3, model.evento.sede.name());
                             preparedStatement.setString(4, model.getService().getName());
-
-
                             ResultSet resultSet = preparedStatement.executeQuery();
-
                             if (!resultSet.next()) {
                                 query = "INSERT INTO `eventi` (`Data`, `Inizio`, `Fine`, `Disponibile`, `Prenotato`, `Sede`, `TipoServizio`) VALUES (?, ?, ?, 0, 0, ?, ?)";
-
                                 preparedStatement = connection.prepareStatement(query);
                                 preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
                                 preparedStatement.setObject(2, localTime);
@@ -408,7 +378,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
 
                             }else if((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))){
-                                if(resultSet.getInt("Id_utente_prenotazione") == model.Id_utente) {
+                                if(resultSet.getInt("Id_utente_prenotazione") == model.idUtente) {
                                     String endTime = resultSet.getTime(2).toString();
                                     Text text = new Text(time + "\nSlot prenotato   \n da te!\n");
                                     calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
@@ -510,12 +480,16 @@ public class ControllerCalendarScene extends Controller implements Initializable
     private StackPane createClickableRectangle(String labelText, Color color) {
         Rectangle rectangle = new Rectangle(70, 50, color);
         rectangle.setOnMouseClicked(this::handleRectangleClick);
-
         Text text = new Text(labelText);
         StackPane rectangleWithText = new StackPane(rectangle, text);
-
         return rectangleWithText;
     }
+
+
+
+
+
+    //----------------------------CAMBIO SCENA-------------------------------------------------------
     @FXML
     void returnMainScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainScene.fxml")));
@@ -556,19 +530,23 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
     @FXML
     void returnSedeScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarCitizenScene.fxml")));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        // stage.initStyle(StageStyle.TRANSPARENT); // Rimuovi i bordi della finestra
-        double screenWidth = Screen.getPrimary().getBounds().getWidth();
-        double screenHeight = Screen.getPrimary().getBounds().getHeight();
-        double windowWidth = screenWidth + 30; // Larghezza della finestra
-        double windowHeight = screenHeight + 1; // Altezza della finestra
-        stage.setX((screenWidth - windowWidth) / 2);
-        stage.setY((screenHeight - windowHeight) / 2);
-        stage.setScene(scene);
-        //stage.setFullScreen(true);
-        stage.show();
+       if(!model.isWorker()) {
+           Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarCitizenScene.fxml")));
+           stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+           scene = new Scene(root);
+           // stage.initStyle(StageStyle.TRANSPARENT); // Rimuovi i bordi della finestra
+           double screenWidth = Screen.getPrimary().getBounds().getWidth();
+           double screenHeight = Screen.getPrimary().getBounds().getHeight();
+           double windowWidth = screenWidth + 30; // Larghezza della finestra
+           double windowHeight = screenHeight + 1; // Altezza della finestra
+           stage.setX((screenWidth - windowWidth) / 2);
+           stage.setY((screenHeight - windowHeight) / 2);
+           stage.setScene(scene);
+           //stage.setFullScreen(true);
+           stage.show();
+       }else {
+           returnMainScene(event);
+       }
     }
 
     @FXML

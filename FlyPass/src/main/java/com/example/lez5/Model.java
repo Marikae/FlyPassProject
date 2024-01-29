@@ -16,25 +16,17 @@ import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class Model implements Initializable {
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-
     Evento evento = new Evento();
-
-
     private static Model modelInstance; // statico e protetto da accesso esterno
     private String loginPassword;
     private String loginUserName;
     private User user;
     private Service service;
-    private boolean worker = false;
-    public int Id_utente;
-
+    private boolean worker;
+    public int idUtente;
     public boolean passaportoPrenotato;
-
-    private Model() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
     }
     public static Model getModel() { // metodo aperto, invocazione tramite codice
         if (modelInstance == null) { // solamente quando non esiste alcuna istanza, ne crea una nuova
@@ -42,13 +34,13 @@ public class Model implements Initializable {
         }
         return modelInstance;
     }
-    public void closeResource(Connection connection, PreparedStatement preparedStatement ) throws SQLException {
+  /*  public void closeResource(Connection connection, PreparedStatement preparedStatement ) throws SQLException {
         connection.close();
         preparedStatement.close();
-    }
+    }*/
 
 
-    //-----------------------------SERVICE DATA SET-----------------------------------
+    //----------------------------- SERVICE -----------------------------------
     public void setService(String nameNewService){
         for (Service s : getServices() ) {
             if(s.getName().equals(nameNewService))
@@ -59,59 +51,66 @@ public class Model implements Initializable {
         return service;
     }
     public List<Service> getServices(){
+        String pre = "";
+        if(isWorker()){
+            pre = "Aggiungi prenotazioni per: \n";
+        }else{
+            pre = "Prenota per:\n";
+        }
+
         List<Service> ls = new ArrayList<Service>();
         //Rilascio prima volta
         Service service = new Service();
-        service.setName("Rilascio prima volta");
+        service.setName(pre + "Rilascio prima volta");
         service.setDescription("Rilascio del passaporto per la prima volta");
         service.setImgSrc("/img/firstTime.jpg");
         ls.add(service);
 
         //Rilascio scadenza
         service = new Service();
-        service.setName("Rinnovo per scadenza");
+        service.setName(pre + "Rinnovo per scadenza");
         service.setDescription("Rilascio del passaporto per scadenza");
         service.setImgSrc("/img/scadenza.jpg");
         ls.add(service);
 
         //Furto o smarrimento
         service = new Service();
-        service.setName("Furto o smarrimento");
+        service.setName(pre + "Furto o smarrimento");
         service.setDescription("Rilascio del passaporto per furto o smarrimento");
         service.setImgSrc("/img/furto.jpg");
         ls.add(service);
 
         //Rilascio detoriamento
         service = new Service();
-        service.setName("Rinnovo per detoriamento");
+        service.setName(pre + "Rinnovo per detoriamento");
         service.setDescription("Rilascio del passaporto per detoriamento");
         service.setImgSrc("/img/detoriamento.jpg");
         ls.add(service);
 
         //passaporto urgente
         service = new Service();
-        service.setName("Passaporto urgente");
+        service.setName(pre + "Passaporto urgente");
         service.setDescription("Rilascio del passaporto urgentemente");
         service.setImgSrc("/img/urgente.jpg");
         ls.add(service);
 
         //prolungamento validità passsaporto
         service = new Service();
-        service.setName("Prolungamento validità passaporto");
+        service.setName(pre + "Prolungamento validità passaporto");
         service.setDescription("prolungamento della validità del passaporto");
         service.setImgSrc("/img/scadenza.jpg");
         ls.add(service);
 
         //cambio info personali
         service = new Service();
-        service.setName("Cambio info personali");
+        service.setName(pre + "Cambio info personali");
         service.setDescription("Iter per il cambio delle informazioni personali");
         service.setImgSrc("/img/cambio.jpg");
         ls.add(service);
 
         //passaporto per minori
         service = new Service();
-        service.setName("Passaporto per minori");
+        service.setName(pre + "Passaporto per minori");
         service.setDescription("Rilascio passaporto per minori");
         service.setImgSrc("/img/minori.jpg");
         ls.add(service);
@@ -119,7 +118,7 @@ public class Model implements Initializable {
         return ls;
     }
 
-    //-------------------------LOGIN----------------------------------
+    //------------------------------ LOGIN ------------------------------------
     public Boolean workerLogin(String username, String password) throws IOException {
         try {
             this.loginPassword = password;
@@ -135,7 +134,8 @@ public class Model implements Initializable {
                 // Se esiste almeno una riga nel risultato, l'accesso è stato effettuato con successo
                // System.out.println("Accesso consentito per l'utente con email: " + resultSet.getString("email"));
                 worker = true;
-                //setUser(loginUserName);
+                setWorker(loginUserName);
+                evento.setSede(((Worker) user).getOffice());
                 return true;
             } else {
                return false;
@@ -165,28 +165,25 @@ public class Model implements Initializable {
                 // Se esiste almeno una riga nel risultato, l'accesso è stato effettuato con successo
                 // System.out.println("Accesso consentito per l'utente con email: " + resultSet.getString("email"));
                 worker = false;
-                setUser(loginUserName);
-                Id_utente = resultSet.getInt("id");
+
+                setCitizen(loginUserName);
+
+                idUtente = resultSet.getInt("id");
                 passaportoPrenotato = resultSet.getBoolean("PassaportoPrenotato");
                 return true;
             } else {
                 return false;
             }
-
             // Chiudi le risorse
-
         } catch (SQLException e) {
-
             System.out.println(e);
-            //return false;
         }
         // Chiudi le risorse
 
         return false;
     }
 
-    //REGISTER @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
+    //----------------------------------------REGISTER----------------------------------------------------
     public boolean HealthCardNumberCheck(String heathCardNumber) {
         // Verifica se la lunghezza della stringa è esattamente 20
         if (heathCardNumber.length() != 20) {
@@ -203,13 +200,9 @@ public class Model implements Initializable {
     }
 
     public boolean checkEmail(String email) {
-
         String regexPattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
-
         Pattern pattern = Pattern.compile(regexPattern);
-
         Matcher matcher = pattern.matcher(email);
-
         return matcher.matches();
     }
 
@@ -230,7 +223,7 @@ public class Model implements Initializable {
         return input.matches("^[A-Z]+$");
     }
 
-
+    //------------------------------------- DATABESE INSERIMENTO ---------------------------------
     public void databaseInsertion (LocalDate aus5,String aus1, String aus2, String aus3, String aus4,
                                    String aus6, String aus7, String aus8, String aus9){
         try {
@@ -251,15 +244,10 @@ public class Model implements Initializable {
             preparedStatement.setString(7, aus6);
             preparedStatement.setString(8, aus3);
             preparedStatement.setString(9, aus2);
-
             preparedStatement.executeUpdate();
-
-
-
         }catch (SQLException e) {
             System.out.println(e);
         }
-
         /*try{
             //TODO da settare l'id prima di far entrare il nuovo utente
         } catch (SQLException e) {
@@ -271,23 +259,45 @@ public class Model implements Initializable {
     public User getUser(){
         return this.user;
     }
+    public void setWorker(String loginUserName)throws SQLException {
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT * FROM worker WHERE email = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        // Imposta i valori dei parametri per email
+        preparedStatement.setString(1, loginUserName);
 
-    private void setUser(String userEmail) throws SQLException {
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            Evento.Sede office = Evento.Sede.valueOf(resultSet.getString("office"));
+            user = new Worker(resultSet.getString("name"), resultSet.getString("surname"),  resultSet.getString("email"), resultSet.getString("password"),  office);
+        }
+    }
+    public boolean hasPrenotation() throws SQLException {
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT PassaportoPrenotato FROM citizen WHERE email = ? AND PassaportoPrenotato = 1";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        // Imposta i valori dei parametri per email
+        preparedStatement.setString(1, user.getEmail());
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            return true;
+        }
+        return false;
+    }
+    private void setCitizen(String userEmail) throws SQLException {
         Connection connection = DatabaseConnection.databaseConnection();
         String query = "SELECT * FROM citizen WHERE email = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-
         // Imposta i valori dei parametri per email
         preparedStatement.setString(1, userEmail);
 
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-            user = new User(resultSet.getString("name"), resultSet.getString("num_health_card"), resultSet.getString("cat"), resultSet.getString("surname"), resultSet.getString("date_of_birth"), resultSet.getString("place_of_birth"), resultSet.getString("tax_code"), resultSet.getString("email"), resultSet.getString("password"));
+            user = new Citizen(resultSet.getString("name"), resultSet.getString("num_health_card"), resultSet.getString("cat"), resultSet.getString("surname"), resultSet.getString("date_of_birth"), resultSet.getString("place_of_birth"), resultSet.getString("tax_code"), resultSet.getString("email"), resultSet.getString("password"));
         }
         //User(String name, String num_health_card, String category, String surname,
         //String birthday, String birthPlace, String codiceFiscale, String email, String phone)
-
-
     }
 
 
@@ -305,5 +315,28 @@ public class Model implements Initializable {
     public void setVeronaAsSede(){
         evento.setSede(Evento.Sede.Verona);
     }
+    public boolean isWorker(){
+        return worker;
+    }
 
+    public String getCitizenPrenotation() throws SQLException {
+        String prenotation = "";
+       try {
+           Connection connection = DatabaseConnection.databaseConnection();
+           String query = ("SELECT Data, Inizio, Fine, Sede FROM eventi WHERE Id_utente_prenotazione = ?");
+
+           PreparedStatement preparedStatement = connection.prepareStatement(query);
+           preparedStatement.setString(1, String.valueOf(idUtente) );
+           ResultSet resultSet = preparedStatement.executeQuery();
+           if (resultSet.next()) {
+                prenotation = "data: " + preparedStatement.getResultSet().getString("Data") + "\n Orario: " + preparedStatement.getResultSet().getString("Inizio") + "\n Sede: " + preparedStatement.getResultSet().getString("Sede");
+           }else{
+               prenotation = "no prenotation found\n";
+           }
+
+       }catch (SQLException e) {
+        System.out.println(e);
+    }
+        return prenotation;
+    }
 }

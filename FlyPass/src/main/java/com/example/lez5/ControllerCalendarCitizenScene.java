@@ -17,12 +17,14 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ControllerCalendarCitizenScene extends Controller implements Initializable {
-    @FXML
-    private Label serviceName;
     private Stage stage;
     private Scene scene;
     @FXML
+    private Label serviceName;
+    @FXML
     private Label descriptionLabel;
+    @FXML
+    private Label choiceLabel;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (serviceName != null && descriptionLabel != null) {
@@ -32,7 +34,21 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
             System.out.println("serviceType is null!");
             // Investigate why serviceType is null and ensure proper initialization
         }
+        if(model.isWorker() == true){
+            workerCalendar();
+        }else{
+            citizenCalendar();
+        }
     }
+
+    private void citizenCalendar() {
+        choiceLabel.setText("Scegli la sede in cui vuoi prenotare e ritirare il passaporto");
+    }
+
+    private void workerCalendar() {
+        choiceLabel.setText("Scegli la sede in cui creare l'appuntamento");
+    }
+
     public ControllerCalendarCitizenScene(){
         super();
     }
@@ -53,8 +69,6 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
         stage.setScene(scene);
         stage.show();
     }
-
-
 
     @FXML
     void PadovaSetAndGo(ActionEvent event) throws IOException{

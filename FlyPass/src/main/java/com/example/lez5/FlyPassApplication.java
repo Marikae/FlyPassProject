@@ -16,6 +16,3 @@ public class FlyPassApplication extends Application {
         stage.show();
     }
 }
-
-
-//provas

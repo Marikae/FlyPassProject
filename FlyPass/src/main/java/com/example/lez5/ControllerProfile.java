@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ControllerProfile extends Controller implements Initializable {
+    public Button logOutM;
     private Stage stage;
     private Scene scene;
     @FXML
@@ -35,18 +36,50 @@ public class ControllerProfile extends Controller implements Initializable {
     private Label placeOfBirthLabel;
     @FXML
     private Label categoryLabel;
+    @FXML
+    private Label finalCat;
+
+    @FXML
+    private Label finalCodFisc;
+
+    @FXML
+    private Label finalDateBirth;
+
+    @FXML
+    private Label finalHealCard;
+
+    @FXML
+    private Label finalPlaceBirth;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        User user = model.getUser();
-        nameLabel.setText(user.getName());
-        surnameLabel.setText(user.getSurname());
-        taxCodeLabel.setText(user.getCodiceFiscale());
-        placeOfBirthLabel.setText(user.getBirthPlace());
-        emailLabel.setText(user.getEmail());
-        birthdayLabel.setText(user.getBirthday());
-        healtCardLabel.setText(user.getHealCard());
-        categoryLabel.setText(user.getCategory());
+        if(!model.isWorker()) {
+            Citizen user = (Citizen) model.getUser();
+            nameLabel.setText(user.getName());
+            surnameLabel.setText(user.getSurname());
+            taxCodeLabel.setText(user.getCodiceFiscale());
+            placeOfBirthLabel.setText(user.getBirthPlace());
+            emailLabel.setText(user.getEmail());
+            birthdayLabel.setText(user.getBirthday());
+            healtCardLabel.setText(user.getHealCard());
+            categoryLabel.setText(user.getCategory());
+        }else{
+            Worker user = (Worker) model.getUser();
+            nameLabel.setText(user.getName());
+            surnameLabel.setText(user.getSurname());
+            emailLabel.setText(user.getEmail());
+            finalCodFisc.setText("Office:      ");
+            taxCodeLabel.setText(user.getOffice().toString());
+            //nascondo le altre label
+            placeOfBirthLabel.setVisible(false);
+            birthdayLabel.setVisible(false);
+            healtCardLabel.setVisible(false);
+            categoryLabel.setVisible(false);
+            finalCat.setVisible(false);
+            finalHealCard.setVisible(false);
+            finalDateBirth.setVisible(false);
+            finalPlaceBirth.setVisible(false);
+        }
     }
     public ControllerProfile(){
         super();
