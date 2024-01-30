@@ -28,7 +28,7 @@ public class ControllerLoginScene extends Controller implements Initializable {
     private TextField usernameLoginTF;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        errorLabel.setVisible(false);
     }
     public ControllerLoginScene() {
         super();
@@ -68,6 +68,7 @@ public class ControllerLoginScene extends Controller implements Initializable {
                     else {
                         // Nessun risultato trovato, le credenziali non sono valide
                         //System.out.println("Credenziali non valide. Accesso negato.");
+                        errorLabel.setVisible(true);
                         errorLabel.setTextFill(Color.web("#FF0000"));
                         errorLabel.setText("Invalid credentials. Access denied.");
                         //fromWho = "worker";
@@ -77,6 +78,7 @@ public class ControllerLoginScene extends Controller implements Initializable {
                         enterMainScene(event);
                     } else {
                         // Nessun risultato trovato, le credenziali non sono valide
+                        errorLabel.setVisible(true);
                         errorLabel.setTextFill(Color.web("#FF0000"));
                         errorLabel.setText("Invalid credentials. Access denied.");
                     }
@@ -104,21 +106,25 @@ public class ControllerLoginScene extends Controller implements Initializable {
 
     boolean checkCredential(String email, String password){
         if(email.isEmpty() && password.isEmpty()){
+            errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
             errorLabel.setText("Empty fields.");
             return false;
         }
         if(email.isEmpty()){
+            errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
             errorLabel.setText("Email is missing.");
             return false;
         }
         if(password.isEmpty()){
+            errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
             errorLabel.setText("Password is missing.");
             return false;
         }
         if (!model.checkEmail(email)) {
+            errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
             errorLabel.setText("Email not valid");
             return false;
@@ -128,6 +134,7 @@ public class ControllerLoginScene extends Controller implements Initializable {
 
     @FXML
     void showPassword(ActionEvent event) { //TODO
+        //errorLabel.setVisible(true);
         passwordF.setDisable(false);
         passwordF.setVisible(true);
     }

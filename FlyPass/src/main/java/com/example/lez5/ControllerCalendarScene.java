@@ -162,7 +162,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 //TODO Aggiungere una variabile alla classe User inserendo Sede e Tipo servizio e fare il pop up di avviso quando viene inserito
                 // un nuovo appuntamento dal personale
 
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Appuntamento non disponibile");
                 alert.setHeaderText(null);
                 // Creare una VBox personalizzata con il messaggio e la CheckBox
