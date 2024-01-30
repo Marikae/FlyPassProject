@@ -31,10 +31,11 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
             flag.setText("worker");
         }else{
             flag.setText("citizen");
+            if(model.notification){
+                model.putNotification(prenotationImg);
+            }
         }
-        if(model.notification){
-            model.putNotification(prenotationImg);
-        }
+
     }
 
 

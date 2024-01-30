@@ -21,9 +21,12 @@ public class ControllerLogOutScene extends Controller implements Initializable{
     private ImageView prenotationImg;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(model.notification){
-            model.putNotification(prenotationImg);
+        if(!model.isWorker()){
+            if(model.notification){
+                model.putNotification(prenotationImg);
+            }
         }
+
     }
 
     public ControllerLogOutScene(){

@@ -25,9 +25,14 @@ public class ControllerInfoScene extends Controller implements Initializable {
     private ImageView prenotationImg;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(model.notification){
-            model.putNotification(prenotationImg);
+        if(model.isWorker()){ //lavoratore
+
+        }else{ // cittadino
+            if(model.notification){
+                model.putNotification(prenotationImg);
+            }
         }
+
     }
     @FXML
     void goToLogOutScene(ActionEvent event) throws IOException {

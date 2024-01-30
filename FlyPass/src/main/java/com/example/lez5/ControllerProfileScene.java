@@ -59,17 +59,7 @@ public class ControllerProfileScene extends Controller implements Initializable 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(!model.isWorker()) {
-            Citizen user = (Citizen) model.getUser();
-            nameLabel.setText(user.getName());
-            surnameLabel.setText(user.getSurname());
-            taxCodeLabel.setText(user.getCodiceFiscale());
-            placeOfBirthLabel.setText(user.getBirthPlace());
-            emailLabel.setText(user.getEmail());
-            birthdayLabel.setText(user.getBirthday());
-            healtCardLabel.setText(user.getHealCard());
-            categoryLabel.setText(user.getCategory());
-        }else{
+        if(model.isWorker()) { //lavoratore
             Worker user = (Worker) model.getUser();
             nameLabel.setText(user.getName());
             surnameLabel.setText(user.getSurname());
@@ -85,11 +75,24 @@ public class ControllerProfileScene extends Controller implements Initializable 
             finalHealCard.setVisible(false);
             finalDateBirth.setVisible(false);
             finalPlaceBirth.setVisible(false);
-        }
-        if(model.notification){
-            model.putNotification(prenotationImg);
-        }
+            //controllo della notifica
 
+        }else{ //cittadino
+            Citizen user = (Citizen) model.getUser();
+            nameLabel.setText(user.getName());
+            surnameLabel.setText(user.getSurname());
+            taxCodeLabel.setText(user.getCodiceFiscale());
+            placeOfBirthLabel.setText(user.getBirthPlace());
+            emailLabel.setText(user.getEmail());
+            birthdayLabel.setText(user.getBirthday());
+            healtCardLabel.setText(user.getHealCard());
+            categoryLabel.setText(user.getCategory());
+
+            //controllo notifica
+            if(model.notification){
+                model.putNotification(prenotationImg);
+            }
+        }
     }
     public ControllerProfileScene(){
         super();

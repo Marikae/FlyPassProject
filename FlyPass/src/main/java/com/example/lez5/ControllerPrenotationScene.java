@@ -27,19 +27,20 @@ public class ControllerPrenotationScene extends Controller implements Initializa
     private Label prenotationLabel;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(model.isWorker()){
+        if(model.isWorker()){ //lavoratore
             workerPrenotation();
-        }else{
+        }else{ //cittadino
             try {
                 citizenPrenotation();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+            if(model.notification){
+                // model.putNotification(prenotationImg);
+                model.disativateNotification();
+            }
         }
-        if(model.notification){
-           // model.putNotification(prenotationImg);
-            model.disativateNotification();
-        }
+
     }
     private void citizenPrenotation() throws SQLException {
         String prenotation = model.getCitizenPrenotation();

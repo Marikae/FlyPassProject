@@ -45,6 +45,10 @@ public class ControllerMainScene extends Controller implements Initializable {
         if(model.isWorker()){
             //se non è un lavoratore
             prenotationPickUpButton.setText("Inserisci disponibilità ritiro passaporto");
+        }else{
+            if(model.notification){
+                model.putNotification(prenotationImg);
+            }
         }
         services = new ArrayList<>(model.getServices());
 
@@ -69,9 +73,7 @@ public class ControllerMainScene extends Controller implements Initializable {
         }catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if(model.notification){
-            model.putNotification(prenotationImg);
-        }
+
 
     }
     public ControllerMainScene(){
