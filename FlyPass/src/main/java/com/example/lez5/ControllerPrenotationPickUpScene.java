@@ -67,8 +67,6 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
         stage.show();
     }
 
-
-
     @FXML
     void goToProfileScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ProfileScene.fxml")));

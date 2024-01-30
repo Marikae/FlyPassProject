@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -117,9 +118,10 @@ public class ControllerCalendarScene extends Controller implements Initializable
             }
         }
         if(isInside == false){
-            ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-            ErrorePrenotazione.setText("La data che hai selezionato\n non è presente nella schermata");
-            return;
+            //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+            //ErrorePrenotazione.setText("La data che hai selezionato\n non è presente nella schermata");
+            //return;
+            //è triggherante
         }
         try {
             Connection connection = DatabaseConnection.databaseConnection();
@@ -136,25 +138,70 @@ public class ControllerCalendarScene extends Controller implements Initializable
             preparedStatement.setString(4, model.getService().getName());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
-                ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                ErrorePrenotazione.setText("Non è stato possibile rilevare l'appuntamento.\n" +
-                        "Cambiare data ed orario e riprovare");
+                //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                //ErrorePrenotazione.setText("Non è stato possibile rilevare l'appuntamento.\n Cambiare data ed orario e riprovare");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attention");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.showAndWait();
                 return;
             }
             if(!resultSet.getBoolean("Disponibile")){
-                ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                ErrorePrenotazione.setText("L'appuntamento da lei selezionato\n" +
-                        " non è al momento disponibile");
+                // ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                // ErrorePrenotazione.setText("L'appuntamento da lei selezionato\n" +
+                //     " non è al momento disponibile");
+               /*
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attention");
+                alert.setHeaderText(null);
+                alert.setContentText("L'appuntamento da lei selezionato non è al momento disponibile");
+                alert.showAndWait();
+                /*
+                */
                 //TODO Aggiungere una variabile alla classe User inserendo Sede e Tipo servizio e fare il pop up di avviso quando viene inserito
                 // un nuovo appuntamento dal personale
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Appuntamento non disponibile");
+                alert.setHeaderText(null);
+                // Creare una VBox personalizzata con il messaggio e la CheckBox
+                VBox vBox = new VBox();
+                vBox.setSpacing(10);
+                vBox.setPadding(new Insets(10, 10, 10, 10));
+                Label messageLabel = new Label("L'appuntamento non è disponibile. Vuoi ricevere una notifica quando sarà disponibile?");
+                CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
+                vBox.getChildren().addAll(messageLabel, notificationCheckBox);
+                // Impostare la VBox come contenuto del DialogPane
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.setContent(vBox);
+                // Aggiungere i pulsanti desiderati
+                dialogPane.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+                // Mostrare l'alert e gestire la risposta
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        boolean receiveNotification = notificationCheckBox.isSelected();
+                        System.out.println("Risposta: OK, Ricevi notifica: " + receiveNotification);
+                        //TODO salvarsi i dati per inviare alla notifica!!!
+
+
+                    } else if (response == ButtonType.CANCEL) {
+                        System.out.println("Risposta: Annulla");
+                    }
+                });
                 return;
             }else if((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))){
-                if(model.passaportoPrenotato == true){
-                    ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                    ErrorePrenotazione.setText("Sembra che tu abbia già\n" +
-                            "prenotato un passaporto.\n" +
-                            "Togli l'altra prenotazione per aggiungerne\n" +
-                            "una nuova");
+                if(model.passaportoPrenotato){
+                    //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                    //ErrorePrenotazione.setText("Sembra che tu abbia già\n" +
+                          //  "prenotato un passaporto.\n" +
+                          //  "Togli l'altra prenotazione per aggiungerne\n" +
+                          //  "una nuova");
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Attention");
+                    alert.setHeaderText(null);
+                    alert.setContentText("porcodio coglione di merda hai già prenotato ritardato");
+                    alert.showAndWait();
                     return;
                 }
                 try {
@@ -191,9 +238,14 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     throw new RuntimeException(e);
                 }
 
-                ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                ErrorePrenotazione.setText("Prenotazione andata a buon fine\n" +
-                        "Ri prenota lo stesso evento per annullare la prenotazione");
+                //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                //ErrorePrenotazione.setText("Prenotazione andata a buon fine\n" +
+                    //    "Ri prenota lo stesso evento per annullare la prenotazione");
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("ALL GOOD!");
+                alert.setHeaderText(null);
+                alert.setContentText("Prenotazione andata a buon fine. \n Ri prenota lo stesso evento per annullare la prenotazione");
+                alert.showAndWait();
 
             }else if((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))){
                 if(resultSet.getInt("Id_utente_prenotazione") == model.idUtente){
@@ -229,9 +281,13 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         throw new RuntimeException(e);
                     }
                 }else{
-                    ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                    ErrorePrenotazione.setText("Errore di prenotazione.\n" +
-                            "Evento Già prenotato da un altro utente");
+                    //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                    //ErrorePrenotazione.setText("Errore di prenotazione.\n Evento Già prenotato da un altro utente");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Errore di prenotazione.\n Evento Già prenotato da un altro utente");
+                    alert.showAndWait();
                 }
             }
             connection.close();

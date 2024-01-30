@@ -31,7 +31,7 @@ public class Model implements Initializable {
     private boolean worker;
     public int idUtente;
     public boolean passaportoPrenotato;
-    public boolean notification = true;
+    public boolean notification = false;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
@@ -349,7 +349,7 @@ public class Model implements Initializable {
 
 
     public void notification(){
-
+        //TODO collegare notifica al database eccetera eccetera
     }
     public void disativateNotification(){
         this.notification = false;

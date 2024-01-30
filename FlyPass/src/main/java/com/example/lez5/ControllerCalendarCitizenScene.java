@@ -38,7 +38,7 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
             System.out.println("serviceType is null!");
             // Investigate why serviceType is null and ensure proper initialization
         }
-        if(model.isWorker() == true){ //profilo lavoratore
+        if(model.isWorker()){ //profilo lavoratore
             workerCalendar();
         }else{ //profilo cittadino
             citizenCalendar();
