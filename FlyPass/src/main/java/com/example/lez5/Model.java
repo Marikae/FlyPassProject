@@ -1,6 +1,10 @@
 package com.example.lez5;
 
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,9 +26,12 @@ public class Model implements Initializable {
     private String loginUserName;
     private User user;
     private Service service;
+    @FXML
+    private ImageView prenotationImg;
     private boolean worker;
     public int idUtente;
     public boolean passaportoPrenotato;
+    public boolean notification = true;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
@@ -339,4 +346,21 @@ public class Model implements Initializable {
     }
         return prenotation;
     }
+
+
+    public void notification(){
+
+    }
+    public void disativateNotification(){
+        this.notification = false;
+    }
+    public void activeNotification(){
+        this.notification = true;
+    }
+    public void putNotification(ImageView image) {
+        // Cambiare l'immagine del bottone con l'immagine con notifica
+        Image initialImage = new Image(getClass().getResource("/icon/bookingNotification.png").toExternalForm());
+        image.setImage(initialImage);
+    }
+
 }

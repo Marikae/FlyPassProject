@@ -8,18 +8,20 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class ControllerPrenotation extends Controller implements Initializable {
+public class ControllerPrenotationScene extends Controller implements Initializable {
     @FXML
     private Stage stage;
+    @FXML
+    private ImageView prenotationImg;
     private Scene scene;
     @FXML
     private Label prenotationLabel;
@@ -33,6 +35,10 @@ public class ControllerPrenotation extends Controller implements Initializable {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+        }
+        if(model.notification){
+           // model.putNotification(prenotationImg);
+            model.disativateNotification();
         }
     }
     private void citizenPrenotation() throws SQLException {

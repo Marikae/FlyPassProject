@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -22,12 +23,17 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
     private Scene scene;
     @FXML
     private Label flag;
+    @FXML
+    private ImageView prenotationImg;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if(model.isWorker()){
             flag.setText("worker");
         }else{
             flag.setText("citizen");
+        }
+        if(model.notification){
+            model.putNotification(prenotationImg);
         }
     }
 

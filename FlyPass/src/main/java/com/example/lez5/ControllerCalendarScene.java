@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -51,7 +52,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
     public ControllerCalendarScene(){
         super();
     }
-
+    @FXML
+    private ImageView prenotationImg;
     ZonedDateTime dateFocus;
     ZonedDateTime today;
     ZonedDateTime auxDate;
@@ -77,6 +79,10 @@ public class ControllerCalendarScene extends Controller implements Initializable
         drawCalendar();
         descriptionLabel.setText(model.getService().getDescription());
         serviceName.setText(model.getService().getName());
+
+        if(model.notification){
+            model.putNotification(prenotationImg);
+        }
     }
 
     @FXML

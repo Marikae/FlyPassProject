@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -19,12 +20,15 @@ import java.util.ResourceBundle;
 public class ControllerCalendarCitizenScene extends Controller implements Initializable {
     private Stage stage;
     private Scene scene;
+
     @FXML
     private Label serviceName;
     @FXML
     private Label descriptionLabel;
     @FXML
     private Label choiceLabel;
+    @FXML
+    private ImageView prenotationImg;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (serviceName != null && descriptionLabel != null) {
@@ -34,11 +38,15 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
             System.out.println("serviceType is null!");
             // Investigate why serviceType is null and ensure proper initialization
         }
-        if(model.isWorker() == true){
+        if(model.isWorker() == true){ //profilo lavoratore
             workerCalendar();
-        }else{
+        }else{ //profilo cittadino
             citizenCalendar();
+            if(model.notification){
+                model.putNotification(prenotationImg);
+            }
         }
+
     }
 
     private void citizenCalendar() {

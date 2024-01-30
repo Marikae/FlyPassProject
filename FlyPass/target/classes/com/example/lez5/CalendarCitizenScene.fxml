@@ -39,7 +39,7 @@
                <children>
                   <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#goToPrenotationScene" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Prenotation">
                      <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="prenotationImg" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../icon/booking.png" />
                            </image>

@@ -3,20 +3,32 @@ package com.example.lez5;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class ControllerInfoScene {
+public class ControllerInfoScene extends Controller implements Initializable {
     @FXML
     private Stage stage;
     private Scene scene;
+    @FXML
+    private ImageView prenotationImg;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        if(model.notification){
+            model.putNotification(prenotationImg);
+        }
+    }
     @FXML
     void goToLogOutScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LogOut.fxml")));
@@ -57,4 +69,6 @@ public class ControllerInfoScene {
         stage.setScene(scene);
         stage.show();
     }
+
+
 }

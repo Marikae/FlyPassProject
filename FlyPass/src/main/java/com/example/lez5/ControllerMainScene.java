@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.event.ActionEvent;
@@ -32,7 +34,11 @@ public class ControllerMainScene extends Controller implements Initializable {
     @FXML
     private Button prenotationPickUpButton;
     private List<Service> services;
+    @FXML
+    private Button prenotationButton;
 
+    @FXML
+    private ImageView prenotationImg;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -63,6 +69,10 @@ public class ControllerMainScene extends Controller implements Initializable {
         }catch (IOException e) {
             throw new RuntimeException(e);
         }
+        if(model.notification){
+            model.putNotification(prenotationImg);
+        }
+
     }
     public ControllerMainScene(){
         super();

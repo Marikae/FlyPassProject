@@ -8,6 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
@@ -16,12 +18,14 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class ControllerProfile extends Controller implements Initializable {
+public class ControllerProfileScene extends Controller implements Initializable {
     public Button logOutM;
     private Stage stage;
     private Scene scene;
     @FXML
     private Label birthdayLabel;
+    @FXML
+    private Button prenotationButton;
     @FXML
     private Label emailLabel;
     @FXML
@@ -50,6 +54,8 @@ public class ControllerProfile extends Controller implements Initializable {
 
     @FXML
     private Label finalPlaceBirth;
+    @FXML
+    private ImageView prenotationImg;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -80,8 +86,12 @@ public class ControllerProfile extends Controller implements Initializable {
             finalDateBirth.setVisible(false);
             finalPlaceBirth.setVisible(false);
         }
+        if(model.notification){
+            model.putNotification(prenotationImg);
+        }
+
     }
-    public ControllerProfile(){
+    public ControllerProfileScene(){
         super();
     }
     @FXML
@@ -124,5 +134,7 @@ public class ControllerProfile extends Controller implements Initializable {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+
+
     }
 }

@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -16,9 +17,13 @@ import java.util.ResourceBundle;
 public class ControllerLogOutScene extends Controller implements Initializable{
     private Stage stage;
     private Scene scene;
+    @FXML
+    private ImageView prenotationImg;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        if(model.notification){
+            model.putNotification(prenotationImg);
+        }
     }
 
     public ControllerLogOutScene(){
