@@ -24,6 +24,15 @@ public class Model implements Initializable {
     private static Model modelInstance; // statico e protetto da accesso esterno
     private String loginPassword;
     private String loginUserName;
+
+    public String getLoginUserName() {
+        return loginUserName;
+    }
+
+    public void setLoginUserName(String loginUserName) {
+        this.loginUserName = loginUserName;
+    }
+
     private User user;
     private Service service;
     @FXML
@@ -143,6 +152,7 @@ public class Model implements Initializable {
                 worker = true;
                 setWorker(loginUserName);
                 evento.setSede(((Worker) user).getOffice());
+                idUtente = resultSet.getInt("id");
                 return true;
             } else {
                return false;
@@ -255,11 +265,6 @@ public class Model implements Initializable {
         }catch (SQLException e) {
             System.out.println(e);
         }
-        /*try{
-            //TODO da settare l'id prima di far entrare il nuovo utente
-        } catch (SQLException e) {
-            System.out.println(e);
-        }*/
     }
 
     //-----------------------USER DATA SET------------------------------
