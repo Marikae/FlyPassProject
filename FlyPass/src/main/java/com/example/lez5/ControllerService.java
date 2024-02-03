@@ -52,7 +52,7 @@ public class ControllerService extends Controller implements Initializable {
     void click(MouseEvent event) throws IOException {
         model.setService(getServiceName());
         if(!model.isWorker()) {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarCitizenScene.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("SelectOfficeScene.fxml")));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);

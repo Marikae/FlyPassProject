@@ -817,7 +817,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
     @FXML
     void returnSedeScene(ActionEvent event) throws IOException {
        if(!model.isWorker()) {
-           Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarCitizenScene.fxml")));
+           Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("SelectOfficeScene.fxml")));
            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
            scene = new Scene(root);
            // stage.initStyle(StageStyle.TRANSPARENT); // Rimuovi i bordi della finestra
