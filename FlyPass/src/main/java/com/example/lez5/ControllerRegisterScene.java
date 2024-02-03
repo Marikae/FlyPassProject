@@ -2,6 +2,7 @@ package com.example.lez5;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -102,7 +103,18 @@ public class ControllerRegisterScene extends Controller{
             error.setText("Field empty");
 
 
-        if(check == true){
+        if(!model.checkAnagrafica(aus5,aus1,aus2,aus3,aus4,aus6,aus7,aus8,aus9)){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attention");
+            alert.setHeaderText(null);
+            alert.setContentText("Non è stato possibile rilevare lil suo profilo\nnell'anagrafica di sistema.\n" +
+                    "Per ulteriori chiarimenti scrivere una mail a info@questura.it\n");
+            alert.showAndWait();
+            check = false;
+        }
+
+
+        if(check){
             model.databaseInsertion(aus5,aus1,aus2,aus3,aus4,aus6,aus7,aus8,aus9);
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainScene.fxml")));
             stage = (Stage) ((Node)event.getSource()).getScene().getWindow();

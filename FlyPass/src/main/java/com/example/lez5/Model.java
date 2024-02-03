@@ -2,6 +2,7 @@ package com.example.lez5;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -241,6 +242,41 @@ public class Model implements Initializable {
     }
 
     //------------------------------------- DATABESE INSERIMENTO ---------------------------------
+    public boolean checkAnagrafica(LocalDate aus5,String aus1, String aus2, String aus3, String aus4,
+                                String aus6, String aus7, String aus8, String aus9){
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+
+            String query = ("SELECT * FROM anagrafica " +
+                    "WHERE name = ? " +
+                    "AND surname = ? " +
+                    "AND date_of_birth = ? " +
+                    "AND place_of_birth = ? " +
+                    "AND num_health_card = ?" +
+                    "AND tax_code = ?");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setString(1, aus1);
+            preparedStatement.setString(2, aus9);
+            preparedStatement.setObject(3, aus5);// Considera che date_of_birth è un LocalDate
+            preparedStatement.setString(4, aus8);
+            preparedStatement.setString(5, aus4);
+            preparedStatement.setString(6, aus7);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next())
+                return false;
+
+        }catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return true;
+    }
+
     public void databaseInsertion (LocalDate aus5,String aus1, String aus2, String aus3, String aus4,
                                    String aus6, String aus7, String aus8, String aus9){
         try {

@@ -131,11 +131,13 @@ public class ControllerCalendarScene extends Controller implements Initializable
             try {
                 Connection connection = DatabaseConnection.databaseConnection();
                 Statement statement = connection.createStatement();
+
                 String query = ("SELECT * FROM eventi " +
                         "WHERE Data = ? " +
                         "AND Inizio = ? " +
                         "AND Sede = ? " +
                         "AND TipoServizio = ? ");
+
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setDate(1, Date.valueOf(EventDatePicker.getValue()));
                 preparedStatement.setObject(2, TimePicker.getValue());
