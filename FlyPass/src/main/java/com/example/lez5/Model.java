@@ -2,8 +2,6 @@ package com.example.lez5;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -402,6 +400,44 @@ public class Model implements Initializable {
         // Cambiare l'immagine del bottone con l'immagine con notifica
         Image initialImage = new Image(getClass().getResource("/icon/bookingNotification.png").toExternalForm());
         image.setImage(initialImage);
+    }
+
+    public String getIdCitizen() throws SQLException {
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT id FROM citizen WHERE email = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, user.getEmail());
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getString(1);
+        }
+        return null;
+    }
+
+    public String getNotification() throws SQLException {
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT * FROM notification WHERE utente_id = ? AND stato = 'definito'";
+        assert connection != null;
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, user.getEmail());
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        StringBuilder resultString = new StringBuilder();
+
+        while (resultSet.next()) {
+            String sede = resultSet.getString("sede");
+            String data = resultSet.getString("data");
+            String ora = resultSet.getString("ora");
+            String tipo = resultSet.getString("tipo");
+            String notificationString = String.format("Nuova disponibilità per %s nella sede di %s, il giorno %s, alle ore %s\n",tipo, sede, data, ora);
+            resultString.append(notificationString);
+        }
+        if (resultString.isEmpty()) {
+            return "nada";
+        } else {
+            return resultString.toString();
+        }
     }
 
 }

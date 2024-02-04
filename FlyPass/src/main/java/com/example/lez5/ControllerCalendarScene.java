@@ -62,6 +62,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
     int currentDate;
     int numberOfWeek;
+    //public Model model;
 
     LocalTime primoTurno = LocalTime.of(8,0,0);
     LocalTime secondoTurno = LocalTime.of(9,0,0);
@@ -127,7 +128,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
         }*/
 
         if (!Model.getModel().isWorker()) {
-
+//------------------------------CALENDARIO CITTADINO------------------------------------------------------
             try {
                 Connection connection = DatabaseConnection.databaseConnection();
                 Statement statement = connection.createStatement();
@@ -145,8 +146,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 preparedStatement.setString(4, model.getService().getName());
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (!resultSet.next()) {
-                    //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                    //ErrorePrenotazione.setText("Non è stato possibile rilevare l'appuntamento.\n Cambiare data ed orario e riprovare");
+
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Attention");
                     alert.setHeaderText(null);
@@ -155,17 +155,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     return;
                 }
                 if (!resultSet.getBoolean("Disponibile")) {
-                    // ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                    // ErrorePrenotazione.setText("L'appuntamento da lei selezionato\n" +
-                    //     " non è al momento disponibile");
-               /*
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Attention");
-                alert.setHeaderText(null);
-                alert.setContentText("L'appuntamento da lei selezionato non è al momento disponibile");
-                alert.showAndWait();
-                /*
-                */
+
                     //TODO Aggiungere una variabile alla classe User inserendo Sede e Tipo servizio e fare il pop up di avviso quando viene inserito
                     // un nuovo appuntamento dal personale
 
@@ -185,17 +175,42 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     // Aggiungere i pulsanti desiderati
                     dialogPane.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
                     // Mostrare l'alert e gestire la risposta
+
                     alert.showAndWait().ifPresent(response -> {
                         if (response == ButtonType.OK) {
                             boolean receiveNotification = notificationCheckBox.isSelected();
                             System.out.println("Risposta: OK, Ricevi notifica: " + receiveNotification);
                             //TODO salvarsi i dati per inviare alla notifica!!!
 
+                            if (receiveNotification){
+                                //se l'utente ha selezionato si allora
+                                try {
+                                    String query1 = ("INSERT INTO notification (id, data, ora, tipo, sede, stato, utente_id) VALUES (NULL, ?, ?, ?, ?, ?, ?)");
+
+                                    Connection connection1 = DatabaseConnection.databaseConnection();
+                                    Statement statement1 = connection1.createStatement();
+
+                                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+
+
+                                    preparedStatement1.setString(1, String.valueOf(Date.valueOf(EventDatePicker.getValue())));
+                                    preparedStatement1.setString(2, String.valueOf(TimePicker.getValue()));
+                                    preparedStatement1.setString(3, model.getService().getName());
+                                    preparedStatement1.setString(4, model.evento.sede.name());
+                                    preparedStatement1.setString(5, "non definito");
+                                    preparedStatement1.setString(6, model.getIdCitizen());
+                                    preparedStatement1.executeUpdate();
+
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
 
                         } else if (response == ButtonType.CANCEL) {
                             System.out.println("Risposta: Annulla");
                         }
                     });
+
                     return;
                 } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
                     if (model.passaportoPrenotato) {
@@ -207,7 +222,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Attention");
                         alert.setHeaderText(null);
-                        alert.setContentText("porcodio coglione di merda hai già prenotato ritardato");
+                        alert.setContentText("Hai già prenotato!");
                         alert.showAndWait();
                         return;
                     }
@@ -305,6 +320,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
             }
 
         } else {
+//------------------------------CALENDARIO LAVORATORE------------------------------------------------------
+
             try {
                 Connection connection = DatabaseConnection.databaseConnection();
                 Statement statement = connection.createStatement();
@@ -329,6 +346,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.showAndWait();
                     return;
                 }
+                //-------------------------CREAZIONE APPUNTAMENTO-----------------------
                 if (!resultSet.getBoolean("Disponibile")) {
                     // IL WORKER SETTA L'EVENTO DISPONIBILE PER LA PRENOTAZIONE
                     try {
@@ -342,22 +360,18 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         preparedStatement1.setObject(3, TimePicker.getValue());
                         preparedStatement1.setString(4, model.evento.sede.name());
                         preparedStatement1.setString(5, model.getService().getName());
-
                         preparedStatement1.executeUpdate();
-
-
                         connection1.close();
                         statement1.close();
                         preparedStatement1.close();
-
                         model.passaportoPrenotato = true;
-
+                        //TODO
                         calendar.getChildren().clear();
                         drawCalendar();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
-
+                //--------------------------CANCELLAZIONE APPUNTAMENTO----------------------------------
                 } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
                     // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO
                     try {
@@ -372,11 +386,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         preparedStatement1.setObject(2, TimePicker.getValue());
                         preparedStatement1.setString(3, model.evento.sede.name());
                         preparedStatement1.setString(4, model.getService().getName());
-
                         preparedStatement1.executeUpdate();
-
-
-
                         connection1.close();
                         statement1.close();
                         preparedStatement1.close();
@@ -393,7 +403,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.setHeaderText(null);
                     alert.setContentText("La cancellazione dell'evento è avvenuta correttamente.");
                     alert.showAndWait();
-
+                //----------------------SLOT GIA' PRENOTATO-----------------------------------------
                 } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Slot prenotato");
