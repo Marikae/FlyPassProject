@@ -152,6 +152,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.setHeaderText(null);
                     alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
                     alert.showAndWait();
+
+                    //CHIUSURA CONNESSIONI
+                    connection.close();
+                    statement.close();
+                    preparedStatement.close();
+
                     return;
                 }
                 if (!resultSet.getBoolean("Disponibile")) {
@@ -196,6 +202,10 @@ public class ControllerCalendarScene extends Controller implements Initializable
                             System.out.println("Risposta: Annulla");
                         }
                     });
+                    //CHIUSURA CONNESSIONI
+                    connection.close();
+                    statement.close();
+                    preparedStatement.close();
                     return;
                 } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
                     if (model.passaportoPrenotato) {
@@ -209,6 +219,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         alert.setHeaderText(null);
                         alert.setContentText("porcodio coglione di merda hai già prenotato ritardato");
                         alert.showAndWait();
+
+                        //CHIUSURA CONNESSIONI
+                        connection.close();
+                        statement.close();
+                        preparedStatement.close();
+
                         return;
                     }
                     try {
@@ -236,6 +252,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         connection1.close();
                         statement1.close();
                         preparedStatement1.close();
+
 
                         model.passaportoPrenotato = true;
 
@@ -297,6 +314,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         alert.showAndWait();
                     }
                 }
+                //CHIUSURA CONNESSIONI
                 connection.close();
                 statement.close();
                 preparedStatement.close();
@@ -327,6 +345,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.setHeaderText(null);
                     alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
                     alert.showAndWait();
+
+                    //CHIUSURA CONNESSIONI
+                    connection.close();
+                    statement.close();
+                    preparedStatement.close();
+
                     return;
                 }
                 if (!resultSet.getBoolean("Disponibile")) {
@@ -345,7 +369,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                         preparedStatement1.executeUpdate();
 
-
+                        //CHIUSURA CONNESSIONI
                         connection1.close();
                         statement1.close();
                         preparedStatement1.close();
@@ -376,7 +400,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         preparedStatement1.executeUpdate();
 
 
-
+                        //CHIUSURA CONNESSIONI
                         connection1.close();
                         statement1.close();
                         preparedStatement1.close();
@@ -401,6 +425,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.setContentText("Lo slot non può essere cancellato poichè\nè già stato prenotato");
                     alert.showAndWait();
                 }
+                //CHIUSURA CONNESSIONI
                 connection.close();
                 statement.close();
                 preparedStatement.close();

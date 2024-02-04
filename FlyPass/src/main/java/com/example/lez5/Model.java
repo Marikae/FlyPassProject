@@ -68,66 +68,61 @@ public class Model implements Initializable {
         return service;
     }
     public List<Service> getServices(){
-        String pre = "";
-        if(isWorker()){
-            pre = "Aggiungi prenotazioni per: \n";
-        }else{
-            pre = "Prenota per:\n";
-        }
+
 
         List<Service> ls = new ArrayList<Service>();
         //Rilascio prima volta
         Service service = new Service();
-        service.setName(pre + "Rilascio prima volta");
+        service.setName("Rilascio prima volta");
         service.setDescription("Rilascio del passaporto per la prima volta");
         service.setImgSrc("/img/firstTime.jpg");
         ls.add(service);
 
         //Rilascio scadenza
         service = new Service();
-        service.setName(pre + "Rinnovo per scadenza");
+        service.setName( "Rinnovo per scadenza");
         service.setDescription("Rilascio del passaporto per scadenza");
         service.setImgSrc("/img/scadenza.jpg");
         ls.add(service);
 
         //Furto o smarrimento
         service = new Service();
-        service.setName(pre + "Furto o smarrimento");
+        service.setName("Furto o smarrimento");
         service.setDescription("Rilascio del passaporto per furto o smarrimento");
         service.setImgSrc("/img/furto.jpg");
         ls.add(service);
 
         //Rilascio detoriamento
         service = new Service();
-        service.setName(pre + "Rinnovo per detoriamento");
+        service.setName("Rinnovo per detoriamento");
         service.setDescription("Rilascio del passaporto per detoriamento");
         service.setImgSrc("/img/detoriamento.jpg");
         ls.add(service);
 
         //passaporto urgente
         service = new Service();
-        service.setName(pre + "Passaporto urgente");
+        service.setName("Passaporto urgente");
         service.setDescription("Rilascio del passaporto urgentemente");
         service.setImgSrc("/img/urgente.jpg");
         ls.add(service);
 
         //prolungamento validità passsaporto
         service = new Service();
-        service.setName(pre + "Prolungamento validità passaporto");
+        service.setName("Prolungamento validità passaporto");
         service.setDescription("prolungamento della validità del passaporto");
         service.setImgSrc("/img/scadenza.jpg");
         ls.add(service);
 
         //cambio info personali
         service = new Service();
-        service.setName(pre + "Cambio info personali");
+        service.setName("Cambio info personali");
         service.setDescription("Iter per il cambio delle informazioni personali");
         service.setImgSrc("/img/cambio.jpg");
         ls.add(service);
 
         //passaporto per minori
         service = new Service();
-        service.setName(pre + "Passaporto per minori");
+        service.setName("Passaporto per minori");
         service.setDescription("Rilascio passaporto per minori");
         service.setImgSrc("/img/minori.jpg");
         ls.add(service);
