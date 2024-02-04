@@ -28,7 +28,11 @@ public class ControllerPrenotationScene extends Controller implements Initializa
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if(model.isWorker()){ //lavoratore
-            workerPrenotation();
+            try {
+                workerPrenotation();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }else{ //cittadino
             try {
                 citizenPrenotation();
@@ -43,12 +47,19 @@ public class ControllerPrenotationScene extends Controller implements Initializa
 
     }
     private void citizenPrenotation() throws SQLException {
-        String prenotation = model.getCitizenPrenotation();
-        prenotationLabel.setText(prenotation);
+        String preString = model.getCitizenPrenotation();
+        if(!preString.equals("nada")){
+            prenotationLabel.setText(preString);
+            model.activeNotification();
+        }
+
+
     }
 
-    private void workerPrenotation() {
+    private void workerPrenotation() throws SQLException {
+        String notificationAvaibility = model.getNotification();
         prenotationLabel.setText("lavoratore");
+
     }
     @FXML
     void goToMainScene(ActionEvent event) throws IOException {

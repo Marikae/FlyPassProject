@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class ControllerCalendarCitizenScene extends Controller implements Initializable {
+public class ControllerSelectOfficeScene extends Controller implements Initializable {
     private Stage stage;
     private Scene scene;
 
@@ -57,7 +57,7 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
         choiceLabel.setText("Scegli la sede in cui creare l'appuntamento");
     }
 
-    public ControllerCalendarCitizenScene(){
+    public ControllerSelectOfficeScene(){
         super();
     }
     @FXML

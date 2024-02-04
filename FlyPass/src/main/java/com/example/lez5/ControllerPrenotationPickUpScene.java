@@ -47,7 +47,6 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
     }
 
     @FXML
