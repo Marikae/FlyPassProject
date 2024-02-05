@@ -127,9 +127,9 @@
                   <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
                         <HBox prefHeight="371.0" prefWidth="900.0" />
-                        <ScrollPane layoutX="-64.0" layoutY="10.0" prefHeight="443.0" prefWidth="992.0" styleClass="ocean-background" stylesheets="@style.css">
+                        <ScrollPane layoutX="-68.0" layoutY="10.0" prefHeight="443.0" prefWidth="996.0" styleClass="ocean-background" stylesheets="@style.css">
                            <content>
-                              <Label fx:id="infoLabel" alignment="TOP_LEFT" prefHeight="705.0" prefWidth="989.0" stylesheets="@style.css" text="desc" wrapText="true" />
+                              <Label fx:id="infoLabel" alignment="TOP_LEFT" prefHeight="735.0" prefWidth="972.0" stylesheets="@style.css" text="desc" wrapText="true" />
                            </content>
                         </ScrollPane>
                      </children>
