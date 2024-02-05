@@ -152,6 +152,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.setHeaderText(null);
                     alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
                     alert.showAndWait();
+
+                    //CHIUSURA CONNESSIONI
+                    connection.close();
+                    statement.close();
+                    preparedStatement.close();
+
                     return;
                 }
                 if (!resultSet.getBoolean("Disponibile")) {
@@ -211,6 +217,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         }
                     });
 
+                    //CHIUSURA CONNESSIONI
+                    connection.close();
+                    statement.close();
+                    preparedStatement.close();
+
+
                     return;
                 } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
                     if (model.passaportoPrenotato) {
@@ -224,6 +236,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         alert.setHeaderText(null);
                         alert.setContentText("Hai già prenotato!");
                         alert.showAndWait();
+
+                        //CHIUSURA CONNESSIONI
+                        connection.close();
+                        statement.close();
+                        preparedStatement.close();
+
                         return;
                     }
                     try {
@@ -344,6 +362,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.setHeaderText(null);
                     alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
                     alert.showAndWait();
+
+                    //CHIUSURA CONNESSIONI
+                    connection.close();
+                    statement.close();
+                    preparedStatement.close();
+
                     return;
                 }
                 //-------------------------CREAZIONE APPUNTAMENTO-----------------------
@@ -411,6 +435,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.setContentText("Lo slot non può essere cancellato poichè\nè già stato prenotato");
                     alert.showAndWait();
                 }
+
                 connection.close();
                 statement.close();
                 preparedStatement.close();
