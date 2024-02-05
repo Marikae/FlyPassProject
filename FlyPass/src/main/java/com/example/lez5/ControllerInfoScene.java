@@ -26,44 +26,57 @@ public class ControllerInfoScene extends Controller implements Initializable {
     private ImageView prenotationImg;
     @FXML
     private Label infoLabel;
+    private String infoCitizen = "\n Benvenuti nel sistema di prenotazione per il rilascio del passaporto.  \n" +
+            " Questa guida vi accompagnerà attraverso il processo di registrazione, prenotazione dei servizi e tutte le fasi necessarie per ottenere il vostro passaporto in modo efficiente.\n\n" +
+            " 1. Registrazione:\n  " +
+            " - Entrate nell'applicazione\n" +
+            " - Cliccate su \"Registrazione\" e fornite i vostri dati personali: nome, cognome, data e luogo di nascita, codice fiscale, numero carta sanitaria, email, categoria d'appartenenza e password a vostra scelta.  \n" +
+            " - Verificate attentamente i dati inseriti e procedete con la registrazione.\n\n" +
+            " 2. Verifica Anagrafica: \n" +
+            " - Il sistema verifica i vostri dati rispetto all'anagrafica disponibile.\n" +
+            " - In caso di anomalie, il sistema vi indicherà l'anomalia e fornirà un'email per domande di chiarimento.\n\n" +
+            " 3. Accesso al Sistema:\n" +
+            " - Una volta registrati, effettuate il login con le credenziali fornite durante la registrazione.\n\n" +
+            " 4. Scelta del Servizio:\n" +
+            " - Nella dashboard, selezionate il tipo di servizio desiderato (ritiro, rilascio per varie ragioni ecc).\n" +
+            " - Visualizzerete le sedi disponibili per il servizio scelto, scegliete il luogo dove ritirare prenotare l'appuntamento.\n" +
+            " - Dopodichè vi comparirà il calendario con gli slot disponibili: rosso -> slot non definito, verde -> slot libero, appuntamento disponibile, azzurro -> slot già prenotato.\n" +
+            " - Riempite i vari campi a destra del calendario per fissare un appuntamento, se desiderate ricevere la notifica quando uno certo slot viene definito, cliccate la checkbox sul popup. \n\n" +
+            " 5. Prenotazione per il ritiro:\n" +
+            " - Scegliete il giorno, l'orario e la sede che preferite.\n" +
+            " - Assicuratevi che la prenotazione sia consistente con le regole del sistema (es. ritiro dopo almeno un mese dalla richiesta di rilascio).\n\n" +
+            " 6. Conferma e Documenti Necessari:\n" +
+            " - Confermate la prenotazione e il sistema vi mostrerà i documenti e le ricevute necessari al momento della richiesta.\n" +
+            " - Assicuratevi di avere tutti i documenti richiesti prima della visita.\n\n" +
+            " 7. LOGOUT: \n" +
+            " - Ricordati di fare LogOut alla fine della sessione per preservare la privacy e la sicurezza dei dati\n\n" +
+            " 8. Fine della Procedura:\n" +
+            " - Una volta completata la prenotazione e preparati i documenti, presentatevi alla sede indicata al momento programmato.\n" +
+            " Seguendo questa guida passo dopo passo, sarete in grado di utilizzare il sistema di prenotazione in modo efficace e ottenere il vostro passaporto senza intoppi.\n" +
+            " Per ulteriori domande o chiarimenti, potete sempre contattare il supporto clienti tramite l'email fornita dal sistema: aiuto@questura.it";
+    private String infoWorker = "Benvenuti nel sistema di prenotazione per il rilascio del passaporto.  \n" +
+            "Questa guida vi aiuterà attraverso il processo di creazione appuntamenti per servizi.\n\n" +
+            " 1. Accesso:\n  " +
+            " - Accedete con le credenziali fornite dall'ufficio all'applicazione.   \n\n" +
+            " 2. Creazione appuntamento: \n" +
+            " -  Nella dashboard, selezionate il tipo di servizio desiderato (ritiro, rilascio per varie ragioni ecc).\n" +
+            " - Comparirà il calendario di appuntamenti per la vostra sede di appartenenza, scegliete il giorno e lo slot da inserire e cliccate 'aggiungi'" +
+            " - Se volete eliminare un appuntamento, basterà rifare la stessa procedura sullo slot da eliminare.\n\n" +
+            " 3. Fine della Procedura:\n" +
+            " - Una volta completato l'inserimento ricordate di fare LogOut per preservare la privacy e la sicurezza dei dati.\n" +
+            " Seguendo questa guida passo dopo passo, sarete in grado di utilizzare il sistema di prenotazione in modo efficace.\n" +
+            " Per ulteriori domande o chiarimenti, potete sempre contattare il tecnico di supporto presente in ufficio.";
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if(model.isWorker()){ //lavoratore
-
+            infoLabel.setText(infoWorker);
         }else{ // cittadino
             if(model.notification){
                 model.putNotification(prenotationImg);
             }
+            infoLabel.setText(infoCitizen);
         }
-        String info = "Benvenuti nel sistema di prenotazione online per il rilascio del passaporto.  \n" +
-                "Questa guida vi accompagnerà attraverso il processo di registrazione, prenotazione dei servizi e tutte le fasi necessarie per ottenere il vostro passaporto in modo efficiente.\n\n" +
-                "1. Registrazione:\n  " +
-                "- Accedete al sito ufficiale del sistema di prenotazione.   \n" +
-                "- Cliccate su \"Registrazione\" e fornite i vostri dati personali: nome, cognome, data e luogo di nascita, e codice fiscale.  \n" +
-                "- Verificate attentamente i dati inseriti e procedete con la registrazione.\n\n" +
-                "2. Verifica Anagrafica: \n" +
-                "- Il sistema verifica i vostri dati rispetto all'anagrafica disponibile.\n" +
-                "- In caso di anomalie, il sistema vi indicherà l'anomalia e fornirà un'email per domande di chiarimento.\n\n" +
-                "3. Accesso al Sistema:\n" +
-                "- Una volta registrati, effettuate il login con le credenziali fornite durante la registrazione.\n\n" +
-                "4. Scelta del Servizio:\n" +
-                "- Nella dashboard, selezionate il tipo di servizio desiderato (ritiro, rilascio per varie ragioni).\n" +
-                "- Visualizzerete gli orari e le sedi disponibili per il servizio scelto.\n\n" +
-                "5. Prenotazione:\n" +
-                "- Scegliete il giorno, l'orario e la sede che preferite.\n" +
-                "- Assicuratevi che la prenotazione sia consistente con le regole del sistema (es. ritiro dopo almeno un mese dalla richiesta di rilascio).\n\n" +
-                "6. Conferma e Documenti Necessari:\n" +
-                "- Confermate la prenotazione e il sistema vi mostrerà i documenti e le ricevute necessari al momento della richiesta.\n" +
-                "- Assicuratevi di avere tutti i documenti richiesti prima della visita.\n\n" +
-                "7. Visualizzazione Temporale:\n" +
-                "- Utilizzate la visualizzazione temporale per distinguere slot occupati, liberi e non ancora gestiti.\n" +
-                "- Se avete richiesto di essere avvisati quando nuovi slot saranno disponibili, il sistema vi informerà.\n\n" +
-                "9. Fine della Procedura:\n" +
-                "- Una volta completata la prenotazione e preparati i documenti, presentatevi alla sede indicata al momento programmato.\n" +
-                "Seguendo questa guida passo dopo passo, sarete in grado di utilizzare il sistema di prenotazione in modo efficace e ottenere il vostro passaporto senza intoppi.\n" +
-                "Per ulteriori domande o chiarimenti, potete sempre contattare il supporto clienti tramite l'email fornita dal sistema: aiuto@questura.it";
-
-        infoLabel.setText(info);
     }
     @FXML
     void goToLogOutScene(ActionEvent event) throws IOException {
