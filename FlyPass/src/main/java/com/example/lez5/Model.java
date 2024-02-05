@@ -605,5 +605,26 @@ public class Model implements Initializable {
 
         return citizenWhoBooked;
     }
+    public boolean notificationAlredyExist(Date dataIn, Time hourIn, String office) throws SQLException {
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT * FROM notification WHERE utente_id = ? AND data = dataIn AND ora = hourIn AND tipo = ? AND sede = office AND stato = 'definito'";
+        Statement statement = connection.createStatement();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, getIdCitizen());
+        preparedStatement.setString(2, getService().getName());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {//ci sono notifiche già inserite torna true
+            connection.close();
+            statement.close();
+            preparedStatement.close();
 
+            return true;
+        } else { //ritorna false se non esistono già dei record
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+
+            return false;
+        }
+    }
 }

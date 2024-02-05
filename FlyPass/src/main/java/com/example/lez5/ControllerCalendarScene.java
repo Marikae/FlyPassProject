@@ -60,6 +60,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
     ZonedDateTime auxDate;
     ZonedDateTime auxDate2 = dateFocus;
 
+    Boolean notificationAlredyExist = null;
+
     int currentDate;
     int numberOfWeek;
     //public Model model;
@@ -93,6 +95,33 @@ public class ControllerCalendarScene extends Controller implements Initializable
         }
     }
 
+    public boolean notificationAlredyExist() throws SQLException {
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT * FROM notification WHERE utente_id = ? AND data = ? AND ora = ?  AND tipo = ? AND sede = ? AND stato = 'definito'";
+        Statement statement = connection.createStatement();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, model.getIdCitizen());
+        preparedStatement.setDate(2, Date.valueOf(EventDatePicker.getValue()));
+        preparedStatement.setObject(3, TimePicker.getValue());
+        preparedStatement.setString(4, model.getService().getName());
+        preparedStatement.setString(5, model.evento.sede.name());
+        //preparedStatement.setString(5, model.getService().getName());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {//ci sono notifiche già inserite torna true
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+
+            return true;
+        } else { //ritorna false se non esistono già dei record
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+
+            return false;
+        }
+
+    }
     @FXML
     void backOneWeek(ActionEvent event) {
         auxDate2 = dateFocus;
@@ -153,69 +182,95 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 }
                 if (!resultSet.getBoolean("Disponibile")) {
 
-                    //TODO Aggiungere una variabile alla classe User inserendo Sede e Tipo servizio e fare il pop up di avviso quando viene inserito
-                    // un nuovo appuntamento dal personale
+                    if(notificationAlredyExist()){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Appuntamento non disponibile");
+                        alert.setHeaderText(null);
+                        // Creare una VBox personalizzata con il messaggio e la CheckBox
+                        VBox vBox = new VBox();
+                        vBox.setSpacing(10);
+                        vBox.setPadding(new Insets(10, 10, 10, 10));
+                        Label messageLabel = new Label("L'appuntamento non è disponibile. Vuoi ricevere una notifica quando sarà disponibile?");
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Appuntamento non disponibile");
-                    alert.setHeaderText(null);
-                    // Creare una VBox personalizzata con il messaggio e la CheckBox
-                    VBox vBox = new VBox();
-                    vBox.setSpacing(10);
-                    vBox.setPadding(new Insets(10, 10, 10, 10));
-                    Label messageLabel = new Label("L'appuntamento non è disponibile. Vuoi ricevere una notifica quando sarà disponibile?");
-                    CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
-                    vBox.getChildren().addAll(messageLabel, notificationCheckBox);
-                    // Impostare la VBox come contenuto del DialogPane
-                    DialogPane dialogPane = alert.getDialogPane();
-                    dialogPane.setContent(vBox);
-                    // Aggiungere i pulsanti desiderati
-                    dialogPane.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
-                    // Mostrare l'alert e gestire la risposta
+                        CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
+                        vBox.getChildren().addAll(messageLabel, notificationCheckBox);
+                        // Impostare la VBox come contenuto del DialogPane
+                        DialogPane dialogPane = alert.getDialogPane();
+                        dialogPane.setContent(vBox);
+                        // Aggiungere i pulsanti desiderati
+                        dialogPane.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+                        // Mostrare l'alert e gestire la risposta
 
-                    alert.showAndWait().ifPresent(response -> {
-                        if (response == ButtonType.OK) {
-                            boolean receiveNotification = notificationCheckBox.isSelected();
-                            System.out.println("Risposta: OK, Ricevi notifica: " + receiveNotification);
-                            //TODO salvarsi i dati per inviare alla notifica!!!
+                        alert.showAndWait().ifPresent(response -> {
+                            if (response == ButtonType.OK) {
+                                boolean receiveNotification = notificationCheckBox.isSelected();
+                                System.out.println("Risposta: OK, Ricevi notifica: " + receiveNotification);
 
-                            if (receiveNotification){
-                                //se l'utente ha selezionato si allora
-                                try {
-                                    String query1 = ("INSERT INTO notification (id, data, ora, tipo, sede, stato, utente_id) VALUES (NULL, ?, ?, ?, ?, ?, ?)");
+                                if (receiveNotification){
+                                    //se l'utente ha selezionato si allora
+                                    try {
+                                        String query1 = ("INSERT INTO notification (id, data, ora, tipo, sede, stato, utente_id) VALUES (NULL, ?, ?, ?, ?, ?, ?)");
 
-                                    Connection connection1 = DatabaseConnection.databaseConnection();
-                                    Statement statement1 = connection1.createStatement();
+                                        Connection connection1 = DatabaseConnection.databaseConnection();
+                                        Statement statement1 = connection1.createStatement();
 
-                                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                                        PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
 
 
-                                    preparedStatement1.setString(1, String.valueOf(Date.valueOf(EventDatePicker.getValue())));
-                                    preparedStatement1.setString(2, String.valueOf(TimePicker.getValue()));
-                                    preparedStatement1.setString(3, model.getService().getName());
-                                    preparedStatement1.setString(4, model.evento.sede.name());
-                                    preparedStatement1.setString(5, "non definito");
-                                    preparedStatement1.setString(6, model.getIdCitizen());
-                                    preparedStatement1.executeUpdate();
+                                        preparedStatement1.setString(1, String.valueOf(Date.valueOf(EventDatePicker.getValue())));
+                                        preparedStatement1.setString(2, String.valueOf(TimePicker.getValue()));
+                                        preparedStatement1.setString(3, model.getService().getName());
+                                        preparedStatement1.setString(4, model.evento.sede.name());
+                                        preparedStatement1.setString(5, "non definito");
+                                        preparedStatement1.setString(6, model.getIdCitizen());
+                                        preparedStatement1.executeUpdate();
 
-                                    //CHIUSURA CONNESSIONI
-                                    closeConnection(connection1, statement1, preparedStatement1);
+                                        //CHIUSURA CONNESSIONI
+                                        closeConnection(connection1, statement1, preparedStatement1);
 
-                                } catch (SQLException e) {
-                                    throw new RuntimeException(e);
+                                    } catch (SQLException e) {
+                                        throw new RuntimeException(e);
+                                    }
                                 }
+
+                            } else if (response == ButtonType.CANCEL) {
+                                System.out.println("Risposta: Annulla");
                             }
+                        });
 
-                        } else if (response == ButtonType.CANCEL) {
-                            System.out.println("Risposta: Annulla");
-                        }
-                    });
-
-                    //CHIUSURA CONNESSIONI
-                    closeConnection(connection, statement, preparedStatement);
+                        //CHIUSURA CONNESSIONI
+                        closeConnection(connection, statement, preparedStatement);
 
 
-                    return;
+                        return;
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Appuntamento non disponibile");
+                        alert.setHeaderText(null);
+                        // Creare una VBox personalizzata con il messaggio e la CheckBox
+                        VBox vBox = new VBox();
+                        vBox.setSpacing(10);
+                        vBox.setPadding(new Insets(10, 10, 10, 10));
+                        Label messageLabel = new Label("L'appuntamento non è disponibile.\n Hai già fatto richiesta per la notifica di avviso\n");
+
+                        //CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
+                        vBox.getChildren().addAll(messageLabel);
+                        // Impostare la VBox come contenuto del DialogPane
+                        DialogPane dialogPane = alert.getDialogPane();
+                        dialogPane.setContent(vBox);
+                        // Aggiungere i pulsanti desiderati
+                        dialogPane.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+                        // Mostrare l'alert e gestire la risposta
+
+                        alert.showAndWait().ifPresent(response -> {
+                            if (response == ButtonType.OK) {
+
+                            } else if (response == ButtonType.CANCEL) {
+                                System.out.println("Risposta: Annulla");
+                            }
+                        });
+                    }
+
                 } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
                     if (model.passaportoPrenotato) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
