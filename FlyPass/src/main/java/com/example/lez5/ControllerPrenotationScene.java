@@ -25,6 +25,13 @@ public class ControllerPrenotationScene extends Controller implements Initializa
     private Scene scene;
     @FXML
     private Label prenotationLabel;
+    @FXML
+    private Label newNotLabel;
+    @FXML
+    private Label oldNotLabel;
+    private String newNot;
+    private String oldNot;
+    private String bookedPrenotation;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if(model.isWorker()){ //lavoratore
@@ -36,29 +43,35 @@ public class ControllerPrenotationScene extends Controller implements Initializa
         }else{ //cittadino
             try {
                 citizenPrenotation();
+
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            if(model.notification){
-                // model.putNotification(prenotationImg);
-                model.disativateNotification();
-            }
+
         }
 
     }
     private void citizenPrenotation() throws SQLException {
-        String preString = model.getCitizenPrenotation();
+        /*String preString = model.getCitizenPrenotation();
         if(!preString.equals("nada")){
             prenotationLabel.setText(preString);
             model.activeNotification();
-        }
+        }*/
+        model.setNotificationSeen();
+        model.notification();
+        newNot = model.getNewNotification();
+        newNotLabel.setText(newNot);
+
+        oldNot = model.getOldNotification();
+        oldNotLabel.setText(oldNot);
 
 
     }
 
     private void workerPrenotation() throws SQLException {
-        String notificationAvaibility = model.getNotification();
-        prenotationLabel.setText("lavoratore");
+        //String notificationAvaibility = model.getNewNotification();
+        bookedPrenotation = model.getBookedReservation();
+        prenotationLabel.setText(bookedPrenotation);
 
     }
     @FXML

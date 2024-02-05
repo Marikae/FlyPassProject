@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -382,8 +383,17 @@ public class Model implements Initializable {
     }
 
 
-    public void notification(){
-        //TODO collegare notifica al database eccetera eccetera
+    public void notification() throws SQLException {
+        if(getCitizenPrenotation().equals("no prenotation found\n")) { //Se il cittadino non ha ancora prenotato
+            //se ci sono notifiche non viste allora appare il pallino verde
+            //altrimenti niente pallino verde ma le notifiche vengono scritte comunque
+            if(notificationSeen() == false){
+                activeNotification();
+            }else{
+                setNotificationSeen(); //setta la notifica a "vista"
+                disativateNotification();
+            }
+        }
     }
     public void disativateNotification(){
         this.notification = false;
@@ -398,28 +408,74 @@ public class Model implements Initializable {
     }
 
     public String getIdCitizen() throws SQLException {
-        Connection connection = DatabaseConnection.databaseConnection();
+        Connection connection2 = DatabaseConnection.databaseConnection();
         String query = "SELECT id FROM citizen WHERE email = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        Statement statement1 = connection2.createStatement();
+        PreparedStatement preparedStatement = connection2.prepareStatement(query);
         preparedStatement.setString(1, user.getEmail());
 
         ResultSet resultSet = preparedStatement.executeQuery();
+
         if (resultSet.next()) {
-            return resultSet.getString(1);
+            String var = resultSet.getString(1);
+            connection2.close();
+            preparedStatement.close();
+            statement1.close();
+            return var;
         }
+        connection2.close();
+        preparedStatement.close();
+        statement1.close();
         return null;
     }
+    public void setNotificationSeen(){ //setta la notifica a già vista
+        try {
+            Connection connection1 = DatabaseConnection.databaseConnection();
+            String query1 = ("UPDATE notification SET seen = 1 WHERE utente_id = ?");
+            Statement statement1 = connection1.createStatement();
+            PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+            preparedStatement1.setString(1, getIdCitizen());
+            preparedStatement1.executeUpdate();
 
-    public String getNotification() throws SQLException {
+            connection1.close();
+            statement1.close();
+            preparedStatement1.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        disativateNotification();
+    }
+    public boolean notificationSeen() throws SQLException {
         Connection connection = DatabaseConnection.databaseConnection();
-        String query = "SELECT * FROM notification WHERE utente_id = ? AND stato = 'definito'";
-        assert connection != null;
+        String query = "SELECT * FROM notification WHERE utente_id = ? AND stato = 'definito' AND seen = 0";
+        Statement statement = connection.createStatement();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, user.getEmail());
+        preparedStatement.setString(1, getIdCitizen());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {//ci sono notifiche da vedere quindi ritorna false
+            connection.close();
+            statement.close();
+            preparedStatement.close();
 
+            return false;
+        } else { //ritorna true se non ci sono notifiche da vedere
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+
+            return true;
+        }
+    }
+
+    public String getNewNotification() throws SQLException {
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT * FROM notification WHERE utente_id = ? AND stato = 'definito' AND seen = 0";
+        Statement statement = connection.createStatement();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, getIdCitizen());
         ResultSet resultSet = preparedStatement.executeQuery();
         StringBuilder resultString = new StringBuilder();
-
         while (resultSet.next()) {
             String sede = resultSet.getString("sede");
             String data = resultSet.getString("data");
@@ -429,10 +485,125 @@ public class Model implements Initializable {
             resultString.append(notificationString);
         }
         if (resultString.isEmpty()) {
-            return "nada";
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+            return "no new notification";
         } else {
+            //notification = true;
+            connection.close();
+            statement.close();
+            preparedStatement.close();
             return resultString.toString();
         }
+    }
+    public String getOldNotification() throws SQLException {
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT * FROM notification WHERE utente_id = ? AND stato = 'definito' AND seen = 1";
+        Statement statement = connection.createStatement();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, getIdCitizen());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        StringBuilder resultString = new StringBuilder();
+        while (resultSet.next()) {
+            String sede = resultSet.getString("sede");
+            String data = resultSet.getString("data");
+            String ora = resultSet.getString("ora");
+            String tipo = resultSet.getString("tipo");
+            String notificationString = String.format("Disponibilità per %s nella sede di %s, il giorno %s, alle ore %s\n",tipo, sede, data, ora);
+            resultString.append(notificationString);
+        }
+        if (resultString.isEmpty()) {
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+            return "no notification";
+        } else {
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+            return resultString.toString();
+        }
+    }
+
+    public void updateNotification(Date date, Time time){
+        try {
+            String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
+            Connection connection1 = DatabaseConnection.databaseConnection();
+            Statement statement1 = connection1.createStatement();
+            PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+            preparedStatement1.setDate(1, date);
+            preparedStatement1.setObject(2, time);
+            preparedStatement1.setString(3, getService().getName());
+            preparedStatement1.setString(4, evento.sede.name());
+            preparedStatement1.executeUpdate();
+
+            connection1.close();
+            statement1.close();
+            preparedStatement1.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String getBookedReservation() throws SQLException {
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT * FROM eventi WHERE Worker = ? AND Prenotato = 1";
+        Statement statement = connection.createStatement();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, getLoginUserName());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        StringBuilder resultString = new StringBuilder();
+        String removeStrg = "Prenota per:\n";
+        while (resultSet.next()) {
+            String office = resultSet.getString("Sede");
+            String date = resultSet.getString("Data");
+            String hour = resultSet.getString("Inizio");
+            String typeOriginal = resultSet.getString("TipoServizio");
+            String type = typeOriginal.substring(removeStrg.length());
+            String citizen = getCitizenWhoBooked(resultSet.getString("Id_utente_prenotazione"));
+
+            String notificationString = String.format("Prenotazione per %s, sede di %s, il giorno %s, alle ore %s effettuata da %s", type, office, date, hour, citizen);
+            resultString.append(notificationString);
+
+        }
+        if (resultString.isEmpty()) {
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+            return "no prenotation booked";
+        } else {
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+            return resultString.toString();
+        }
+    }
+
+    public String getCitizenWhoBooked(String idCode) throws SQLException {
+        Connection connection2 = DatabaseConnection.databaseConnection();
+        String query2 = "SELECT * FROM citizen WHERE id = ?";
+        Statement statement2 = connection2.createStatement();
+        PreparedStatement preparedStatement2 = connection2.prepareStatement(query2);
+        preparedStatement2.setString(1, idCode);
+        ResultSet resultSet2 = preparedStatement2.executeQuery();
+
+        StringBuilder resultString = new StringBuilder();
+        String citizenWhoBooked = "";
+        while (resultSet2.next()) {
+            String name = resultSet2.getString("name");
+            String surname = resultSet2.getString("surname");
+            String taxCode = resultSet2.getString("tax_code");
+
+            citizenWhoBooked = String.format("%s %s cod. fisc. %s\n", name, surname, taxCode);
+            resultString.append(citizenWhoBooked);
+        }
+        connection2.close();
+        statement2.close();
+        preparedStatement2.close();
+
+        return citizenWhoBooked;
     }
 
 }

@@ -29,7 +29,7 @@ import javafx.scene.text.Text;
 import java.sql.*;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
-import java.util.*;
+
 public class ControllerCalendarScene extends Controller implements Initializable {
     @FXML
     private Label ErrorePrenotazione;
@@ -71,6 +71,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
     LocalTime quintoTurno = LocalTime.of(12,0,0);
 
 
+    public void closeConnection(Connection connection, Statement statement, PreparedStatement preparedStatement) throws SQLException {
+        //CHIUSURA CONNESSIONI
+        connection.close();
+        statement.close();
+        preparedStatement.close();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -113,20 +119,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
     private void prenotaEvento (ActionEvent event) {
 
 
-        /*boolean isInside = false;
-        for(ZonedDateTime auxDateCheck : checkInserimentoPrenotazione){
-            if (auxDateCheck.toLocalDate().isEqual(EventDatePicker.getValue())){
-                isInside = true;
-                break;
-            }
-        }
-        if(isInside == false){
-            //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-            //ErrorePrenotazione.setText("La data che hai selezionato\n non è presente nella schermata");
-            //return;
-            //è triggherante
-        }*/
-
         if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
             try {
@@ -153,10 +145,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
                     alert.showAndWait();
 
+
                     //CHIUSURA CONNESSIONI
-                    connection.close();
-                    statement.close();
-                    preparedStatement.close();
+                    closeConnection(connection, statement, preparedStatement);
 
                     return;
                 }
@@ -207,6 +198,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                     preparedStatement1.setString(6, model.getIdCitizen());
                                     preparedStatement1.executeUpdate();
 
+                                    //CHIUSURA CONNESSIONI
+                                    closeConnection(connection1, statement1, preparedStatement1);
+
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -218,19 +212,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     });
 
                     //CHIUSURA CONNESSIONI
-                    connection.close();
-                    statement.close();
-                    preparedStatement.close();
+                    closeConnection(connection, statement, preparedStatement);
 
 
                     return;
                 } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
                     if (model.passaportoPrenotato) {
-                        //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                        //ErrorePrenotazione.setText("Sembra che tu abbia già\n" +
-                        //  "prenotato un passaporto.\n" +
-                        //  "Togli l'altra prenotazione per aggiungerne\n" +
-                        //  "una nuova");
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Attention");
                         alert.setHeaderText(null);
@@ -238,9 +225,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         alert.showAndWait();
 
                         //CHIUSURA CONNESSIONI
-                        connection.close();
-                        statement.close();
-                        preparedStatement.close();
+                        closeConnection(connection, statement, preparedStatement);
+
 
                         return;
                     }
@@ -266,9 +252,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                         preparedStatement1.executeUpdate();
 
-                        connection1.close();
-                        statement1.close();
-                        preparedStatement1.close();
+                        //CHIUSURA CONNESSIONE
+                        closeConnection(connection1, statement1, preparedStatement1);
+
 
                         model.passaportoPrenotato = true;
 
@@ -278,9 +264,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         throw new RuntimeException(e);
                     }
 
-                    //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                    //ErrorePrenotazione.setText("Prenotazione andata a buon fine\n" +
-                    //    "Ri prenota lo stesso evento per annullare la prenotazione");
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("ALL GOOD!");
                     alert.setHeaderText(null);
@@ -311,9 +294,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                             model.passaportoPrenotato = false;
 
-                            connection2.close();
-                            statement2.close();
-                            preparedStatement2.close();
+                            //CHIUSURA CONNESSIONE
+                            closeConnection(connection2, statement2, preparedStatement2);
+
 
                             calendar.getChildren().clear();
                             drawCalendar();
@@ -321,8 +304,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                             throw new RuntimeException(e);
                         }
                     } else {
-                        //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                        //ErrorePrenotazione.setText("Errore di prenotazione.\n Evento Già prenotato da un altro utente");
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
                         alert.setHeaderText(null);
@@ -330,9 +311,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         alert.showAndWait();
                     }
                 }
-                connection.close();
-                statement.close();
-                preparedStatement.close();
+                //CHIUSURA CONNESSIONE
+                closeConnection(connection, statement, preparedStatement);
+
             } catch (SQLException e) {
                 System.out.println(e);
             }
@@ -355,8 +336,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 preparedStatement.setString(4, model.getService().getName());
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (!resultSet.next()) {
-                    //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
-                    //ErrorePrenotazione.setText("Non è stato possibile rilevare l'appuntamento.\n Cambiare data ed orario e riprovare");
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Attention");
                     alert.setHeaderText(null);
@@ -364,9 +343,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.showAndWait();
 
                     //CHIUSURA CONNESSIONI
-                    connection.close();
-                    statement.close();
-                    preparedStatement.close();
+                    closeConnection(connection, statement, preparedStatement);
 
                     return;
                 }
@@ -375,9 +352,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     // IL WORKER SETTA L'EVENTO DISPONIBILE PER LA PRENOTAZIONE
                     try {
                         String query1 = ("UPDATE eventi SET Disponibile = 1, Worker = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
+
                         Connection connection1 = DatabaseConnection.databaseConnection();
                         Statement statement1 = connection1.createStatement();
-
                         PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
                         preparedStatement1.setString(1, model.getLoginUserName());
                         preparedStatement1.setDate(2, Date.valueOf(EventDatePicker.getValue()));
@@ -385,9 +362,10 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         preparedStatement1.setString(4, model.evento.sede.name());
                         preparedStatement1.setString(5, model.getService().getName());
                         preparedStatement1.executeUpdate();
-                        connection1.close();
-                        statement1.close();
-                        preparedStatement1.close();
+
+                        //CHIUSURA CONNESSIONE
+                        closeConnection(connection1, statement1, preparedStatement1);
+
                         model.passaportoPrenotato = true;
                         //TODO
                         calendar.getChildren().clear();
@@ -395,6 +373,30 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
+                    //------------------------UPDATE NOTIFICA--------------------------------------
+                    //c'è un metodo nel model per l'updateNotification che non funziona perchè mi da errore di Time/LocalTime
+                    try {
+                        String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
+                        Connection connection1 = DatabaseConnection.databaseConnection();
+                        Statement statement1 = connection1.createStatement();
+                        PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                        preparedStatement1.setDate(1, Date.valueOf(EventDatePicker.getValue()));
+                        preparedStatement1.setObject(2, TimePicker.getValue());
+                        preparedStatement1.setString(3, model.getService().getName());
+                        preparedStatement1.setString(4, model.evento.sede.name());
+                        preparedStatement1.executeUpdate();
+
+
+                        //CHIUSURA CONNESSIONE
+                        closeConnection(connection1, statement1, preparedStatement1);
+
+                        calendar.getChildren().clear();
+                        drawCalendar();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
                 //--------------------------CANCELLAZIONE APPUNTAMENTO----------------------------------
                 } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
                     // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO
@@ -411,16 +413,14 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         preparedStatement1.setString(3, model.evento.sede.name());
                         preparedStatement1.setString(4, model.getService().getName());
                         preparedStatement1.executeUpdate();
-                        connection1.close();
-                        statement1.close();
-                        preparedStatement1.close();
+                        //CHIUSURA CONNESSIONE
+                        closeConnection(connection1, statement1, preparedStatement1);
 
                         calendar.getChildren().clear();
                         drawCalendar();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
-
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Slot cancellato");
@@ -435,10 +435,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     alert.setContentText("Lo slot non può essere cancellato poichè\nè già stato prenotato");
                     alert.showAndWait();
                 }
+                //CHIUSURA CONNESSIONE
+                closeConnection(connection, statement, preparedStatement);
 
-                connection.close();
-                statement.close();
-                preparedStatement.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
@@ -549,9 +548,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                         "AND Sede = ? " +
                                         "AND TipoServizio = ? ");
 
-
-
-
                                 preparedStatement = connection.prepareStatement(query);
                                 preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
                                 preparedStatement.setObject(2, localTime);
@@ -560,8 +556,10 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                                 resultSet = preparedStatement.executeQuery();
                                 resultSet.next();
-                            }
 
+                                //CHIUSURA CONNESSIONE
+                                //closeConnection(connection, statement, preparedStatement);
+                            }
 
                             VBox calendarActivityBox = new VBox();
 
@@ -611,10 +609,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
                             vBoxContainer.getChildren().add(calendarActivityBox); // Aggiungere la VBox al contenitore principale
 
                             localTime = localTime.plusHours(1);
+                            closeConnection(connection, statement, preparedStatement);
 
-                            connection.close();
-                            statement.close();
-                            preparedStatement.close();
 
                         }catch (SQLException e) {
                             System.out.println(e);
@@ -708,8 +704,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                         "AND TipoServizio = ? ");
 
 
-
-
                                 preparedStatement = connection.prepareStatement(query);
                                 preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
                                 preparedStatement.setObject(2, localTime);
@@ -770,9 +764,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                             localTime = localTime.plusHours(1);
 
-                            connection.close();
-                            statement.close();
-                            preparedStatement.close();
+                            //CHIUSURA CONNESSIONE
+                            closeConnection(connection, statement, preparedStatement);
+
 
                         }catch (SQLException e) {
                             System.out.println(e);

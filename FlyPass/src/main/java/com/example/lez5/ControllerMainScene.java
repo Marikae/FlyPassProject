@@ -46,6 +46,15 @@ public class ControllerMainScene extends Controller implements Initializable {
             //se non è un lavoratore
             prenotationPickUpButton.setText("Inserisci disponibilità ritiro passaporto");
         }else{
+            try {
+                if(model.notificationSeen() == false)
+                    model.activeNotification();
+                else{
+                    model.disativateNotification();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             if(model.notification){
                 model.putNotification(prenotationImg);
             }
