@@ -135,7 +135,7 @@
                      <children>
                         <VBox prefHeight="101.0" prefWidth="967.0">
                            <children>
-                              <Label fx:id="prenotationLabel" alignment="TOP_LEFT" prefHeight="101.0" prefWidth="996.0" styleClass="text-background" stylesheets="@style.css" text="prenotation" />
+                              <Label fx:id="prenotationLabel" alignment="TOP_LEFT" prefHeight="101.0" prefWidth="996.0" styleClass="text-background" stylesheets="@style.css" />
                            </children>
                         </VBox>
                         <VBox layoutY="100.0" prefHeight="132.0" prefWidth="901.0">

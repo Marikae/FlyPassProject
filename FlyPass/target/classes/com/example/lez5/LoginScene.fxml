@@ -76,7 +76,7 @@
                         <VBox prefHeight="59.0" prefWidth="156.0" BorderPane.alignment="CENTER">
                            <children>
                               <Label fx:id="passwordLoginLabel1" alignment="CENTER" styleClass="text-background" text="Password:" />
-                              <PasswordField fx:id="passwordF" />
+                              <PasswordField fx:id="passwordF" onKeyPressed="#activeWriting" onKeyReleased="#activeWriting" onKeyTyped="#activeWriting" onMouseClicked="#activeWriting" />
                            </children>
                         </VBox>
                      </center>

@@ -11,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.w3c.dom.events.MouseEvent;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,8 +28,21 @@ public class ControllerLoginScene extends Controller implements Initializable {
     private PasswordField passwordF;
     @FXML
     private TextField usernameLoginTF;
+    @FXML
+    private CheckBox showPass;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        showPass.setOnAction(event -> {
+            if (showPass.isSelected()) {
+                passwordF.setPromptText(passwordF.getText());
+                passwordF.setText("");
+                passwordF.setDisable(true);
+            } else {
+                passwordF.setText(passwordF.getPromptText());
+                passwordF.setPromptText("");
+                passwordF.setDisable(false);
+            }
+        });
         errorLabel.setVisible(false);
     }
     public ControllerLoginScene() {
@@ -50,11 +65,16 @@ public class ControllerLoginScene extends Controller implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
     @FXML
      private void login(ActionEvent event) throws IOException {
-
+        passwordF.setText(passwordF.getPromptText());
+        passwordF.setPromptText("");
+        passwordF.setDisable(false);
         String email = usernameLoginTF.getText();
         String password = passwordF.getText();
+
+
         if(email.equals("admin")){
             model.workerLogin(email, password);
             enterMainScene(event);

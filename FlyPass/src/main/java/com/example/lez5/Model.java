@@ -41,6 +41,7 @@ public class Model implements Initializable {
     public int idUtente;
     public boolean passaportoPrenotato;
     public boolean notification = false;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
@@ -476,11 +477,14 @@ public class Model implements Initializable {
         preparedStatement.setString(1, getIdCitizen());
         ResultSet resultSet = preparedStatement.executeQuery();
         StringBuilder resultString = new StringBuilder();
+        String removeStrg = "Prenota per:\n";
+
         while (resultSet.next()) {
             String sede = resultSet.getString("sede");
             String data = resultSet.getString("data");
             String ora = resultSet.getString("ora");
-            String tipo = resultSet.getString("tipo");
+            String tipoOriginal = resultSet.getString("tipo");
+            String tipo = tipoOriginal.substring(removeStrg.length());
             String notificationString = String.format("Nuova disponibilità per %s nella sede di %s, il giorno %s, alle ore %s\n",tipo, sede, data, ora);
             resultString.append(notificationString);
         }
@@ -505,11 +509,13 @@ public class Model implements Initializable {
         preparedStatement.setString(1, getIdCitizen());
         ResultSet resultSet = preparedStatement.executeQuery();
         StringBuilder resultString = new StringBuilder();
+        String removeStrg = "Prenota per:\n";
         while (resultSet.next()) {
             String sede = resultSet.getString("sede");
             String data = resultSet.getString("data");
             String ora = resultSet.getString("ora");
-            String tipo = resultSet.getString("tipo");
+            String tipoOriginal = resultSet.getString("tipo");
+            String tipo = tipoOriginal.substring(removeStrg.length());
             String notificationString = String.format("Disponibilità per %s nella sede di %s, il giorno %s, alle ore %s\n",tipo, sede, data, ora);
             resultString.append(notificationString);
         }
