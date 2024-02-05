@@ -68,9 +68,11 @@ public class ControllerLoginScene extends Controller implements Initializable {
 
     @FXML
      private void login(ActionEvent event) throws IOException {
-        passwordF.setText(passwordF.getPromptText());
-        passwordF.setPromptText("");
-        passwordF.setDisable(false);
+        if(showPass.isSelected()) {
+            passwordF.setText(passwordF.getPromptText());
+            passwordF.setPromptText("");
+            passwordF.setDisable(false);
+        }
         String email = usernameLoginTF.getText();
         String password = passwordF.getText();
 
@@ -80,8 +82,7 @@ public class ControllerLoginScene extends Controller implements Initializable {
             enterMainScene(event);
         }else {
             if (checkCredential(email, password)) {
-                //String fromWho = "";
-                //model.login(email, password);
+
                 if (email.endsWith("@questura.it")) { //si logga il personale della questura
                     if (model.workerLogin(email, password))
                         enterMainScene(event);
