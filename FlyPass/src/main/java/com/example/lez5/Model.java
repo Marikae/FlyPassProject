@@ -51,11 +51,6 @@ public class Model implements Initializable {
         }
         return modelInstance;
     }
-  /*  public void closeResource(Connection connection, PreparedStatement preparedStatement ) throws SQLException {
-        connection.close();
-        preparedStatement.close();
-    }*/
-
 
     //----------------------------- SERVICE -----------------------------------
     public void setService(String nameNewService){
@@ -156,7 +151,6 @@ public class Model implements Initializable {
             // Chiudi le risorse
         } catch (SQLException e) {
             System.out.println(e);
-            //return false;
         }
         return false;
     }

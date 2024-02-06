@@ -83,32 +83,32 @@ public class ControllerRegisterScene extends Controller{
             Citizen newUser = new Citizen(name.getText(), num_health_card.getText(), cat.getText(), surname.getText(), date_of_birth.getValue().toString(), place_of_birth.getText(), tax_code.getText(), email.getText(), password.getText());
 
             if(!model.checkEmail(email.getText())){
-                error.setText("Invalid mail format");
+                error.setText("Invalid mail format.");
                 return;
             }
 
             if (!model.isCodiceFiscaleValid(aus7, aus1, aus9)){
-                error.setText("Invalid tax code format");
+                error.setText("Invalid tax code format.");
                 return;
             }
 
             if(!model.HealthCardNumberCheck(aus4)){
-                error.setText("Invalid health card number format");
+                error.setText("Invalid health card number format. The number must be 20 digits long.");
                 return;
             }
             if(checkEmptyFields(newUser) && checkPasswordConfirm())
                 check = true;
 
         }else
-            error.setText("Field empty");
+            error.setText("Field empty.");
 
 
         if(!model.checkAnagrafica(aus5,aus1,aus2,aus3,aus4,aus6,aus7,aus8,aus9)){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Attention");
             alert.setHeaderText(null);
-            alert.setContentText("Non è stato possibile rilevare lil suo profilo\nnell'anagrafica di sistema.\n" +
-                    "Per ulteriori chiarimenti scrivere una mail a info@questura.it\n");
+            alert.setContentText("Not able to detect your profile \n in the system registry. \n " +
+                    "For further clarification, please email info@questura.it\n"); //il profilo non rientra nell'anagrafica
             alert.showAndWait();
             check = false;
         }
@@ -133,14 +133,14 @@ public class ControllerRegisterScene extends Controller{
 
     public boolean checkEmptyFields(Citizen user){
         if(user.getName().isEmpty() || user.getSurname().isEmpty() || user.getBirthday().isEmpty() || user.getBirthPlace().isEmpty() || user.getCodiceFiscale().isEmpty() || user.getEmail().isEmpty() || confirmPassword.getText().isEmpty()){
-            error.setText("there is a empty fields");
+            error.setText("There is a empty field."); //casella vuota
             return false;
         }
         return true;
     }
     public boolean checkPasswordConfirm(){
         if(!password.getText().equals(confirmPassword.getText())){
-            error.setText("Password not equal");
+            error.setText("The passwords do not match."); //le password non sono uguali
             return false;
         }
         return true;
