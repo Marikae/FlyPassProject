@@ -6,10 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -19,15 +18,14 @@ public class ControllerLogOutScene extends Controller implements Initializable{
     private Stage stage;
     private Scene scene;
     @FXML
-    private Button undoLogOut;
-    @FXML
-    private Button logOut;
-    @FXML
-    private Button yesLogOut;
-    @FXML
-    private Button servicesButton;
+    private ImageView prenotationImg;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if(!model.isWorker()){
+            if(model.notification){
+                model.putNotification(prenotationImg);
+            }
+        }
 
     }
 
@@ -61,11 +59,6 @@ public class ControllerLogOutScene extends Controller implements Initializable{
             //stage.setFullScreen(true);
             stage.show();
     }
-
-    public void goToLogOutScene(ActionEvent actionEvent) {
-
-    }
-
     @FXML
     void goToProfileScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ProfileScene.fxml")));
@@ -75,5 +68,24 @@ public class ControllerLogOutScene extends Controller implements Initializable{
         stage.show();
     }
 
+    @FXML
+    void goToInfoScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("InfoScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
+    @FXML
+    void goToPrenotationScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("PrenotationScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void goToLogOutScene(ActionEvent actionEvent) {
+    }
 }
