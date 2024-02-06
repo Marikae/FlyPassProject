@@ -98,7 +98,7 @@ public class ControllerMainScene extends Controller implements Initializable {
                 alert.setContentText("Devi prima prenotare il passaporto prima di chiedere l'appuntamento per il ritiro!");
                 alert.showAndWait();
             } else {
-                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("PrenotationPickUpScene.fxml")));
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("SelectOfficeSceneForPrenotation.fxml")));
                 stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);
