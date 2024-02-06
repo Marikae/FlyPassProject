@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerProfile">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerProfileScene">
    <top>
       <HBox prefHeight="97.0" prefWidth="1247.0" spacing="20.0" styleClass="border-bottom" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
@@ -42,9 +42,9 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Prenotation">
+                  <Button fx:id="prenotationButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToPrenotationScene" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Prenotation">
                      <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="prenotationImg" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../icon/booking.png" />
                            </image>
@@ -55,7 +55,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Info">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#goToInfoScene" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Info">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -66,19 +66,7 @@
                   </Button>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-               <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="91.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Remember">
-                     <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../icon/remember.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" />
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
@@ -169,78 +157,6 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="271.0">
-                     <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="Cod. Fisc:  " textFill="WHITE">
-                           <font>
-                              <Font size="26.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
-                     <children>
-                        <Label fx:id="taxCodeLabel" styleClass="text-background" stylesheets="@style.css" text="RSSGIUA039EU0AHD0A" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="320.0">
-                     <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="Date of Birth:  " textFill="WHITE">
-                           <font>
-                              <Font size="26.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
-                     <children>
-                        <Label fx:id="birthdayLabel" styleClass="text-background" stylesheets="@style.css" text="03/01/1947" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="326.0">
-                     <children>
-                        <Label styleClass="text-background" stylesheets="@style.css" text="Place of Birth:  " textFill="WHITE">
-                           <font>
-                              <Font size="26.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
-                     <children>
-                        <Label fx:id="placeOfBirthLabel" styleClass="text-background" stylesheets="@style.css" text="Vittorio Veneto" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="371.0">
-                     <children>
-                        <Label prefHeight="38.0" prefWidth="217.0" styleClass="text-background" stylesheets="@style.css" text="Number heal card:" textFill="WHITE">
-                           <font>
-                              <Font size="26.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="809.0" styleClass="text-background" stylesheets="@style.css">
-                     <children>
-                        <Label fx:id="healtCardLabel" styleClass="text-background" stylesheets="@style.css" text="Via peron " />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
                   <VBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="233.0">
                      <children>
                         <Label styleClass="text-background" stylesheets="@style.css" text="Email:  " textFill="WHITE">
@@ -259,9 +175,81 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
+                  <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="271.0">
+                     <children>
+                        <Label fx:id="finalCodFisc" styleClass="text-background" stylesheets="@style.css" text="Cod. Fisc:  " textFill="WHITE">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
+                     <children>
+                        <Label fx:id="taxCodeLabel" styleClass="text-background" stylesheets="@style.css" text="RSSGIUA039EU0AHD0A" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="320.0">
+                     <children>
+                        <Label fx:id="finalDateBirth" styleClass="text-background" stylesheets="@style.css" text="Date of Birth:  " textFill="WHITE">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
+                     <children>
+                        <Label fx:id="birthdayLabel" styleClass="text-background" stylesheets="@style.css" text="03/01/1947" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="326.0">
+                     <children>
+                        <Label fx:id="finalPlaceBirth" styleClass="text-background" stylesheets="@style.css" text="Place of Birth:  " textFill="WHITE">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="833.0" styleClass="text-background" stylesheets="@style.css">
+                     <children>
+                        <Label fx:id="placeOfBirthLabel" styleClass="text-background" stylesheets="@style.css" text="Vittorio Veneto" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="371.0">
+                     <children>
+                        <Label fx:id="finalHealCard" prefHeight="38.0" prefWidth="217.0" styleClass="text-background" stylesheets="@style.css" text="Number heal card:" textFill="WHITE">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="809.0" styleClass="text-background" stylesheets="@style.css">
+                     <children>
+                        <Label fx:id="healtCardLabel" styleClass="text-background" stylesheets="@style.css" text="Via peron " />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
                   <VBox alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="287.0">
                      <children>
-                        <Label prefHeight="38.0" prefWidth="131.0" styleClass="text-background" stylesheets="@style.css" text="Category:" textFill="WHITE">
+                        <Label fx:id="finalCat" prefHeight="38.0" prefWidth="131.0" styleClass="text-background" stylesheets="@style.css" text="Category:" textFill="WHITE">
                            <font>
                               <Font size="26.0" />
                            </font>
