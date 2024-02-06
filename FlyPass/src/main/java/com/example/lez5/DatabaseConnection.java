@@ -17,7 +17,7 @@ public class DatabaseConnection {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }s
+        }
 
 
     }*/
@@ -33,11 +33,12 @@ public class DatabaseConnection {
             ds.setUsername("root");
             ds.setPassword("");
         }
-        try{
-            return ds.getConnection();
-        }catch (SQLException e){
-            e.printStackTrace();
-            return  null;
-        }
+            try{
+               return ds.getConnection();
+            }catch (SQLException e){
+                e.printStackTrace();
+                return  null;
+            }
     }
+
 }
