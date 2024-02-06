@@ -33,6 +33,17 @@ public class Model implements Initializable {
         this.loginUserName = loginUserName;
     }
 
+    //Serve per capire se l'utente sta provando a prenotare o ad inserire disponibilità in un "ritiro passaporto"
+    private boolean prenotaPassaportoClicked;
+
+    public boolean isPrenotaPassaportoClicked() {
+        return prenotaPassaportoClicked;
+    }
+
+    public void setPrenotaPassaportoClicked(boolean prenotaPassaportoClicked) {
+        this.prenotaPassaportoClicked = prenotaPassaportoClicked;
+    }
+
     private User user;
     private Service service;
     @FXML
@@ -40,6 +51,8 @@ public class Model implements Initializable {
     private boolean worker;
     public int idUtente;
     public boolean passaportoPrenotato;
+
+    public boolean ritiroPrenotato;
     public boolean notification = false;
 
     @Override
@@ -144,14 +157,23 @@ public class Model implements Initializable {
                 setWorker(loginUserName);
                 evento.setSede(((Worker) user).getOffice());
                 idUtente = resultSet.getInt("id");
+
+                connection.close();
+                preparedStatement.close();
+                resultSet.close();
                 return true;
             } else {
+                connection.close();
+                preparedStatement.close();
+                resultSet.close();
                return false;
             }
             // Chiudi le risorse
         } catch (SQLException e) {
             System.out.println(e);
+            //return false;
         }
+
         return false;
     }
     public boolean citizenLogin(String username, String password){
@@ -177,8 +199,15 @@ public class Model implements Initializable {
 
                 idUtente = resultSet.getInt("id");
                 passaportoPrenotato = resultSet.getBoolean("PassaportoPrenotato");
+                ritiroPrenotato = resultSet.getBoolean("PrenotazioneRitiro");
+                connection.close();
+                preparedStatement.close();
+                resultSet.close();
                 return true;
             } else {
+                connection.close();
+                preparedStatement.close();
+                resultSet.close();
                 return false;
             }
             // Chiudi le risorse
@@ -256,9 +285,15 @@ public class Model implements Initializable {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (!resultSet.next())
+            if (!resultSet.next()) {
+                connection.close();
+                preparedStatement.close();
+                resultSet.close();
                 return false;
-
+            }
+            connection.close();
+            preparedStatement.close();
+            resultSet.close();
         }catch (SQLException e) {
             System.out.println(e);
         }
@@ -287,6 +322,9 @@ public class Model implements Initializable {
             preparedStatement.setString(8, aus3);
             preparedStatement.setString(9, aus2);
             preparedStatement.executeUpdate();
+
+            connection.close();
+            preparedStatement.close();
         }catch (SQLException e) {
             System.out.println(e);
         }
@@ -308,6 +346,9 @@ public class Model implements Initializable {
             Evento.Sede office = Evento.Sede.valueOf(resultSet.getString("office"));
             user = new Worker(resultSet.getString("name"), resultSet.getString("surname"),  resultSet.getString("email"), resultSet.getString("password"),  office);
         }
+        connection.close();
+        preparedStatement.close();
+        resultSet.close();
     }
     public boolean hasPrenotation() throws SQLException {
         Connection connection = DatabaseConnection.databaseConnection();
@@ -318,8 +359,14 @@ public class Model implements Initializable {
 
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
+            connection.close();
+            preparedStatement.close();
+            resultSet.close();
             return true;
         }
+        connection.close();
+        preparedStatement.close();
+        resultSet.close();
         return false;
     }
     private void setCitizen(String userEmail) throws SQLException {
@@ -335,6 +382,10 @@ public class Model implements Initializable {
         }
         //User(String name, String num_health_card, String category, String surname,
         //String birthday, String birthPlace, String codiceFiscale, String email, String phone)
+
+        connection.close();
+        preparedStatement.close();
+        resultSet.close();
     }
 
 
@@ -371,9 +422,13 @@ public class Model implements Initializable {
                prenotation = "no prenotation found\n";
            }
 
+           connection.close();
+           preparedStatement.close();
+           resultSet.close();
+
        }catch (SQLException e) {
         System.out.println(e);
-    }
+        }
         return prenotation;
     }
 

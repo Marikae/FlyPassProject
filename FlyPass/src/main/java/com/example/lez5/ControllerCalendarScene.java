@@ -842,23 +842,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
     }
 
 
-    private void handleRectangleClick(MouseEvent event) {
-        System.out.println("Rettangolo cliccato!");
-        // Aggiungi qui le azioni che desideri eseguire al cliccare del rettangolo
-    }
-
-    private StackPane createClickableRectangle(String labelText, Color color) {
-        Rectangle rectangle = new Rectangle(70, 50, color);
-        rectangle.setOnMouseClicked(this::handleRectangleClick);
-        Text text = new Text(labelText);
-        StackPane rectangleWithText = new StackPane(rectangle, text);
-        return rectangleWithText;
-    }
-
-
-
-
-
     //----------------------------CAMBIO SCENA-------------------------------------------------------
     @FXML
     void returnMainScene(ActionEvent event) throws IOException {
