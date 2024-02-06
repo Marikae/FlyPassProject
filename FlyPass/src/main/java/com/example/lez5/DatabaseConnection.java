@@ -5,7 +5,7 @@ import java.sql.*;
 public class DatabaseConnection {
 
     /*public Connection databaseConnection(){
-        String url = "jdbc:mysql://localhost:3306/passport";
+        String url = "jdbc:mysql://localhost:3306/passport?useUnicode=true&characterEncoding=utf8mb4";
         String username = "root";
         String databasePassword = "";
 

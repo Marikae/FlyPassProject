@@ -11,12 +11,11 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.w3c.dom.events.MouseEvent;
+
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.Objects;
 
 public class ControllerLoginScene extends Controller implements Initializable {
@@ -26,22 +25,25 @@ public class ControllerLoginScene extends Controller implements Initializable {
     @FXML
     private Label errorLabel;
     @FXML
-    private Label loginLabel;
-    @FXML
-    private Label passwordLoginLabel;
-    @FXML
     private PasswordField passwordF;
-    @FXML
-    private Button undoButton;
-    @FXML
-    private Label usernameLoginLabel;
     @FXML
     private TextField usernameLoginTF;
     @FXML
     private CheckBox showPass;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        showPass.setOnAction(event -> {
+            if (showPass.isSelected()) {
+                passwordF.setPromptText(passwordF.getText());
+                passwordF.setText("");
+                passwordF.setDisable(true);
+            } else {
+                passwordF.setText(passwordF.getPromptText());
+                passwordF.setPromptText("");
+                passwordF.setDisable(false);
+            }
+        });
+        errorLabel.setVisible(false);
     }
     public ControllerLoginScene() {
         super();
@@ -63,33 +65,44 @@ public class ControllerLoginScene extends Controller implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
     @FXML
      private void login(ActionEvent event) throws IOException {
-
+        if(showPass.isSelected()) {
+            passwordF.setText(passwordF.getPromptText());
+            passwordF.setPromptText("");
+            passwordF.setDisable(false);
+        }
         String email = usernameLoginTF.getText();
         String password = passwordF.getText();
 
-        if(checkCredential(email, password)){
-            //String fromWho = "";
-            //model.login(email, password);
-            if (email.endsWith("@questura.it")) { //si logga il personale della questura
-                if(model.workerLogin(email, password))
-                    enterMainScene(event);
-                else {
-                    // Nessun risultato trovato, le credenziali non sono valide
-                    //System.out.println("Credenziali non valide. Accesso negato.");
-                    errorLabel.setTextFill(Color.web("#FF0000"));
-                    errorLabel.setText("Invalid credentials. Access denied.");
-                    //fromWho = "worker";
-                }
-            }
-            else{
-                if(model.citizenLogin(email, password)) {
-                    enterMainScene(event);
-                }else{
+
+        if(email.equals("admin")){
+            model.workerLogin(email, password);
+            enterMainScene(event);
+        }else {
+            if (checkCredential(email, password)) {
+
+                if (email.endsWith("@questura.it")) { //si logga il personale della questura
+                    if (model.workerLogin(email, password))
+                        enterMainScene(event);
+                    else {
                         // Nessun risultato trovato, le credenziali non sono valide
+                        //System.out.println("Credenziali non valide. Accesso negato.");
+                        errorLabel.setVisible(true);
                         errorLabel.setTextFill(Color.web("#FF0000"));
                         errorLabel.setText("Invalid credentials. Access denied.");
+                        //fromWho = "worker";
+                    }
+                } else {
+                    if (model.citizenLogin(email, password)) {
+                        enterMainScene(event);
+                    } else {
+                        // Nessun risultato trovato, le credenziali non sono valide
+                        errorLabel.setVisible(true);
+                        errorLabel.setTextFill(Color.web("#FF0000"));
+                        errorLabel.setText("Invalid credentials. Access denied.");
+                    }
                 }
             }
         }
@@ -114,21 +127,25 @@ public class ControllerLoginScene extends Controller implements Initializable {
 
     boolean checkCredential(String email, String password){
         if(email.isEmpty() && password.isEmpty()){
+            errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
             errorLabel.setText("Empty fields.");
             return false;
         }
         if(email.isEmpty()){
+            errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
             errorLabel.setText("Email is missing.");
             return false;
         }
         if(password.isEmpty()){
+            errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
             errorLabel.setText("Password is missing.");
             return false;
         }
         if (!model.checkEmail(email)) {
+            errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
             errorLabel.setText("Email not valid");
             return false;
@@ -138,6 +155,7 @@ public class ControllerLoginScene extends Controller implements Initializable {
 
     @FXML
     void showPassword(ActionEvent event) { //TODO
+        //errorLabel.setVisible(true);
         passwordF.setDisable(false);
         passwordF.setVisible(true);
     }

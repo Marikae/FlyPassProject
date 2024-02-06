@@ -9,7 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -18,32 +18,28 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class ControllerCalendarCitizenScene extends Controller implements Initializable {
-    @FXML
-    private Label serviceName;
+public class ControllerPrenotationPickUpScene extends Controller implements Initializable {
     private Stage stage;
     private Scene scene;
     @FXML
-    private Label descriptionLabel;
+    private Label flag;
     @FXML
-    private Button logOutM;
-    @FXML
-    private Button profileButton;
-    @FXML
-    private Button returnMainScene;
+    private ImageView prenotationImg;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if (serviceName != null && descriptionLabel != null) {
-            serviceName.setText(model.getService().getName());
-            descriptionLabel.setText(model.getService().getDescription());
-        } else {
-            System.out.println("serviceType is null!");
-            // Investigate why serviceType is null and ensure proper initialization
+        if(model.isWorker()){
+            flag.setText("worker");
+        }else{
+            flag.setText("citizen");
+            if(model.notification){
+                model.putNotification(prenotationImg);
+            }
         }
+
     }
-    public ControllerCalendarCitizenScene(){
-        super();
-    }
+
+
+
     @FXML
     void goToLogOutScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LogOut.fxml")));
@@ -54,16 +50,7 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
     }
 
     @FXML
-    void goToProfileScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ProfileScene.fxml")));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @FXML
-    void goToMainScene(ActionEvent event) throws IOException {
+    void returnToMainScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -78,4 +65,32 @@ public class ControllerCalendarCitizenScene extends Controller implements Initia
         //stage.setFullScreen(true);
         stage.show();
     }
+
+    @FXML
+    void goToProfileScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ProfileScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    void goToInfoScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("InfoScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    @FXML
+    void goToPrenotationScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("PrenotationScene.fxml")));
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
 }

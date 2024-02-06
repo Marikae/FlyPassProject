@@ -11,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -52,14 +51,21 @@ public class ControllerService extends Controller implements Initializable {
     @FXML
     void click(MouseEvent event) throws IOException {
         model.setService(getServiceName());
-
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CalendarCitizenScene.fxml")));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-
+        if(!model.isWorker()) {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("SelectOfficeScene.fxml")));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }else{
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("newCalendarScene.fxml")));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
+
 
 
 }
