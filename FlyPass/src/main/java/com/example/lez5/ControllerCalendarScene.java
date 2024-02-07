@@ -95,9 +95,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
         }
     }
 
-    public boolean notificationAlredyExist() throws SQLException {
+    public boolean notificationAlredyExist() throws SQLException { //se c'è già la richiesta di notifica per una certa data allora ritorna true
         Connection connection = DatabaseConnection.databaseConnection();
-        String query = "SELECT * FROM notification WHERE utente_id = ? AND data = ? AND ora = ?  AND tipo = ? AND sede = ? AND stato = 'definito'";
+        String query = "SELECT * FROM notification WHERE utente_id = ? AND data = ? AND ora = ?  AND tipo = ? AND sede = ?";
         Statement statement = connection.createStatement();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, model.getIdCitizen());
@@ -182,7 +182,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 }
                 if (!resultSet.getBoolean("Disponibile")) {
 
-                    if(notificationAlredyExist()){
+                    if(!notificationAlredyExist()){ //se la notifica per questa data non esite ancora
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Appuntamento non disponibile");
                         alert.setHeaderText(null);
