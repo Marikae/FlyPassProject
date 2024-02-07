@@ -147,13 +147,14 @@
                         <DatePicker fx:id="EventDatePicker" layoutX="29.0" layoutY="74.0" />
                         <Label layoutX="29.0" layoutY="118.0" prefHeight="17.0" prefWidth="111.0" styleClass="text-background" stylesheets="@style.css" text="Seleziona l'orario" />
                         <ComboBox fx:id="TimePicker" editable="true" layoutX="30.0" layoutY="143.0" prefWidth="150.0" promptText="Seleziona un orario" visibleRowCount="5" />
-                        <Button fx:id="prenotaEvento" layoutX="85.0" layoutY="193.0" mnemonicParsing="false" onAction="#prenotaEvento" prefHeight="25.0" prefWidth="134.0" styleClass="bottom" stylesheets="@style.css" text="Prenota" />
+                        <Button fx:id="prenotaEvento" layoutX="29.0" layoutY="196.0" mnemonicParsing="false" onAction="#prenotaEvento" prefHeight="25.0" prefWidth="190.0" styleClass="bottom" stylesheets="@style.css" text="Prenota" />
                         <Label fx:id="ErrorePrenotazione" layoutX="34.0" layoutY="235.0" prefHeight="94.0" prefWidth="202.0" />
                         <Label layoutY="1.0" prefHeight="27.0" prefWidth="232.0" styleClass="text-background" stylesheets="@style.css" text="Inserisci la tua prenotazione:">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
+                        <Button fx:id="annullaPrenotaEvento" layoutX="32.0" layoutY="235.0" mnemonicParsing="false" onAction="#annullaPrenotaEvento" prefHeight="25.0" prefWidth="187.0" styleClass="bottom" stylesheets="@style.css" text="Annulla prenotazione" />
                      </children>
                   </Pane>
                </right>
