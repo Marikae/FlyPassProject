@@ -47,7 +47,7 @@ public class ControllerMainScene extends Controller implements Initializable {
             prenotationPickUpButton.setText("Inserisci disponibilità ritiro passaporto");
         }else{
             try {
-                if(model.notificationSeen() == false)
+                if(!model.notificationSeen()) //se ci sono notifiche da vedere allora attiva
                     model.activeNotification();
                 else{
                     model.disativateNotification();

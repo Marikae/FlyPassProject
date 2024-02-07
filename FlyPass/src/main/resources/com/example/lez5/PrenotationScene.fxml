@@ -156,7 +156,30 @@
                      <children>
                         <VBox prefHeight="101.0" prefWidth="967.0">
                            <children>
-                              <Label fx:id="prenotationLabel" alignment="TOP_LEFT" prefHeight="101.0" prefWidth="996.0" styleClass="text-background" stylesheets="@style.css" />
+                              <Pane prefHeight="101.0" prefWidth="565.0">
+                                 <children>
+                                    <HBox prefHeight="100.0" prefWidth="240.0">
+                                       <children>
+                                          <Label fx:id="prenotationLabel" alignment="TOP_LEFT" prefHeight="101.0" prefWidth="431.0" styleClass="text-background" stylesheets="@style.css" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="211.0" prefHeight="100.0" prefWidth="111.0" stylesheets="@style.css">
+                                       <children>
+                                          <Button fx:id="deletePrenotation" mnemonicParsing="false" onAction="#deleteReservation" styleClass="bottom" stylesheets="@style.css" text="Elimina" />
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="414.0" prefHeight="100.0" prefWidth="233.0">
+                                       <children>
+                                          <Label fx:id="preRitiroLabel" alignment="TOP_LEFT" prefHeight="103.0" prefWidth="240.0" styleClass="text-background" stylesheets="@style.css" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="682.0" prefHeight="100.0" prefWidth="73.0">
+                                       <children>
+                                          <Button fx:id="deleteRitiro" mnemonicParsing="false" onAction="#deleteRitiro" styleClass="bottom" stylesheets="@style.css" text="Elimina" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </Pane>
                            </children>
                         </VBox>
                         <VBox layoutY="100.0" prefHeight="132.0" prefWidth="901.0">

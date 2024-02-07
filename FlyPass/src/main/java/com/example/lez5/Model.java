@@ -433,32 +433,57 @@ public class Model implements Initializable {
         return prenotation;
     }
 
-
-    public void notification() throws SQLException {
-        if(getCitizenPrenotation().equals("Prenotazione ancora da effettuare!\n")) { //Se il cittadino non ha ancora prenotato
-            //se ci sono notifiche non viste allora appare il pallino verde
-            //altrimenti niente pallino verde ma le notifiche vengono scritte comunque
-            if(notificationSeen() == false){
-                activeNotification();
+    public String getCitizenRitiro() throws SQLException { //ritorna la prenotazione del ritiro passaporto se c'è
+        String prenotation = "";
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            String query = ("SELECT Data, Inizio, Fine, Sede FROM eventi WHERE Id_utente_prenotazione = ? AND tipoServizio = ?");
+            Statement statement = connection.createStatement();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, String.valueOf(idUtente) );
+            preparedStatement.setString(2, "Prenotazione ritiro passaporto");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                prenotation = "Prenotazione ritiro passaporto prenotata per: \n " + preparedStatement.getResultSet().getString("Data") + "\n Orario: " + preparedStatement.getResultSet().getString("Inizio") + "\n Sede: " + preparedStatement.getResultSet().getString("Sede");
             }else{
-                setNotificationSeen(); //setta la notifica a "vista"
-                disativateNotification();
+                prenotation = "Prenotazione per il ritiro passaporto\n ancora da effettuare!\n";
             }
+
+            connection.close();
+            preparedStatement.close();
+            statement.close();
+            resultSet.close();
+
+        }catch (SQLException e) {
+            System.out.println(e);
         }
+        return prenotation;
     }
+
+
+    /*public void notification() throws SQLException {
+        //se ci sono notifiche non viste allora appare il pallino verde
+        //altrimenti niente pallino verde ma le notifiche vengono scritte comunque
+        if(notificationSeen() == false){
+            activeNotification();
+        }else{
+            setNotificationSeen(); //setta la notifica a "vista"
+            disativateNotification();
+        }
+
+    }*/
     public void disativateNotification(){
         this.notification = false;
     }
     public void activeNotification(){
         this.notification = true;
     }
-    public void putNotification(ImageView image) {
-        // Cambiare l'immagine del bottone con l'immagine con notifica
+    public void putNotification(ImageView image) { //Cambiare l'immagine di prenotazioni con l'immagine con notifica
         Image initialImage = new Image(getClass().getResource("/icon/bookingNotification.png").toExternalForm());
         image.setImage(initialImage);
     }
 
-    public String getIdCitizen() throws SQLException {
+    public String getIdCitizen() throws SQLException { //ritorna l'id del cittadino
         Connection connection2 = DatabaseConnection.databaseConnection();
         String query = "SELECT id FROM citizen WHERE email = ?";
         Statement statement1 = connection2.createStatement();
@@ -499,7 +524,7 @@ public class Model implements Initializable {
 
         disativateNotification();
     }
-    public boolean notificationSeen() throws SQLException {
+    public boolean notificationSeen() throws SQLException { //controlla se ci sono notifiche da vedere
         Connection connection = DatabaseConnection.databaseConnection();
         String query = "SELECT * FROM notification WHERE utente_id = ? AND stato = 'definito' AND seen = 0";
         Statement statement = connection.createStatement();
@@ -521,7 +546,7 @@ public class Model implements Initializable {
         }
     }
 
-    public String getNewNotification() throws SQLException {
+    public String getNewNotification() throws SQLException { //ritorna le nuove prenotazioni ancora da vedere
         Connection connection = DatabaseConnection.databaseConnection();
         String query = "SELECT * FROM notification WHERE utente_id = ? AND stato = 'definito' AND seen = 0";
         Statement statement = connection.createStatement();
@@ -553,7 +578,7 @@ public class Model implements Initializable {
             return resultString.toString();
         }
     }
-    public String getOldNotification() throws SQLException {
+    public String getOldNotification() throws SQLException { //ritorna le vecchie prenotazioni già viste
         Connection connection = DatabaseConnection.databaseConnection();
         String query = "SELECT * FROM notification WHERE utente_id = ? AND stato = 'definito' AND seen = 1";
         Statement statement = connection.createStatement();
@@ -622,7 +647,6 @@ public class Model implements Initializable {
 
             String notificationString = String.format("Prenotazione per %s, sede di %s, il giorno %s, alle ore %s effettuata da %s", type, office, date, hour, citizen);
             resultString.append(notificationString);
-
         }
         if (resultString.isEmpty()) {
             connection.close();
