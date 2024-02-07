@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
@@ -24,11 +25,20 @@ public class ControllerPrenotationScene extends Controller implements Initializa
     private ImageView prenotationImg;
     private Scene scene;
     @FXML
-    private Label prenotationLabel;
+    private Button deleteRitiro;
+    @FXML
+    private Button logOutM;
     @FXML
     private Label newNotLabel;
     @FXML
     private Label oldNotLabel;
+    @FXML
+    private Label preRitiroLabel;
+    @FXML
+    private Button deletePrenotation;
+
+    @FXML
+    private Label prenotationLabel;
     private String newNot;
     private String oldNot;
     private String bookedPrenotation;
@@ -52,9 +62,24 @@ public class ControllerPrenotationScene extends Controller implements Initializa
         String preString = model.getCitizenPrenotation();
         if(!preString.equals("Prenotazione ancora da effettuare!\n")){ //prenotazione effettuata
             prenotationLabel.setText(preString);
+            newNotLabel.setText("Ricordati di portare:\n" +
+                    "1) Il modulo di richiesta compilato\n" +
+                    "2) Una marca da bollo\n" +
+                    "3) La ricevuta del versamento sul C/C postale\n" +
+                    "4) Due fototessere su sfondo bianco\n" +
+                    "5) Il passaporto precendete (se ancora in possesso)\n");
+            preRitiroLabel.setText(model.getCitizenRitiro());
+            if(preRitiroLabel.getText().equals("Prenotazione per il ritiro passaporto\n ancora da effettuare!\n")) {
+                deleteRitiro.setVisible(false);
+            }else{
+                deletePrenotation.setVisible(false);
+            }
+
             //model.activeNotification();
         }else{ //la prenotazione deve ancora avvenire
             //model.notification();
+            deletePrenotation.setVisible(false);
+            deleteRitiro.setVisible(false);
             newNot = model.getNewNotification();
             newNotLabel.setText(newNot);
             oldNot = model.getOldNotification();
@@ -111,5 +136,14 @@ public class ControllerPrenotationScene extends Controller implements Initializa
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+    @FXML
+    void deleteReservation(ActionEvent event) {
+        System.out.println("cancella prenotazione\n");
+    }
+
+    @FXML
+    void deleteRitiro(ActionEvent event) {
+        System.out.println("cancella ritiro\n");
     }
 }

@@ -433,6 +433,33 @@ public class Model implements Initializable {
         return prenotation;
     }
 
+    public String getCitizenRitiro() throws SQLException { //ritorna la prenotazione del ritiro passaporto se c'è
+        String prenotation = "";
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            String query = ("SELECT Data, Inizio, Fine, Sede FROM eventi WHERE Id_utente_prenotazione = ? AND tipoServizio = ?");
+            Statement statement = connection.createStatement();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, String.valueOf(idUtente) );
+            preparedStatement.setString(2, "Prenotazione ritiro passaporto");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                prenotation = "Prenotazione ritiro passaporto prenotata per: \n " + preparedStatement.getResultSet().getString("Data") + "\n Orario: " + preparedStatement.getResultSet().getString("Inizio") + "\n Sede: " + preparedStatement.getResultSet().getString("Sede");
+            }else{
+                prenotation = "Prenotazione per il ritiro passaporto\n ancora da effettuare!\n";
+            }
+
+            connection.close();
+            preparedStatement.close();
+            statement.close();
+            resultSet.close();
+
+        }catch (SQLException e) {
+            System.out.println(e);
+        }
+        return prenotation;
+    }
+
 
     /*public void notification() throws SQLException {
         //se ci sono notifiche non viste allora appare il pallino verde
