@@ -35,7 +35,7 @@ public class ControllerSelectOfficeScene extends Controller implements Initializ
             serviceName.setText(model.getService().getName());
             descriptionLabel.setText(model.getService().getDescription());
         } else {
-            System.out.println("serviceType is null!");
+            System.out.println("Il tipo di serivzio è nullo!");
             // Investigate why serviceType is null and ensure proper initialization
         }
         if(model.isWorker()){ //profilo lavoratore

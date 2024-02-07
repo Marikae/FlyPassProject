@@ -169,7 +169,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 if (!resultSet.next()) {
 
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Attention");
+                    alert.setTitle("Attenzione!");
                     alert.setHeaderText(null);
                     alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
                     alert.showAndWait();
@@ -198,7 +198,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         DialogPane dialogPane = alert.getDialogPane();
                         dialogPane.setContent(vBox);
                         // Aggiungere i pulsanti desiderati
-                        dialogPane.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+                        dialogPane.getButtonTypes().setAll(ButtonType.OK);
                         // Mostrare l'alert e gestire la risposta
 
                         alert.showAndWait().ifPresent(response -> {
@@ -233,8 +233,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                                     }
                                 }
 
-                            } else if (response == ButtonType.CANCEL) {
-                                System.out.println("Risposta: Annulla");
                             }
                         });
 
@@ -259,14 +257,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         DialogPane dialogPane = alert.getDialogPane();
                         dialogPane.setContent(vBox);
                         // Aggiungere i pulsanti desiderati
-                        dialogPane.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+                        dialogPane.getButtonTypes().setAll(ButtonType.OK);
                         // Mostrare l'alert e gestire la risposta
 
                         alert.showAndWait().ifPresent(response -> {
                             if (response == ButtonType.OK) {
 
-                            } else if (response == ButtonType.CANCEL) {
-                                System.out.println("Risposta: Annulla");
                             }
                         });
                     }
@@ -274,9 +270,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
                     if (model.passaportoPrenotato) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Attention");
+                        alert.setTitle("Attenzione!");
                         alert.setHeaderText(null);
-                        alert.setContentText("Hai già prenotato!");
+                        alert.setContentText("Hai già prenotato!\n");
                         alert.showAndWait();
 
                         //CHIUSURA CONNESSIONI
@@ -320,9 +316,9 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     }
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("ALL GOOD!");
+                    alert.setTitle("Conferma prenotazione!");
                     alert.setHeaderText(null);
-                    alert.setContentText("Prenotazione andata a buon fine. \n Ri prenota lo stesso evento per annullare la prenotazione");
+                    alert.setContentText("Prenotazione andata a buon fine. \nRi prenota lo stesso evento per annullare la prenotazione");
                     alert.showAndWait();
 
                 } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
@@ -360,7 +356,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         }
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
+                        alert.setTitle("Errore");
                         alert.setHeaderText(null);
                         alert.setContentText("Errore di prenotazione.\n Evento Già prenotato da un altro utente");
                         alert.showAndWait();
@@ -392,7 +388,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (!resultSet.next()) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Attention");
+                    alert.setTitle("Attenzione!");
                     alert.setHeaderText(null);
                     alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
                     alert.showAndWait();
