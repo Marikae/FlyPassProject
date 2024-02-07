@@ -52,7 +52,7 @@ public class ControllerPrenotationScene extends Controller implements Initializa
 
     }
     private void citizenPrenotation() throws SQLException {
-        /*String preString = model.getCitizenPrenotation();
+        /*String preString = model.getCitizenPrenotation(s);
         if(!preString.equals("nada")){
             prenotationLabel.setText(preString);
             model.activeNotification();

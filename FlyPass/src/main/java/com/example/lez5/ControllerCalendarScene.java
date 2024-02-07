@@ -111,12 +111,14 @@ public class ControllerCalendarScene extends Controller implements Initializable
             connection.close();
             statement.close();
             preparedStatement.close();
+            resultSet.close();
 
             return true;
         } else { //ritorna false se non esistono già dei record
             connection.close();
             statement.close();
             preparedStatement.close();
+            resultSet.close();
 
             return false;
         }
@@ -177,12 +179,13 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                     //CHIUSURA CONNESSIONI
                     closeConnection(connection, statement, preparedStatement);
+                    resultSet.close();
 
                     return;
                 }
                 if (!resultSet.getBoolean("Disponibile")) {
 
-                    if(notificationAlredyExist()){
+                    if(!notificationAlredyExist()){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Appuntamento non disponibile");
                         alert.setHeaderText(null);
@@ -227,6 +230,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                                         //CHIUSURA CONNESSIONI
                                         closeConnection(connection1, statement1, preparedStatement1);
+
 
                                     } catch (SQLException e) {
                                         throw new RuntimeException(e);
@@ -320,9 +324,16 @@ public class ControllerCalendarScene extends Controller implements Initializable
                     }
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("ALL GOOD!");
+                    alert.setTitle("Prenotazione effettuata!");
                     alert.setHeaderText(null);
-                    alert.setContentText("Prenotazione andata a buon fine. \n Ri prenota lo stesso evento per annullare la prenotazione");
+                    alert.setContentText("Prenotazione andata a buon fine. \n Ri prenota lo stesso evento per annullare la prenotazione.\n" +
+                            "Ricorda di portare:\n" +
+                            "1) Il modulo di richiesta compilato\n" +
+                            "2) Una marca da bollo\n" +
+                            "3) La ricevuta del versamento sul C/C postale\n" +
+                            "4) Due fototessere su sfondo bianco\n" +
+                            "5) Il passaporto precedente (se ancora in possesso)\n\n\n" +
+                            "La lista dei documenti da portare sarà visualizzabile su prenotation alla chiusura di questo avviso");
                     alert.showAndWait();
 
                 } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
