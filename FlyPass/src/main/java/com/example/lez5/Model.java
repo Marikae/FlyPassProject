@@ -472,11 +472,13 @@ public class Model implements Initializable {
             connection2.close();
             preparedStatement.close();
             statement1.close();
+            resultSet.close();
             return var;
         }
         connection2.close();
         preparedStatement.close();
         statement1.close();
+        resultSet.close();
         return null;
     }
     public void setNotificationSeen(){ //setta la notifica a già vista
@@ -611,13 +613,11 @@ public class Model implements Initializable {
         preparedStatement.setString(1, getLoginUserName());
         ResultSet resultSet = preparedStatement.executeQuery();
         StringBuilder resultString = new StringBuilder();
-        String removeStrg = "Prenota per:\n";
         while (resultSet.next()) {
             String office = resultSet.getString("Sede");
             String date = resultSet.getString("Data");
             String hour = resultSet.getString("Inizio");
-            String typeOriginal = resultSet.getString("TipoServizio");
-            String type = typeOriginal.substring(removeStrg.length());
+            String type = resultSet.getString("TipoServizio");
             String citizen = getCitizenWhoBooked(resultSet.getString("Id_utente_prenotazione"));
 
             String notificationString = String.format("Prenotazione per %s, sede di %s, il giorno %s, alle ore %s effettuata da %s", type, office, date, hour, citizen);
@@ -661,7 +661,7 @@ public class Model implements Initializable {
 
         return citizenWhoBooked;
     }
-    public boolean notificationAlredyExist(Date dataIn, Time hourIn, String office) throws SQLException {
+    /*public boolean notificationAlredyExist(Date dataIn, Time hourIn, String office) throws SQLException {
         Connection connection = DatabaseConnection.databaseConnection();
         String query = "SELECT * FROM notification WHERE utente_id = ? AND data = dataIn AND ora = hourIn AND tipo = ? AND sede = office AND stato = 'definito'";
         Statement statement = connection.createStatement();
@@ -682,5 +682,5 @@ public class Model implements Initializable {
 
             return false;
         }
-    }
+    }*/
 }

@@ -282,8 +282,26 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                         ResultSet resultSet3 = preparedStatement3.executeQuery();
 
 
+                        if(!resultSet3.next()){
 
-                        Date dataPrenotazionePassaporto = resultSet.getDate("Data");
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Errore!");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Non è stato rilevato nessun appuntamento di prenotazione passaporto.");
+                            alert.showAndWait();
+
+                            connection.close();
+                            statement.close();
+                            preparedStatement.close();
+
+                            connection3.close();
+                            statement3.close();
+                            preparedStatement3.close();
+
+                            return;
+                        }
+
+                        Date dataPrenotazionePassaporto = resultSet3.getDate("Data");
 
                         LocalDate dataPrenotazionePassaportoLD = dataPrenotazionePassaporto.toLocalDate().plusDays(30);
                         LocalDate dataPrenotazioneRitiroLD = (EventDatePicker.getValue());
@@ -291,7 +309,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
 
 
                         //LA DIFFERENZA E' MINORE DI 30 GIORNI
-                        if (dataPrenotazioneRitiroLD.isAfter(dataPrenotazionePassaportoLD)) {
+                        if (!dataPrenotazioneRitiroLD.isAfter(dataPrenotazionePassaportoLD)) {
                             System.out.println("La differenza è minore di 30 giorni.");
 
                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
