@@ -100,6 +100,12 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
             prenotaEvento.setText("Inserisci slot");
             annullaPrenotaEvento.setText("Rimuovi slot");
         }
+        if(model.ritiroPrenotato){
+            prenotaEvento.setVisible(false);
+        }else{
+            annullaPrenotaEvento.setVisible(false);
+        }
+
     }
 
     @FXML
@@ -137,124 +143,61 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                 alert.showAndWait();
                 return;
             }
-            try {
-                Connection connection = DatabaseConnection.databaseConnection();
-                Statement statement = connection.createStatement();
 
-                String query = ("SELECT * FROM eventi " +
-                        "WHERE Data = ? " +
-                        "AND Inizio = ? " +
-                        "AND Sede = ? " +
-                        "AND TipoServizio = ? ");
 
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setDate(1, Date.valueOf(EventDatePicker.getValue()));
-                preparedStatement.setObject(2, TimePicker.getValue());
-                preparedStatement.setString(3, model.evento.sede.name());
-                preparedStatement.setString(4, ritiropassaporto);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (!resultSet.next()) {
+            if(!model.passaportoPrenotato){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attenzione");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rilevare nessun passaporto da lei prenotato.");
+                alert.showAndWait();
+                return;
+            }else {
+                try {
+                    Connection connection = DatabaseConnection.databaseConnection();
+                    Statement statement = connection.createStatement();
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Attention");
+                    String query = ("UPDATE eventi SET Id_utente_prenotazione = 0, Prenotato = 0 WHERE Id_utente_prenotazione = ? AND TipoServizio = ?");
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setInt(1, model.idUtente);
+                    preparedStatement.setString(2,ritiropassaporto);
+
+                    preparedStatement.executeUpdate();
+
+                    String query2 = "UPDATE citizen SET PrenotazioneRitiro = 0 WHERE id = ?";
+
+                    Connection connection2 = DatabaseConnection.databaseConnection();
+                    Statement statement2 = connection2.createStatement();
+
+                    PreparedStatement preparedStatement2 = connection2.prepareStatement(query2);
+                    preparedStatement2.setInt(1, model.idUtente);
+
+                    preparedStatement2.executeUpdate();
+
+                    model.ritiroPrenotato = false;
+
+                    //CHIUSURA CONNESSIONE
+                    closeConnection(connection2, statement2, preparedStatement2);
+
+                    //CHIUSURA CONNESSIONE
+                    closeConnection(connection, statement, preparedStatement);
+
+                    prenotaEvento.setVisible(true);
+                    annullaPrenotaEvento.setVisible(false);
+
+                    calendar.getChildren().clear();
+                    drawCalendar();
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Prenotazione annullata");
                     alert.setHeaderText(null);
-                    alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                    alert.setContentText("La prenotazione è stata annullata con successo");
                     alert.showAndWait();
 
 
-                    //CHIUSURA CONNESSIONI
-                    closeConnection(connection, statement, preparedStatement);
-                    resultSet.close();
-
-                    return;
+                } catch (SQLException e) {
+                    System.out.println(e);
                 }
-                if (!resultSet.getBoolean("Disponibile")) {
-
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Appuntamento non disponibile");
-                    alert.setHeaderText(null);
-                    // Creare una VBox personalizzata con il messaggio e la CheckBox
-                    VBox vBox = new VBox();
-                    vBox.setSpacing(10);
-                    vBox.setPadding(new Insets(10, 10, 10, 10));
-                    Label messageLabel = new Label("L'appuntamento non è disponibile. E quindi non può essere annullata \n" +
-                            "alcuna prenotazione.\nScegli un'altra data e riprova");
-
-                    //CHIUSURA CONNESSIONI
-                    closeConnection(connection, statement, preparedStatement);
-                    resultSet.close();
-
-                    return;
-
-                } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
-
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Appuntamento non prenotato");
-                    alert.setHeaderText(null);
-                    alert.setContentText("L'appuntamento che hai scelto è disponibile per la prenotazione, tuttavia\n" +
-                            "non puoi annullare una prenotazione non effettuata.");
-                    alert.showAndWait();
-
-                    //CHIUSURA CONNESSIONI
-                    closeConnection(connection, statement, preparedStatement);
-                    resultSet.close();
-
-                    return;
-
-                } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
-                    if (resultSet.getInt("Id_utente_prenotazione") == model.idUtente) {
-                        try {
-                            String query2 = ("UPDATE eventi SET Prenotato = 0, Id_utente_prenotazione = 0 WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
-                            Connection connection2 = DatabaseConnection.databaseConnection();
-                            Statement statement2 = connection2.createStatement();
-
-                            PreparedStatement preparedStatement2 = connection2.prepareStatement(query2);
-                            preparedStatement2.setDate(1, Date.valueOf(EventDatePicker.getValue()));
-                            preparedStatement2.setObject(2, TimePicker.getValue());
-                            preparedStatement2.setString(3, model.evento.sede.name());
-                            preparedStatement2.setString(4, ritiropassaporto);
-
-                            preparedStatement2.executeUpdate();
-
-                            query2 = "UPDATE citizen SET PrenotazioneRitiro = 0 WHERE id = ?";
-
-                            preparedStatement2 = connection2.prepareStatement(query2);
-                            preparedStatement2.setInt(1, model.idUtente);
-
-                            preparedStatement2.executeUpdate();
-
-                            model.ritiroPrenotato = false;
-
-                            //CHIUSURA CONNESSIONE
-                            closeConnection(connection2, statement2, preparedStatement2);
-                            resultSet.close();
-
-                            calendar.getChildren().clear();
-                            drawCalendar();
-
-                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                            alert.setTitle("Appuntamento annullato");
-                            alert.setHeaderText(null);
-                            alert.setContentText("L'appuntamento è stato annullato con successo!");
-                            alert.showAndWait();
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setHeaderText(null);
-                        alert.setContentText("L'appuntamento da lei selezionato non è stato prenotato da lei e non è quindi annullabile.\n" +
-                                "Riprova.");
-                        alert.showAndWait();
-                    }
-                }
-                //CHIUSURA CONNESSIONE
-                closeConnection(connection, statement, preparedStatement);
-                resultSet.close();
-
-            } catch (SQLException e) {
-                System.out.println(e);
             }
 
         } else {
@@ -572,6 +515,9 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                     alert.setHeaderText(null);
                     alert.setContentText("Prenotazione andata a buon fine.");
                     alert.showAndWait();
+
+                    prenotaEvento.setVisible(false);
+                    annullaPrenotaEvento.setVisible(true);
 
                 } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
                     if (resultSet.getInt("Id_utente_prenotazione") == model.idUtente) {
