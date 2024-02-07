@@ -8,36 +8,36 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="676.0" prefWidth="600.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerRegisterScene">
+<AnchorPane prefHeight="676.0" prefWidth="600.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerRegisterScene">
    <children>
-      <Button fx:id="registerButton" layoutX="284.0" layoutY="473.0" mnemonicParsing="false" onAction="#registration" prefHeight="25.0" prefWidth="89.0" styleClass="bottom" stylesheets="@style.css" text="Register" />
-      <Button fx:id="undoButton" layoutX="28.0" layoutY="25.0" mnemonicParsing="false" onAction="#backToFirstScene" prefHeight="25.0" prefWidth="73.0" styleClass="bottom" stylesheets="@style.css" text="&lt;Back" />
-      <Label fx:id="nameSinginLabel" layoutX="193.0" layoutY="94.0" text="Name" textFill="WHITE" />
-      <Label fx:id="surnameSinginLabel" layoutX="356.0" layoutY="94.0" text="Surname" textFill="WHITE" />
-      <TextField fx:id="name" layoutX="193.0" layoutY="111.0" />
-      <TextField fx:id="surname" layoutX="356.0" layoutY="111.0" />
-      <TextField fx:id="place_of_birth" layoutX="193.0" layoutY="166.0" />
-      <Label fx:id="birthplaceLabel" layoutX="195.0" layoutY="149.0" text="Birth place" textFill="WHITE" />
-      <Label fx:id="birthdayLabel" layoutX="356.0" layoutY="149.0" text="day of birth" textFill="WHITE" />
-      <DatePicker fx:id="date_of_birth" layoutX="356.0" layoutY="166.0" />
-      <Label fx:id="codfisLabel" layoutX="195.0" layoutY="208.0" text="Tax code" textFill="WHITE" />
-      <TextField fx:id="tax_code" layoutX="193.0" layoutY="226.0" />
-      <Label fx:id="singinLabel" layoutX="225.0" layoutY="38.0" styleClass="ocean-background" stylesheets="@style.css" text="Register" textFill="WHITE">
+      <Button fx:id="registerButton" layoutX="313.0" layoutY="480.0" mnemonicParsing="false" onAction="#registration" prefHeight="25.0" prefWidth="89.0" styleClass="bottom" stylesheets="@style.css" text="Registrati" />
+      <Button fx:id="undoButton" layoutX="28.0" layoutY="25.0" mnemonicParsing="false" onAction="#backToFirstScene" prefHeight="25.0" prefWidth="73.0" styleClass="bottom" stylesheets="@style.css" text="&lt; Indietro" />
+      <Label fx:id="nameSinginLabel" layoutX="143.0" layoutY="126.0" text="Nome" textFill="WHITE" />
+      <Label fx:id="surnameSinginLabel" layoutX="306.0" layoutY="126.0" text="Cognome" textFill="WHITE" />
+      <TextField fx:id="name" layoutX="143.0" layoutY="143.0" />
+      <TextField fx:id="surname" layoutX="306.0" layoutY="143.0" />
+      <TextField fx:id="place_of_birth" layoutX="143.0" layoutY="198.0" />
+      <Label fx:id="birthplaceLabel" layoutX="145.0" layoutY="181.0" text="Luogo di nascita" textFill="WHITE" />
+      <Label fx:id="birthdayLabel" layoutX="306.0" layoutY="181.0" text="Data di nascita" textFill="WHITE" />
+      <DatePicker fx:id="date_of_birth" layoutX="306.0" layoutY="198.0" />
+      <Label fx:id="codfisLabel" layoutX="145.0" layoutY="240.0" text="Codice fiscale" textFill="WHITE" />
+      <TextField fx:id="tax_code" layoutX="143.0" layoutY="258.0" />
+      <Label fx:id="singinLabel" layoutX="175.0" layoutY="70.0" styleClass="ocean-background" stylesheets="@style.css" text="Registrazione" textFill="WHITE">
          <font>
             <Font name="Berlin Sans FB" size="36.0" />
          </font>
       </Label>
-      <Hyperlink fx:id="loginHL" layoutX="179.0" layoutY="509.0" onAction="#EnterLoginScene" prefHeight="24.0" prefWidth="225.0" text="You have alredy an account? Log in" underline="true" />
-      <TextField fx:id="email" layoutX="193.0" layoutY="286.0" />
-      <TextField fx:id="password" layoutX="193.0" layoutY="338.0" />
-      <TextField fx:id="confirmPassword" layoutX="193.0" layoutY="395.0" />
-      <Label layoutX="195.0" layoutY="269.0" text="Email" textFill="WHITE" />
-      <Label layoutX="195.0" layoutY="321.0" text="Password" textFill="WHITE" />
-      <Label layoutX="195.0" layoutY="378.0" text="Confirm password" textFill="WHITE" />
-      <Label fx:id="error" layoutX="211.0" layoutY="433.0" text="Errore" textFill="RED" />
-      <TextField fx:id="num_health_card" layoutX="356.0" layoutY="226.0" />
-      <Label layoutX="359.0" layoutY="208.0" styleClass="text-background" stylesheets="@style.css" text="Health card number" />
-      <TextField fx:id="cat" layoutX="356.0" layoutY="286.0" />
-      <Label layoutX="356.0" layoutY="269.0" styleClass="text-background" stylesheets="@style.css" text="Category" />
+      <Hyperlink fx:id="loginHL" layoutX="257.0" layoutY="549.0" onAction="#EnterLoginScene" prefHeight="24.0" prefWidth="175.0" text="Hai già un'account? Accedi qui." underline="true" />
+      <TextField fx:id="email" layoutX="143.0" layoutY="318.0" />
+      <TextField fx:id="password" layoutX="144.0" layoutY="418.0" />
+      <TextField fx:id="confirmPassword" layoutX="309.0" layoutY="418.0" />
+      <Label layoutX="145.0" layoutY="301.0" text="Email" textFill="WHITE" />
+      <Label layoutX="146.0" layoutY="401.0" text="Password" textFill="WHITE" />
+      <Label layoutX="311.0" layoutY="401.0" text="Conferma password" textFill="WHITE" />
+      <Label fx:id="error" layoutX="132.0" layoutY="521.0" prefHeight="17.0" prefWidth="347.0" textFill="RED" />
+      <TextField fx:id="num_health_card" layoutX="306.0" layoutY="258.0" />
+      <Label layoutX="309.0" layoutY="240.0" styleClass="text-background" stylesheets="@style.css" text="Numero carta sanitaria" />
+      <TextField fx:id="cat" layoutX="306.0" layoutY="318.0" />
+      <Label layoutX="306.0" layoutY="301.0" styleClass="text-background" stylesheets="@style.css" text="Categoria d'appartenenza" />
    </children>
 </AnchorPane>

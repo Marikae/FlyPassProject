@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -30,7 +31,7 @@
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Button fx:id="servicesButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#returnMainScene" prefHeight="91.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Services">
+                  <Button fx:id="servicesButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#returnMainScene" prefHeight="91.0" prefWidth="90.0" stylesheets="@style.css" text="Servizi">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -38,12 +39,16 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <styleClass>
+                        <String fx:value="ocean-background" />
+                        <String fx:value="text-background" />
+                     </styleClass>
                   </Button>
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#goToPrenotationScene" prefHeight="89.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Prenotation">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#goToPrenotationScene" prefHeight="89.0" prefWidth="90.0" stylesheets="@style.css" text="Prenotazioni">
                      <graphic>
                         <ImageView fx:id="prenotationImg" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -51,12 +56,16 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <styleClass>
+                        <String fx:value="ocean-background" />
+                        <String fx:value="text-background" />
+                     </styleClass>
                   </Button>
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="106.0" prefWidth="90.0" styleClass="middleocean-background" stylesheets="@style.css" text="Info">
+                  <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="106.0" prefWidth="90.0" stylesheets="@style.css" text="Info">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -64,6 +73,10 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <styleClass>
+                        <String fx:value="middleocean-background" />
+                        <String fx:value="text-background" />
+                     </styleClass>
                   </Button>
                </children>
             </VBox>
@@ -71,7 +84,7 @@
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Button fx:id="logOut" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToLogOutScene" prefHeight="93.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="LogOut">
+                  <Button fx:id="logOut" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToLogOutScene" prefHeight="93.0" prefWidth="90.0" stylesheets="@style.css" text="Uscita">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -79,12 +92,16 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <styleClass>
+                        <String fx:value="ocean-background" />
+                        <String fx:value="text-background" />
+                     </styleClass>
                   </Button>
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <Button fx:id="profileButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToProfileScene" prefHeight="87.0" prefWidth="90.0" styleClass="ocean-background" stylesheets="@style.css" text="Profile">
+                  <Button fx:id="profileButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToProfileScene" prefHeight="87.0" prefWidth="90.0" stylesheets="@style.css" text="Profilo">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -92,6 +109,10 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <styleClass>
+                        <String fx:value="ocean-background" />
+                        <String fx:value="text-background" />
+                     </styleClass>
                   </Button>
                </children>
             </VBox>
@@ -106,9 +127,9 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0" styleClass="ocean-background" stylesheets="@style.css">
                <children>
-                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="809.0">
+                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="564.0">
                      <children>
-                        <Label prefHeight="35.0" prefWidth="141.0" text="Information" textFill="WHITE">
+                        <Label prefHeight="35.0" prefWidth="151.0" text="Informazioni" textFill="WHITE">
                            <font>
                               <Font name="System Italic" size="24.0" />
                            </font>

@@ -91,7 +91,7 @@ public class ControllerLoginScene extends Controller implements Initializable {
                         //System.out.println("Credenziali non valide. Accesso negato.");
                         errorLabel.setVisible(true);
                         errorLabel.setTextFill(Color.web("#FF0000"));
-                        errorLabel.setText("Invalid credentials. Access denied.");
+                        errorLabel.setText("Credenziali non valide. Accesso negato\n.");
                         //fromWho = "worker";
                     }
                 } else {
@@ -101,7 +101,7 @@ public class ControllerLoginScene extends Controller implements Initializable {
                         // Nessun risultato trovato, le credenziali non sono valide
                         errorLabel.setVisible(true);
                         errorLabel.setTextFill(Color.web("#FF0000"));
-                        errorLabel.setText("Invalid credentials. Access denied.");
+                        errorLabel.setText("Credenziali non valide. Accesso negato.\n");
                     }
                 }
             }
@@ -129,25 +129,25 @@ public class ControllerLoginScene extends Controller implements Initializable {
         if(email.isEmpty() && password.isEmpty()){
             errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
-            errorLabel.setText("Empty fields.");
+            errorLabel.setText("Inserisci le credenziali per accedere.");
             return false;
         }
         if(email.isEmpty()){
             errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
-            errorLabel.setText("Email is missing.");
+            errorLabel.setText("Email mancante.");
             return false;
         }
         if(password.isEmpty()){
             errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
-            errorLabel.setText("Password is missing.");
+            errorLabel.setText("Password mancante.");
             return false;
         }
         if (!model.checkEmail(email)) {
             errorLabel.setVisible(true);
             errorLabel.setTextFill(Color.web("#FF0000"));
-            errorLabel.setText("Email not valid");
+            errorLabel.setText("Email non valida.");
             return false;
         }
         return  true;

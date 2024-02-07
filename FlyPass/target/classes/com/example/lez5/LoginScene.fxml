@@ -21,7 +21,7 @@
    <top>
       <Pane prefHeight="62.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="undoButton" layoutX="27.0" layoutY="16.0" mnemonicParsing="false" onAction="#backToFirstScene" prefHeight="25.0" prefWidth="56.0" styleClass="bottom" stylesheets="@style.css" text="&lt;Back" />
+            <Button fx:id="undoButton" layoutX="27.0" layoutY="16.0" mnemonicParsing="false" onAction="#backToFirstScene" prefHeight="25.0" prefWidth="73.0" styleClass="bottom" stylesheets="@style.css" text="&lt; Indietro" />
          </children>
       </Pane>
    </top>
@@ -33,7 +33,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="64.0" prefWidth="440.0">
                <children>
-                  <Label fx:id="loginLabel" prefHeight="23.0" prefWidth="127.0" styleClass="text-background" stylesheets="@style.css" text="Login">
+                  <Label fx:id="loginLabel" prefHeight="57.0" prefWidth="127.0" styleClass="text-background" stylesheets="@style.css" text="Accedi">
                      <font>
                         <Font name="Berlin Sans FB Demi Bold" size="43.0" />
                      </font>
@@ -69,7 +69,7 @@
                      <right>
                         <VBox alignment="CENTER" prefHeight="55.0" prefWidth="195.0" BorderPane.alignment="CENTER">
                            <children>
-                              <CheckBox fx:id="showPass" mnemonicParsing="false" onAction="#showPassword" prefHeight="59.0" prefWidth="140.0" text="Show password" textFill="WHITE" />
+                              <CheckBox fx:id="showPass" mnemonicParsing="false" onAction="#showPassword" prefHeight="59.0" prefWidth="140.0" text="Mostra password" textFill="WHITE" />
                            </children></VBox>
                      </right>
                      <center>
@@ -97,11 +97,11 @@
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label fx:id="errorLabel" prefHeight="33.0" prefWidth="217.0" styleClass="ocean-background" stylesheets="@style.css" text="Error" textFill="#0e2573" />
+                                    <Label fx:id="errorLabel" prefHeight="33.0" prefWidth="217.0" styleClass="ocean-background" stylesheets="@style.css" textFill="#0e2573" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="29.0" prefWidth="219.0" />
-                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="76.0" styleClass="bottom" stylesheets="@style.css" text="Enter" />
+                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="76.0" styleClass="bottom" stylesheets="@style.css" text="Entra" />
                            </children>
                         </VBox>
                      </center>
@@ -120,7 +120,7 @@
                      <center>
                         <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Hyperlink fx:id="createAcciuntHL" onAction="#enterRegisterScene" prefHeight="46.0" prefWidth="225.0" text="You don't have any account? create one" underline="true" />
+                              <Hyperlink fx:id="createAcciuntHL" onAction="#enterRegisterScene" prefHeight="46.0" prefWidth="225.0" text="Non hai un'account? Creane uno." underline="true" />
                            </children>
                         </VBox>
                      </center>

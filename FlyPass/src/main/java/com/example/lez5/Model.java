@@ -82,56 +82,56 @@ public class Model implements Initializable {
         //Rilascio prima volta
         Service service = new Service();
         service.setName("Rilascio prima volta");
-        service.setDescription("Rilascio del passaporto per la prima volta");
+        service.setDescription("Rilascio del passaporto per la prima volta.");
         service.setImgSrc("/img/firstTime.jpg");
         ls.add(service);
 
         //Rilascio scadenza
         service = new Service();
         service.setName( "Rinnovo per scadenza");
-        service.setDescription("Rilascio del passaporto per scadenza");
+        service.setDescription("Rilascio del passaporto per scadenza.");
         service.setImgSrc("/img/scadenza.jpg");
         ls.add(service);
 
         //Furto o smarrimento
         service = new Service();
         service.setName("Furto o smarrimento");
-        service.setDescription("Rilascio del passaporto per furto o smarrimento");
+        service.setDescription("Rilascio del passaporto per furto o smarrimento.");
         service.setImgSrc("/img/furto.jpg");
         ls.add(service);
 
         //Rilascio detoriamento
         service = new Service();
         service.setName("Rinnovo per detoriamento");
-        service.setDescription("Rilascio del passaporto per detoriamento");
+        service.setDescription("Rilascio del passaporto per detoriamento.");
         service.setImgSrc("/img/detoriamento.jpg");
         ls.add(service);
 
         //passaporto urgente
         service = new Service();
         service.setName("Passaporto urgente");
-        service.setDescription("Rilascio del passaporto urgentemente");
+        service.setDescription("Rilascio del passaporto urgentemente.");
         service.setImgSrc("/img/urgente.jpg");
         ls.add(service);
 
         //prolungamento validità passsaporto
         service = new Service();
         service.setName("Prolungamento validità passaporto");
-        service.setDescription("prolungamento della validità del passaporto");
+        service.setDescription("prolungamento della validità del passaporto.");
         service.setImgSrc("/img/scadenza.jpg");
         ls.add(service);
 
         //cambio info personali
         service = new Service();
         service.setName("Cambio info personali");
-        service.setDescription("Iter per il cambio delle informazioni personali");
+        service.setDescription("Iter per il cambio delle informazioni personali.");
         service.setImgSrc("/img/cambio.jpg");
         ls.add(service);
 
         //passaporto per minori
         service = new Service();
         service.setName("Passaporto per minori");
-        service.setDescription("Rilascio passaporto per minori");
+        service.setDescription("Rilascio passaporto per minori.");
         service.setImgSrc("/img/minori.jpg");
         ls.add(service);
 
@@ -435,7 +435,7 @@ public class Model implements Initializable {
 
 
     public void notification() throws SQLException {
-        if(getCitizenPrenotation().equals("no prenotation found\n")) { //Se il cittadino non ha ancora prenotato
+        if(getCitizenPrenotation().equals("Prenotazione ancora da effettuare!\n")) { //Se il cittadino non ha ancora prenotato
             //se ci sono notifiche non viste allora appare il pallino verde
             //altrimenti niente pallino verde ma le notifiche vengono scritte comunque
             if(notificationSeen() == false){
@@ -544,7 +544,7 @@ public class Model implements Initializable {
             connection.close();
             statement.close();
             preparedStatement.close();
-            return "no new notification";
+            return "Nessuna nuova notifica";
         } else {
             //notification = true;
             connection.close();
@@ -628,7 +628,7 @@ public class Model implements Initializable {
             connection.close();
             statement.close();
             preparedStatement.close();
-            return "no prenotation booked";
+            return "Lista prenotazioni vuota.";
         } else {
             connection.close();
             statement.close();

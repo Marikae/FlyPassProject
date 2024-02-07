@@ -163,7 +163,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                 if (!resultSet.next()) {
 
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Attention");
+                    alert.setTitle("Attenzione!");
                     alert.setHeaderText(null);
                     alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
                     alert.showAndWait();
@@ -199,7 +199,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                     DialogPane dialogPane = alert.getDialogPane();
                     dialogPane.setContent(vBox);
                     // Aggiungere i pulsanti desiderati
-                    dialogPane.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+                    dialogPane.getButtonTypes().setAll(ButtonType.OK);
                     // Mostrare l'alert e gestire la risposta
 
                     alert.showAndWait().ifPresent(response -> {
@@ -236,8 +236,6 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                                 }
                             }
 
-                        } else if (response == ButtonType.CANCEL) {
-                            System.out.println("Risposta: Annulla");
                         }
                     });
 
@@ -256,7 +254,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                         //  "Togli l'altra prenotazione per aggiungerne\n" +
                         //  "una nuova");
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Attention");
+                        alert.setTitle("Attenzione");
                         alert.setHeaderText(null);
                         alert.setContentText("Hai già prenotato il tuo ritiro!");
                         alert.showAndWait();
@@ -413,7 +411,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                         //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
                         //ErrorePrenotazione.setText("Errore di prenotazione.\n Evento Già prenotato da un altro utente");
                         Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
+                        alert.setTitle("Errore");
                         alert.setHeaderText(null);
                         alert.setContentText("Errore di prenotazione.\n Evento Già prenotato da un altro utente");
                         alert.showAndWait();
@@ -447,7 +445,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                     //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
                     //ErrorePrenotazione.setText("Non è stato possibile rilevare l'appuntamento.\n Cambiare data ed orario e riprovare");
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Attention");
+                    alert.setTitle("Attenzione!");
                     alert.setHeaderText(null);
                     alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
                     alert.showAndWait();

@@ -63,7 +63,7 @@ public class ControllerProfileScene extends Controller implements Initializable 
             nameLabel.setText(user.getName());
             surnameLabel.setText(user.getSurname());
             emailLabel.setText(user.getEmail());
-            finalCodFisc.setText("Office:      ");
+            finalCodFisc.setText("Ufficio:      ");
             taxCodeLabel.setText(user.getOffice().toString());
             //nascondo le altre label
             placeOfBirthLabel.setVisible(false);
