@@ -412,18 +412,19 @@ public class Model implements Initializable {
        try {
            Connection connection = DatabaseConnection.databaseConnection();
            String query = ("SELECT Data, Inizio, Fine, Sede FROM eventi WHERE Id_utente_prenotazione = ?");
-
+           Statement statement = connection.createStatement();
            PreparedStatement preparedStatement = connection.prepareStatement(query);
            preparedStatement.setString(1, String.valueOf(idUtente) );
            ResultSet resultSet = preparedStatement.executeQuery();
            if (resultSet.next()) {
-                prenotation = "data: " + preparedStatement.getResultSet().getString("Data") + "\n Orario: " + preparedStatement.getResultSet().getString("Inizio") + "\n Sede: " + preparedStatement.getResultSet().getString("Sede");
+                prenotation = "Prenotazione prenotata per: \n " + preparedStatement.getResultSet().getString("Data") + "\n Orario: " + preparedStatement.getResultSet().getString("Inizio") + "\n Sede: " + preparedStatement.getResultSet().getString("Sede");
            }else{
-               prenotation = "no prenotation found\n";
+               prenotation = "Prenotazione ancora da effettuare!\n";
            }
 
            connection.close();
            preparedStatement.close();
+           statement.close();
            resultSet.close();
 
        }catch (SQLException e) {
@@ -526,14 +527,14 @@ public class Model implements Initializable {
         preparedStatement.setString(1, getIdCitizen());
         ResultSet resultSet = preparedStatement.executeQuery();
         StringBuilder resultString = new StringBuilder();
-        String removeStrg = "Prenota per:\n";
+        //String removeStrg = "Prenota per:\n";
 
         while (resultSet.next()) {
             String sede = resultSet.getString("sede");
             String data = resultSet.getString("data");
             String ora = resultSet.getString("ora");
-            String tipoOriginal = resultSet.getString("tipo");
-            String tipo = tipoOriginal.substring(removeStrg.length());
+            String tipo = resultSet.getString("tipo");
+            //String tipo = tipoOriginal.substring(removeStrg.length());
             String notificationString = String.format("Nuova disponibilità per %s nella sede di %s, il giorno %s, alle ore %s\n",tipo, sede, data, ora);
             resultString.append(notificationString);
         }
@@ -558,13 +559,13 @@ public class Model implements Initializable {
         preparedStatement.setString(1, getIdCitizen());
         ResultSet resultSet = preparedStatement.executeQuery();
         StringBuilder resultString = new StringBuilder();
-        String removeStrg = "Prenota per:\n";
+       // String removeStrg = "Prenota per:\n";
         while (resultSet.next()) {
             String sede = resultSet.getString("sede");
             String data = resultSet.getString("data");
             String ora = resultSet.getString("ora");
-            String tipoOriginal = resultSet.getString("tipo");
-            String tipo = tipoOriginal.substring(removeStrg.length());
+            String tipo = resultSet.getString("tipo");
+            //String tipo = tipoOriginal.substring(removeStrg.length());
             String notificationString = String.format("Disponibilità per %s nella sede di %s, il giorno %s, alle ore %s\n",tipo, sede, data, ora);
             resultString.append(notificationString);
         }
@@ -572,7 +573,7 @@ public class Model implements Initializable {
             connection.close();
             statement.close();
             preparedStatement.close();
-            return "no notification";
+            return "";
         } else {
             connection.close();
             statement.close();

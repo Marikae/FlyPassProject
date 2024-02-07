@@ -52,18 +52,20 @@ public class ControllerPrenotationScene extends Controller implements Initializa
 
     }
     private void citizenPrenotation() throws SQLException {
-        /*String preString = model.getCitizenPrenotation();
-        if(!preString.equals("nada")){
+        String preString = model.getCitizenPrenotation();
+        if(!preString.equals("Prenotazione ancora da effettuare!\n")){ //prenotazione effettuata
             prenotationLabel.setText(preString);
             model.activeNotification();
-        }*/
-        model.setNotificationSeen();
-        model.notification();
-        newNot = model.getNewNotification();
-        newNotLabel.setText(newNot);
+        }else{ //la prenotazione deve ancora avvenire
+            model.setNotificationSeen();
+            model.notification();
+            newNot = model.getNewNotification();
+            newNotLabel.setText(newNot);
 
-        oldNot = model.getOldNotification();
-        oldNotLabel.setText(oldNot);
+            oldNot = model.getOldNotification();
+            oldNotLabel.setText(oldNot);
+        }
+
 
 
     }
