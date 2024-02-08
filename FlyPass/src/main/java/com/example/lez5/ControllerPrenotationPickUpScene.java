@@ -134,7 +134,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
     private void annullaPrenotaEvento(ActionEvent event) {
         if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
-            if (!model.annullaPrenotaEventoCittadino()) {
+            if (!model.annullaPrenotaRitiroPassaportoCittadino()) {
                 return;
             }
 
@@ -153,7 +153,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
         } else {
 //------------------------------CALENDARIO LAVORATORE------------------------------------------------------
 
-            if (!model.annullaPrenotazioneEventoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())) {
+            if (!model.annullaPrenotaRitiroPassaportoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())) {
                 return;
             } else {
                 calendar.getChildren().clear();
@@ -321,7 +321,51 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
 
         }
     }*/
+
     @FXML
+    private void prenotaEvento (ActionEvent event) {
+        if (!Model.getModel().isWorker()) {
+//------------------------------CALENDARIO CITTADINO------------------------------------------------------
+            if(!model.prenotaRitiroPassaportoCittadino(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                return;
+            }else{
+                calendar.getChildren().clear();
+                drawCalendar();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Conferma prenotazione!");
+                alert.setHeaderText(null);
+                alert.setContentText("Prenotazione andata a buon fine.\n" +
+                        "Ricorda di portare:\n" +
+                        "1) Il modulo di richiesta compilato\n" +
+                        "2) Una marca da bollo\n" +
+                        "3) La ricevuta del versamento sul C/C postale\n" +
+                        "4) Due fototessere su sfondo bianco\n" +
+                        "5) Il passaporto precedente (se ancora in possesso)\n\n\n" +
+                        "La lista dei documenti da portare sarà visualizzabile su prenotation alla chiusura di questo avviso");
+                alert.showAndWait();
+
+                annullaPrenotaEvento.setVisible(true);
+                prenotaEvento.setVisible(false);
+            }
+
+        } else {
+//------------------------------CALENDARIO LAVORATORE------------------------------------------------------
+            if(!model.prenotaRitiroPassaportoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                return;
+            }else{
+                calendar.getChildren().clear();
+                drawCalendar();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Slot inserito");
+                alert.setHeaderText(null);
+                alert.setContentText("Lo slot è stato inserito correttamente");
+                alert.showAndWait();
+            }
+        }
+    }
+    /*@FXML
     private void prenotaEvento (ActionEvent event) {
         if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
@@ -648,7 +692,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
             }
 
         }
-    }
+    }*/
 
     public void closeConnection(Connection connection, Statement statement, PreparedStatement preparedStatement) throws SQLException {
         //CHIUSURA CONNESSIONI
