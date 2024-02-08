@@ -36,7 +36,7 @@
 .text-stylish {
     font-family: impact;
     -fx-text-fill: white;
-    text-shadow: 0 0 10px orange;
+    -fx-text-shadow: 0 0 10px orange;
 }
 
 /* Sfondo opaco */
