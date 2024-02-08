@@ -68,7 +68,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
     int currentDate;
     int numberOfWeek;
-    //public Model model;
+
 
     LocalTime primoTurno = LocalTime.of(8,0,0);
     LocalTime secondoTurno = LocalTime.of(9,0,0);
@@ -164,6 +164,40 @@ public class ControllerCalendarScene extends Controller implements Initializable
     @FXML
     private void annullaPrenotaEvento(ActionEvent event){
         if (!Model.getModel().isWorker()) {
+//------------------------------CALENDARIO CITTADINO------------------------------------------------------
+            if(!model.annullaPrenotaEventoCittadino()){
+                return;
+            }
+
+            prenotaEvento.setVisible(true);
+            annullaPrenotaEvento.setVisible(false);
+
+            calendar.getChildren().clear();
+            drawCalendar();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Prenotazione annullata");
+            alert.setHeaderText(null);
+            alert.setContentText("La prenotazione è stata annullata con successo");
+            alert.showAndWait();
+
+        } else {
+//------------------------------CALENDARIO LAVORATORE------------------------------------------------------
+
+            if(!model.annullaPrenotazioneEventoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                return;
+            }else{
+                calendar.getChildren().clear();
+                drawCalendar();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Slot cancellato");
+                alert.setHeaderText(null);
+                alert.setContentText("La cancellazione dell'evento è avvenuta correttamente.");
+                alert.showAndWait();
+            }
+        }
+        /*if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
             if(!model.passaportoPrenotato){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -311,316 +345,49 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 System.out.println(e);
             }
 
-        }
+        }*/
     }
     @FXML
     private void prenotaEvento (ActionEvent event) {
-
-
         if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
-            try {
-                Connection connection = DatabaseConnection.databaseConnection();
-                Statement statement = connection.createStatement();
+            if(!model.prenotaEventoCittadino(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                return;
+            }else{
+                calendar.getChildren().clear();
+                drawCalendar();
 
-                String query = ("SELECT * FROM eventi " +
-                        "WHERE Data = ? " +
-                        "AND Inizio = ? " +
-                        "AND Sede = ? " +
-                        "AND TipoServizio = ? ");
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Conferma prenotazione!");
+                alert.setHeaderText(null);
+                alert.setContentText("Prenotazione andata a buon fine.\n" +
+                        "Ricorda di portare:\n" +
+                        "1) Il modulo di richiesta compilato\n" +
+                        "2) Una marca da bollo\n" +
+                        "3) La ricevuta del versamento sul C/C postale\n" +
+                        "4) Due fototessere su sfondo bianco\n" +
+                        "5) Il passaporto precedente (se ancora in possesso)\n\n\n" +
+                        "La lista dei documenti da portare sarà visualizzabile su prenotation alla chiusura di questo avviso");
+                alert.showAndWait();
 
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setDate(1, Date.valueOf(EventDatePicker.getValue()));
-                preparedStatement.setObject(2, TimePicker.getValue());
-                preparedStatement.setString(3, model.evento.sede.name());
-                preparedStatement.setString(4, model.getService().getName());
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (!resultSet.next()) {
-
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Attenzione!");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
-                    alert.showAndWait();
-
-
-                    //CHIUSURA CONNESSIONI
-                    closeConnection(connection, statement, preparedStatement);
-                    resultSet.close();
-
-                    return;
-                }
-                if (!resultSet.getBoolean("Disponibile")) {
-
-                    if(!notificationAlredyExist()){
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Appuntamento non disponibile");
-                        alert.setHeaderText(null);
-                        // Creare una VBox personalizzata con il messaggio e la CheckBox
-                        VBox vBox = new VBox();
-                        vBox.setSpacing(10);
-                        vBox.setPadding(new Insets(10, 10, 10, 10));
-                        Label messageLabel = new Label("L'appuntamento non è disponibile. Vuoi ricevere una notifica quando sarà disponibile?");
-
-                        CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
-                        vBox.getChildren().addAll(messageLabel, notificationCheckBox);
-                        // Impostare la VBox come contenuto del DialogPane
-                        DialogPane dialogPane = alert.getDialogPane();
-                        dialogPane.setContent(vBox);
-                        // Aggiungere i pulsanti desiderati
-                        dialogPane.getButtonTypes().setAll(ButtonType.OK);
-                        // Mostrare l'alert e gestire la risposta
-
-                        alert.showAndWait().ifPresent(response -> {
-                            if (response == ButtonType.OK) {
-                                boolean receiveNotification = notificationCheckBox.isSelected();
-                                System.out.println("Risposta: OK, Ricevi notifica: " + receiveNotification);
-
-                                if (receiveNotification){
-                                    //se l'utente ha selezionato si allora
-                                    try {
-                                        String query1 = ("INSERT INTO notification (id, data, ora, tipo, sede, stato, utente_id) VALUES (NULL, ?, ?, ?, ?, ?, ?)");
-
-                                        Connection connection1 = DatabaseConnection.databaseConnection();
-                                        Statement statement1 = connection1.createStatement();
-
-                                        PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
-
-
-                                        preparedStatement1.setString(1, String.valueOf(Date.valueOf(EventDatePicker.getValue())));
-                                        preparedStatement1.setString(2, String.valueOf(TimePicker.getValue()));
-                                        preparedStatement1.setString(3, model.getService().getName());
-                                        preparedStatement1.setString(4, model.evento.sede.name());
-                                        preparedStatement1.setString(5, "non definito");
-                                        preparedStatement1.setString(6, model.getIdCitizen());
-                                        preparedStatement1.executeUpdate();
-
-                                        //CHIUSURA CONNESSIONI
-                                        closeConnection(connection1, statement1, preparedStatement1);
-
-                                    } catch (SQLException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
-
-                            }
-                        });
-
-                        //CHIUSURA CONNESSIONI
-                        closeConnection(connection, statement, preparedStatement);
-                        resultSet.close();
-                        return;
-                    }else{
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Appuntamento non disponibile");
-                        alert.setHeaderText(null);
-                        // Creare una VBox personalizzata con il messaggio e la CheckBox
-                        VBox vBox = new VBox();
-                        vBox.setSpacing(10);
-                        vBox.setPadding(new Insets(10, 10, 10, 10));
-                        Label messageLabel = new Label("L'appuntamento non è disponibile.\n Hai già fatto richiesta per la notifica di avviso\n");
-
-                        //CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
-                        vBox.getChildren().addAll(messageLabel);
-                        // Impostare la VBox come contenuto del DialogPane
-                        DialogPane dialogPane = alert.getDialogPane();
-                        dialogPane.setContent(vBox);
-                        // Aggiungere i pulsanti desiderati
-                        dialogPane.getButtonTypes().setAll(ButtonType.OK);
-                        // Mostrare l'alert e gestire la risposta
-
-                        alert.showAndWait().ifPresent(response -> {
-                            if (response == ButtonType.OK) {
-
-                            }
-                        });
-                    }
-
-                } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
-                    if (model.passaportoPrenotato) {
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Attenzione!");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Hai già prenotato!\n");
-                        alert.showAndWait();
-
-                        //CHIUSURA CONNESSIONI
-                        closeConnection(connection, statement, preparedStatement);
-                        resultSet.close();
-                        return;
-                    }
-                    try {
-                        String query1 = ("UPDATE eventi SET Prenotato = 1, Id_utente_prenotazione = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
-                        Connection connection1 = DatabaseConnection.databaseConnection();
-                        Statement statement1 = connection1.createStatement();
-
-                        PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
-                        preparedStatement1.setInt(1, model.idUtente);
-                        preparedStatement1.setDate(2, Date.valueOf(EventDatePicker.getValue()));
-                        preparedStatement1.setObject(3, TimePicker.getValue());
-                        preparedStatement1.setString(4, model.evento.sede.name());
-                        preparedStatement1.setString(5, model.getService().getName());
-
-                        preparedStatement1.executeUpdate();
-
-
-                        query1 = "UPDATE citizen SET PassaportoPrenotato = 1 WHERE id = ?";
-
-                        preparedStatement1 = connection1.prepareStatement(query1);
-                        preparedStatement1.setInt(1, model.idUtente);
-
-                        preparedStatement1.executeUpdate();
-
-                        //CHIUSURA CONNESSIONE
-                        closeConnection(connection1, statement1, preparedStatement1);
-
-
-                        model.passaportoPrenotato = true;
-
-                        calendar.getChildren().clear();
-                        drawCalendar();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Conferma prenotazione!");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Prenotazione andata a buon fine.\n" +
-                            "Ricorda di portare:\n" +
-                            "1) Il modulo di richiesta compilato\n" +
-                            "2) Una marca da bollo\n" +
-                            "3) La ricevuta del versamento sul C/C postale\n" +
-                            "4) Due fototessere su sfondo bianco\n" +
-                            "5) Il passaporto precedente (se ancora in possesso)\n\n\n" +
-                            "La lista dei documenti da portare sarà visualizzabile su prenotation alla chiusura di questo avviso");
-                    alert.showAndWait();
-
-                    annullaPrenotaEvento.setVisible(true);
-                    prenotaEvento.setVisible(false);
-
-                } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
-
-
-                    if (resultSet.getInt("Id_utente_prenotazione") == model.idUtente) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Errore");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Errore di prenotazione.\n Hai già prenotato questo evento");
-                        alert.showAndWait();
-                    }else{
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Errore di prenotazione.\n Questo evento è stato già prenotato da un altro utente.\n" +
-                                "Scegli un altro evento e riprova");
-                        alert.showAndWait();
-                    }
-                }
-                //CHIUSURA CONNESSIONE
-                closeConnection(connection, statement, preparedStatement);
-                resultSet.close();
-            } catch (SQLException e) {
-                System.out.println(e);
+                annullaPrenotaEvento.setVisible(true);
+                prenotaEvento.setVisible(false);
             }
 
         } else {
 //------------------------------CALENDARIO LAVORATORE------------------------------------------------------
-            try {
-                Connection connection = DatabaseConnection.databaseConnection();
-                Statement statement = connection.createStatement();
-                String query = ("SELECT * FROM eventi " +
-                        "WHERE Data = ? " +
-                        "AND Inizio = ? " +
-                        "AND Sede = ? " +
-                        "AND TipoServizio = ? ");
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setDate(1, Date.valueOf(EventDatePicker.getValue()));
-                preparedStatement.setObject(2, TimePicker.getValue());
-                preparedStatement.setString(3, model.evento.sede.name());
-                preparedStatement.setString(4, model.getService().getName());
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (!resultSet.next()) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Attenzione!");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
-                    alert.showAndWait();
+            if(!model.prenotaEventoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                return;
+            }else{
+                calendar.getChildren().clear();
+                drawCalendar();
 
-                    //CHIUSURA CONNESSIONI
-                    closeConnection(connection, statement, preparedStatement);
-                    resultSet.close();
-                    return;
-                }
-                //-------------------------CREAZIONE APPUNTAMENTO-----------------------
-                if (!resultSet.getBoolean("Disponibile")) {
-                    // IL WORKER SETTA L'EVENTO DISPONIBILE PER LA PRENOTAZIONE
-                    try {
-                        String query1 = ("UPDATE eventi SET Disponibile = 1, Worker = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
-
-                        Connection connection1 = DatabaseConnection.databaseConnection();
-                        Statement statement1 = connection1.createStatement();
-                        PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
-                        preparedStatement1.setString(1, model.getLoginUserName());
-                        preparedStatement1.setDate(2, Date.valueOf(EventDatePicker.getValue()));
-                        preparedStatement1.setObject(3, TimePicker.getValue());
-                        preparedStatement1.setString(4, model.evento.sede.name());
-                        preparedStatement1.setString(5, model.getService().getName());
-                        preparedStatement1.executeUpdate();
-
-                        //CHIUSURA CONNESSIONE
-                        closeConnection(connection1, statement1, preparedStatement1);
-                        resultSet.close();
-                        calendar.getChildren().clear();
-                        drawCalendar();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    //------------------------UPDATE NOTIFICA--------------------------------------
-                    //c'è un metodo nel model per l'updateNotification che non funziona perchè mi da errore di Time/LocalTime
-                    try {
-                        String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
-                        Connection connection1 = DatabaseConnection.databaseConnection();
-                        Statement statement1 = connection1.createStatement();
-                        PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
-                        preparedStatement1.setDate(1, Date.valueOf(EventDatePicker.getValue()));
-                        preparedStatement1.setObject(2, TimePicker.getValue());
-                        preparedStatement1.setString(3, model.getService().getName());
-                        preparedStatement1.setString(4, model.evento.sede.name());
-                        preparedStatement1.executeUpdate();
-
-
-                        //CHIUSURA CONNESSIONE
-                        closeConnection(connection1, statement1, preparedStatement1);
-
-                        calendar.getChildren().clear();
-                        drawCalendar();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
-                    // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO NELLA FUNZIONE annullaPrenotaEvento
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Slot già disponibile");
-                    alert.setHeaderText(null);
-                    alert.setContentText("L'evento è già disponibile, per cancellarlo cliccare il tasto \"annulla prenotazione\"");
-                    alert.showAndWait();
-                //----------------------SLOT GIA' PRENOTATO-----------------------------------------
-                } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Slot prenotato");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Lo slot non può essere reso disponibile poichè è già stato prenotato da un cittadino");
-                    alert.showAndWait();
-                }
-                //CHIUSURA CONNESSIONE
-                closeConnection(connection, statement, preparedStatement);
-                resultSet.close();
-            } catch (SQLException e) {
-                System.out.println(e);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Slot inserito");
+                alert.setHeaderText(null);
+                alert.setContentText("Lo slot è stato inserito correttamente");
+                alert.showAndWait();
             }
-
         }
     }
 
