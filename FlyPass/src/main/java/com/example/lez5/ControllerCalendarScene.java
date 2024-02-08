@@ -109,36 +109,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
             }
         }
     }
-
-    public boolean notificationAlredyExist() throws SQLException {
-        Connection connection = DatabaseConnection.databaseConnection();
-        String query = "SELECT * FROM notification WHERE utente_id = ? AND data = ? AND ora = ?  AND tipo = ? AND sede = ? AND stato = 'definito'";
-        Statement statement = connection.createStatement();
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, model.getIdCitizen());
-        preparedStatement.setDate(2, Date.valueOf(EventDatePicker.getValue()));
-        preparedStatement.setObject(3, TimePicker.getValue());
-        preparedStatement.setString(4, model.getService().getName());
-        preparedStatement.setString(5, model.evento.sede.name());
-        //preparedStatement.setString(5, model.getService().getName());
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {//ci sono notifiche già inserite torna true
-            connection.close();
-            statement.close();
-            preparedStatement.close();
-            resultSet.close();
-
-            return true;
-        } else { //ritorna false se non esistono già dei record
-            connection.close();
-            statement.close();
-            preparedStatement.close();
-            resultSet.close();
-
-            return false;
-        }
-
-    }
     @FXML
     void backOneWeek(ActionEvent event) {
         auxDate2 = dateFocus;

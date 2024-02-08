@@ -131,20 +131,46 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
     }
 
     @FXML
-    private void annullaPrenotaEvento(ActionEvent event){
+    private void annullaPrenotaEvento(ActionEvent event) {
         if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
-
-            if(!model.passaportoPrenotato){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Attenzione");
-                alert.setHeaderText(null);
-                alert.setContentText("Non è stato possibile rilevare nessun passaporto da lei prenotato.");
-                alert.showAndWait();
+            if (!model.annullaPrenotaEventoCittadino()) {
                 return;
             }
 
+            prenotaEvento.setVisible(true);
+            annullaPrenotaEvento.setVisible(false);
 
+            calendar.getChildren().clear();
+            drawCalendar();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Prenotazione annullata");
+            alert.setHeaderText(null);
+            alert.setContentText("La prenotazione è stata annullata con successo");
+            alert.showAndWait();
+
+        } else {
+//------------------------------CALENDARIO LAVORATORE------------------------------------------------------
+
+            if (!model.annullaPrenotazioneEventoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())) {
+                return;
+            } else {
+                calendar.getChildren().clear();
+                drawCalendar();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Slot cancellato");
+                alert.setHeaderText(null);
+                alert.setContentText("La cancellazione dell'evento è avvenuta correttamente.");
+                alert.showAndWait();
+            }
+        }
+    }
+    /*@FXML
+    private void annullaPrenotaEvento(ActionEvent event){
+        if (!Model.getModel().isWorker()) {
+//------------------------------CALENDARIO CITTADINO------------------------------------------------------
             if(!model.passaportoPrenotato){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Attenzione");
@@ -294,9 +320,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
             }
 
         }
-    }
-
-
+    }*/
     @FXML
     private void prenotaEvento (ActionEvent event) {
         if (!Model.getModel().isWorker()) {

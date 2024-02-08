@@ -28,6 +28,7 @@ public class Model implements Initializable {
     private static Model modelInstance; // statico e protetto da accesso esterno
     private String loginPassword;
     private String loginUserName;
+    String ritiropassaporto = "Prenotazione ritiro passaporto";
 
     public String getLoginUserName() {
         return loginUserName;
@@ -264,6 +265,157 @@ public class Model implements Initializable {
     }
 
     //------------------------------------- DATABESE INSERIMENTO ---------------------------------
+    public boolean annullaPrenotaRitiroPassaportoCittadino() {
+        if (!ritiroPrenotato) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione");
+            alert.setHeaderText(null);
+            alert.setContentText("Non è stato possibile rilevare nessun passaporto da lei prenotato.");
+            alert.showAndWait();
+            return false;
+        } else {
+            try {
+                Connection connection = DatabaseConnection.databaseConnection();
+                Statement statement = connection.createStatement();
+                 String query = ("UPDATE eventi SET Id_utente_prenotazione = 0, Prenotato = 0 WHERE Id_utente_prenotazione = ? AND TipoServizio = ?");
+                 PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 preparedStatement.setInt(1, idUtente);
+                 preparedStatement.setString(2, ritiropassaporto);
+
+                 preparedStatement.executeUpdate();
+
+                 String query2 = "UPDATE citizen SET PrenotazioneRitiro = 0 WHERE id = ?";
+
+                 Connection connection2 = DatabaseConnection.databaseConnection();
+                 Statement statement2 = connection2.createStatement();
+
+                 PreparedStatement preparedStatement2 = connection2.prepareStatement(query2);
+                 preparedStatement2.setInt(1, idUtente);
+
+                 preparedStatement2.executeUpdate();
+
+                 ritiroPrenotato = false;
+
+                 //CHIUSURA CONNESSIONE
+                closeConnection(connection2, statement2, preparedStatement2);
+
+                //CHIUSURA CONNESSIONE
+                closeConnection(connection, statement, preparedStatement);
+
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            return true;
+        }
+
+    }
+
+
+    public boolean prenotaRitiroPassaportoCittadino(){
+
+    }
+
+    public boolean annullaPrenotaRitiroPassaportoWorker(Date date, Object time){
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, date);
+            preparedStatement.setObject(2, time);
+            preparedStatement.setString(3, evento.sede.name());
+            preparedStatement.setString(4, ritiropassaporto);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attention");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rilevare lo slot. Cambiare data ed orario e riprovare");
+                alert.showAndWait();
+
+                //CHIUSURA CONNESSIONI
+                closeConnection(connection, statement, preparedStatement);
+                resultSet.close();
+                return false;
+            }
+
+            if (!resultSet.getBoolean("Disponibile")) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Errore");
+                alert.setHeaderText(null);
+                alert.setContentText("La cancellazione dell'evento non può essere effettuata poichè non esiste\n" +
+                        "alcun evento programmato per questo slot temporale");
+                alert.showAndWait();
+                //--------------------------CANCELLAZIONE APPUNTAMENTO----------------------------------
+            } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
+                // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO
+                if(getLoginUserName().equals(resultSet.getString("Worker"))){
+                    try {
+                        String query1 = ("UPDATE eventi SET Disponibile = 0, Worker = NULL WHERE Data = ? AND Inizio = ?" +
+                                " AND Sede = ? AND TipoServizio = ? ");
+
+                        Connection connection1 = DatabaseConnection.databaseConnection();
+                        Statement statement1 = connection1.createStatement();
+
+                        PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                        preparedStatement1.setDate(1, date);
+                        preparedStatement1.setObject(2, time);
+                        preparedStatement1.setString(3, evento.sede.name());
+                        preparedStatement1.setString(4, ritiropassaporto);
+                        preparedStatement1.executeUpdate();
+                        //CHIUSURA CONNESSIONE
+                        closeConnection(connection1, statement1, preparedStatement1);
+
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    //CHIUSURA CONNESSIONE
+                    closeConnection(connection, statement, preparedStatement);
+                    resultSet.close();
+                    return true;
+
+                    //Il worker sta cercando di cancellare lo slot di un altro worker
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Slot non cancellabile");
+                    alert.setHeaderText(null);
+                    alert.setContentText("La cancellazione dell'evento non può essere cancellata poichè\n" +
+                            "l'evento non è stato creato da lei");
+                    alert.showAndWait();
+
+                    //CHIUSURA CONNESSIONE
+                    closeConnection(connection, statement, preparedStatement);
+                    resultSet.close();
+                    return false;
+                }
+
+                //----------------------SLOT GIA' PRENOTATO-----------------------------------------
+            } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Slot prenotato");
+                alert.setHeaderText(null);
+                alert.setContentText("Lo slot non può essere cancellato poichè\nè già stato prenotato");
+                alert.showAndWait();
+            }
+            //CHIUSURA CONNESSIONE
+            closeConnection(connection, statement, preparedStatement);
+            resultSet.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public boolean prenotaRitiroPassaportoWorker(){
+
+    }
+
     public boolean isAlreadyRegistered(String aus7){
         try {
             Connection connection = DatabaseConnection.databaseConnection();
