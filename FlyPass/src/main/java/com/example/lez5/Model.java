@@ -541,7 +541,7 @@ public class Model implements Initializable {
     public void setNotificationSeen(){ //setta la notifica a già vista
         try {
             Connection connection1 = DatabaseConnection.databaseConnection();
-            String query1 = ("UPDATE notification SET seen = 1 WHERE utente_id = ?");
+            String query1 = ("UPDATE notification SET seen = 1 WHERE utente_id = ? AND stato = 'definito'");
             Statement statement1 = connection1.createStatement();
             PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
             preparedStatement1.setString(1, getIdCitizen());
