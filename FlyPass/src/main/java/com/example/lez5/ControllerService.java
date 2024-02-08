@@ -38,6 +38,15 @@ public class ControllerService extends Controller implements Initializable {
         Image image = new Image(getClass().getResourceAsStream(service.getImgSrc()));
         //this.myListener = myListener;
         img.setImage(image);
+        //Image image = new Image(getClass().getResourceAsStream(service.getImgSrc()));
+        //ImageView imageView = new ImageView(image);
+        img.setPreserveRatio(false); // Imposta il rapporto d'aspetto su false
+        //imageView.fitWidthProperty().bind(containerPane.widthProperty()); // Fai in modo che l'immagine si adatti alla larghezza del contenitore
+        //imageView.fitHeightProperty().bind(containerPane.heightProperty()); // Fai in modo che l'immagine si adatti all'altezza del contenitore
+        img.setSmooth(true); // Opzionale: rende l'immagine più nitida
+        img.setCache(true); // Opzionale: abilita la cache per migliorare le prestazioni
+        //scene.getChildren().add(imageView); // Aggiungi l'ImageView al contenitore
+
         name.setText(service.getName());
         description.setText(service.getDescription());
     }

@@ -42,6 +42,7 @@ public class ControllerMainScene extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         if(model.isWorker()){
             //se non è un lavoratore
             prenotationPickUpButton.setText("Inserisci disponibilità ritiro passaporto");

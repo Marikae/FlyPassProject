@@ -1,5 +1,7 @@
+
 .ocean-background{
-    -fx-background-color: #071952;
+    //-fx-background-color: linear-gradient(#16627e, white);
+    -fx-background-color: #1F2041; //#3A4E48; //#010001; //#531CB3; //#464D77
 }
 .dark-background{
     -fx-background-color: #222222;
@@ -9,7 +11,7 @@
     -fx-border-color: white;
 }
 .bottom{
-    -fx-background-color: #16627e;
+    -fx-background-color: #4B3F72; //#6A7B76; //#BC5F04;  //#944BBB; // #36827F; // #16627e
     -fx-background-radius: 50;
     -fx-text-fill: white;
 }
@@ -21,7 +23,7 @@
 }
 
 .middleocean-background{
-    -fx-background-color: #F6AE2D;
+    -fx-background-color: #417B5A; //#BEB0A7; //#2B0504; //#CC92C2; //#F9DB6D; //#F6AE2D
 }
 .text-background{
     -fx-text-fill: white;

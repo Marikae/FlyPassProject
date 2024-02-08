@@ -68,6 +68,7 @@ public class ControllerLoginScene extends Controller implements Initializable {
 
     @FXML
      private void login(ActionEvent event) throws IOException {
+
         if(showPass.isSelected()) {
             passwordF.setText(passwordF.getPromptText());
             passwordF.setPromptText("");

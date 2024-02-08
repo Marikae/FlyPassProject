@@ -90,14 +90,14 @@ public class Model implements Initializable {
         service = new Service();
         service.setName( "Rinnovo per scadenza");
         service.setDescription("Rilascio del passaporto per scadenza.");
-        service.setImgSrc("/img/scadenza.jpg");
+        service.setImgSrc("/img/expiration.jpg");
         ls.add(service);
 
         //Furto o smarrimento
         service = new Service();
         service.setName("Furto o smarrimento");
         service.setDescription("Rilascio del passaporto per furto o smarrimento.");
-        service.setImgSrc("/img/furto.jpg");
+        service.setImgSrc("/img/thref.jpg");
         ls.add(service);
 
         //Rilascio detoriamento
@@ -111,21 +111,21 @@ public class Model implements Initializable {
         service = new Service();
         service.setName("Passaporto urgente");
         service.setDescription("Rilascio del passaporto urgentemente.");
-        service.setImgSrc("/img/urgente.jpg");
+        service.setImgSrc("/img/urgent.jpg");
         ls.add(service);
 
         //prolungamento validità passsaporto
         service = new Service();
         service.setName("Prolungamento validità passaporto");
         service.setDescription("prolungamento della validità del passaporto.");
-        service.setImgSrc("/img/scadenza.jpg");
+        service.setImgSrc("/img/extension.jpg");
         ls.add(service);
 
         //cambio info personali
         service = new Service();
         service.setName("Cambio info personali");
         service.setDescription("Iter per il cambio delle informazioni personali.");
-        service.setImgSrc("/img/cambio.jpg");
+        service.setImgSrc("/img/change.jpg");
         ls.add(service);
 
         //passaporto per minori
