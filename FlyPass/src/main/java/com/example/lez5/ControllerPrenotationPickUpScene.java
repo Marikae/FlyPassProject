@@ -99,11 +99,12 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
         if(model.isWorker()){
             prenotaEvento.setText("Inserisci slot");
             annullaPrenotaEvento.setText("Rimuovi slot");
-        }
-        if(model.ritiroPrenotato){
-            prenotaEvento.setVisible(false);
-        }else{
-            annullaPrenotaEvento.setVisible(false);
+        }else {
+            if (model.ritiroPrenotato) {
+                prenotaEvento.setVisible(false);
+            } else {
+                annullaPrenotaEvento.setVisible(false);
+            }
         }
 
     }
@@ -332,23 +333,9 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                 calendar.getChildren().clear();
                 drawCalendar();
 
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Conferma prenotazione!");
-                alert.setHeaderText(null);
-                alert.setContentText("Prenotazione andata a buon fine.\n" +
-                        "Ricorda di portare:\n" +
-                        "1) Il modulo di richiesta compilato\n" +
-                        "2) Una marca da bollo\n" +
-                        "3) La ricevuta del versamento sul C/C postale\n" +
-                        "4) Due fototessere su sfondo bianco\n" +
-                        "5) Il passaporto precedente (se ancora in possesso)\n\n\n" +
-                        "La lista dei documenti da portare sarà visualizzabile su prenotation alla chiusura di questo avviso");
-                alert.showAndWait();
-
                 annullaPrenotaEvento.setVisible(true);
                 prenotaEvento.setVisible(false);
             }
-
         } else {
 //------------------------------CALENDARIO LAVORATORE------------------------------------------------------
             if(!model.prenotaRitiroPassaportoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){

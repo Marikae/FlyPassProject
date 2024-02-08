@@ -100,8 +100,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
         if(model.isWorker()){
             prenotaEvento.setText("Inserisci slot");
             annullaPrenotaEvento.setText("Rimuovi slot");
-        }
-        if(!model.isWorker()) {
+        } else{
             if (model.passaportoPrenotato) {
                 prenotaEvento.setVisible(false);
             } else {
