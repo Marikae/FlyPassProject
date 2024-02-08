@@ -94,8 +94,9 @@ public class ControllerPrenotationScene extends Controller implements Initializa
     private void workerPrenotation() throws SQLException {
         //String notificationAvaibility = model.getNewNotification();
         bookedPrenotation = model.getBookedReservation();
-        prenotationLabel.setText(bookedPrenotation);
-
+        newNotLabel.setText(bookedPrenotation);
+        deleteRitiro.setVisible(false);
+        deletePrenotation.setVisible(false);
     }
     @FXML
     void goToMainScene(ActionEvent event) throws IOException {

@@ -27,6 +27,7 @@
 }
 .text-background{
     -fx-text-fill: white;
+
 }
 
 .calendar-background{
@@ -36,6 +37,7 @@
 .text-stylish {
     font-family: impact;
     -fx-text-fill: white;
+    text-shadow: 0 0 10px orange;
 }
 
 /* Sfondo opaco */

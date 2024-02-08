@@ -83,14 +83,14 @@ public class Model implements Initializable {
         Service service = new Service();
         service.setName("Rilascio prima volta");
         service.setDescription("Rilascio del passaporto per la prima volta.");
-        service.setImgSrc("/img/firstTime.jpg");
+        service.setImgSrc("/img/fistTime.jpg");
         ls.add(service);
 
         //Rilascio scadenza
         service = new Service();
         service.setName( "Rinnovo per scadenza");
         service.setDescription("Rilascio del passaporto per scadenza.");
-        service.setImgSrc("/img/expiration.jpg");
+        service.setImgSrc("/img/clessidra.jpg");
         ls.add(service);
 
         //Furto o smarrimento
@@ -125,7 +125,7 @@ public class Model implements Initializable {
         service = new Service();
         service.setName("Cambio info personali");
         service.setDescription("Iter per il cambio delle informazioni personali.");
-        service.setImgSrc("/img/change.jpg");
+        service.setImgSrc("/img/cambio.jpg");
         ls.add(service);
 
         //passaporto per minori
