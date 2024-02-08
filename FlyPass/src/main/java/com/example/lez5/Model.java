@@ -260,6 +260,35 @@ public class Model implements Initializable {
     }
 
     //------------------------------------- DATABESE INSERIMENTO ---------------------------------
+    public boolean isAlreadyRegistered(String aus7){
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+
+            String query = ("SELECT * FROM citizen " +
+                    "WHERE tax_code = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, aus7);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                connection.close();
+                preparedStatement.close();
+                resultSet.close();
+                statement.close();
+                return false;
+            }
+            connection.close();
+            preparedStatement.close();
+            resultSet.close();
+            statement.close();
+        }catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return true;
+    }
+
     public boolean checkAnagrafica(LocalDate aus5,String aus1, String aus2, String aus3, String aus4,
                                 String aus6, String aus7, String aus8, String aus9){
         try {
@@ -289,11 +318,13 @@ public class Model implements Initializable {
                 connection.close();
                 preparedStatement.close();
                 resultSet.close();
+                statement.close();
                 return false;
             }
             connection.close();
             preparedStatement.close();
             resultSet.close();
+            statement.close();
         }catch (SQLException e) {
             System.out.println(e);
         }
@@ -325,6 +356,7 @@ public class Model implements Initializable {
 
             connection.close();
             preparedStatement.close();
+            statement.close();
         }catch (SQLException e) {
             System.out.println(e);
         }

@@ -115,19 +115,28 @@ public class ControllerRegisterScene extends Controller{
 
 
         if(check){
-            model.databaseInsertion(aus5,aus1,aus2,aus3,aus4,aus6,aus7,aus8,aus9);
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainScene.fxml")));
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            // stage.initStyle(StageStyle.TRANSPARENT); // Rimuovi i bordi della finestra
-            double screenWidth = Screen.getPrimary().getBounds().getWidth();
-            double screenHeight = Screen.getPrimary().getBounds().getHeight();
-            double windowWidth = screenWidth + 30; // Larghezza della finestra
-            double windowHeight = screenHeight + 1; // Altezza della finestra
-            stage.setX((screenWidth - windowWidth) / 2);
-            stage.setY((screenHeight - windowHeight) / 2);
-            stage.setScene(scene);
-            stage.show();
+            if(!model.isAlreadyRegistered(aus7)) {
+                model.databaseInsertion(aus5, aus1, aus2, aus3, aus4, aus6, aus7, aus8, aus9);
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LoginScene.fxml")));
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                // stage.initStyle(StageStyle.TRANSPARENT); // Rimuovi i bordi della finestra
+                double screenWidth = Screen.getPrimary().getBounds().getWidth();
+                double screenHeight = Screen.getPrimary().getBounds().getHeight();
+                double windowWidth = screenWidth + 30; // Larghezza della finestra
+                double windowHeight = screenHeight + 1; // Altezza della finestra
+                stage.setX((screenWidth - windowWidth) / 2);
+                stage.setY((screenHeight - windowHeight) / 2);
+                stage.setScene(scene);
+                stage.show();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attenzione!");
+                alert.setHeaderText(null);
+                alert.setContentText("Il tuo profilo risulta già registrato nel sistema.\n" +
+                        "Per maggiori informazioni manda un'email a info@questura.it\n"); //il profilo è già registrato
+                alert.showAndWait();
+            }
         }
     }
 
