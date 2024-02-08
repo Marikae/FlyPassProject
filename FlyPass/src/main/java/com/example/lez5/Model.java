@@ -118,7 +118,7 @@ public class Model implements Initializable {
         service = new Service();
         service.setName("Prolungamento validità passaporto");
         service.setDescription("prolungamento della validità del passaporto.");
-        service.setImgSrc("/img/extension.jpg");
+        service.setImgSrc("/img/exstension.png");
         ls.add(service);
 
         //cambio info personali
@@ -132,7 +132,7 @@ public class Model implements Initializable {
         service = new Service();
         service.setName("Passaporto per minori");
         service.setDescription("Rilascio passaporto per minori.");
-        service.setImgSrc("/img/minori.jpg");
+        service.setImgSrc("/img/minors.jpg");
         ls.add(service);
 
         return ls;
