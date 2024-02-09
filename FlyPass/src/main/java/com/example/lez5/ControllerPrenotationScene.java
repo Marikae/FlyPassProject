@@ -140,11 +140,11 @@ public class ControllerPrenotationScene extends Controller implements Initializa
     }
     @FXML
     void deleteReservation(ActionEvent event) {
-        System.out.println("cancella prenotazione\n");
+        //boolean b = model.annullaPrenotaEventoCittadino();
     }
 
     @FXML
     void deleteRitiro(ActionEvent event) {
-        System.out.println("cancella ritiro\n");
+       //boolean b = model.annullaPrenotaRitiroPassaportoCittadino();
     }
 }
