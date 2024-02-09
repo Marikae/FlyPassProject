@@ -401,10 +401,8 @@ public class Model implements Initializable {
 
 
 
-
-
-
     public boolean annullaPrenotaRitiroPassaportoCittadino() {
+
         if(!passaportoPrenotato){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Attenzione");
@@ -455,6 +453,23 @@ public class Model implements Initializable {
     }
 
     public boolean prenotaRitiroPassaportoCittadino(Date date, Object time){
+
+        LocalDate now = LocalDate.now();
+        Date nowDate = Date.valueOf(now);
+        if(!date.after(nowDate)){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione!");
+            alert.setHeaderText(null);
+            alert.setContentText("Stai cercando di prenotare il ritiro per la data odierna oppure\n" +
+                    "una data passata.\n" +
+                    "Cambia data e riprova.");
+            alert.getButtonTypes().clear();
+            // Aggiungi solo il tipo di pulsante OK
+            alert.getButtonTypes().add(ButtonType.OK);
+            alert.showAndWait();
+            return false;
+        }
+
         try {
             //CONNESSIONE AL DB PER SELEZIONARE L'EVENTO SCELTO DAL CITTADINO (resultset)
             Connection connection = DatabaseConnection.databaseConnection();
@@ -718,6 +733,23 @@ public class Model implements Initializable {
     }
 
     public boolean annullaPrenotaRitiroPassaportoWorker(Date date, Object time){
+
+        LocalDate now = LocalDate.now();
+        Date nowDate = Date.valueOf(now);
+        if(!date.after(nowDate)){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione!");
+            alert.setHeaderText(null);
+            alert.setContentText("Stai cercando di annullare lo slot per il ritiro in data odierna oppure\n" +
+                    "in una data passata.\n" +
+                    "Cambia data e riprova.");
+            alert.getButtonTypes().clear();
+            // Aggiungi solo il tipo di pulsante OK
+            alert.getButtonTypes().add(ButtonType.OK);
+            alert.showAndWait();
+            return false;
+        }
+
         try {
             Connection connection = DatabaseConnection.databaseConnection();
             Statement statement = connection.createStatement();
@@ -817,6 +849,22 @@ public class Model implements Initializable {
     }
 
     public boolean prenotaRitiroPassaportoWorker(Date date, Object time){
+        LocalDate now = LocalDate.now();
+        Date nowDate = Date.valueOf(now);
+        if(!date.after(nowDate)){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione!");
+            alert.setHeaderText(null);
+            alert.setContentText("Stai cercando di aggiungere lo slot per il ritiro in\n" +
+                    " data odierna oppure in una data passata.\n" +
+                    "Cambia data e riprova.");
+            alert.getButtonTypes().clear();
+            // Aggiungi solo il tipo di pulsante OK
+            alert.getButtonTypes().add(ButtonType.OK);
+            alert.showAndWait();
+            return false;
+        }
+
         try {
             Connection connection = DatabaseConnection.databaseConnection();
             Statement statement = connection.createStatement();
@@ -1013,6 +1061,7 @@ public class Model implements Initializable {
 
 
     public boolean annullaPrenotaEventoCittadino(){
+
         if(ritiroPrenotato){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Attenzione");
@@ -1070,6 +1119,23 @@ public class Model implements Initializable {
     }
 
     public boolean annullaPrenotazioneEventoWorker(Date date, Object time){
+        LocalDate now = LocalDate.now();
+        Date nowDate = Date.valueOf(now);
+        if(!date.after(nowDate)){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione!");
+            alert.setHeaderText(null);
+            alert.setContentText("Stai cercando di togliere lo slot in data odierna oppure in\n" +
+                    "una data passata.\n" +
+                    "Cambia data e riprova.");
+            alert.getButtonTypes().clear();
+            // Aggiungi solo il tipo di pulsante OK
+            alert.getButtonTypes().add(ButtonType.OK);
+            alert.showAndWait();
+            return false;
+        }
+
+
         try {
             Connection connection = DatabaseConnection.databaseConnection();
             Statement statement = connection.createStatement();
@@ -1177,6 +1243,23 @@ public class Model implements Initializable {
     }
 
     public boolean prenotaEventoCittadino(Date date, Object time){
+        LocalDate now = LocalDate.now();
+        Date nowDate = Date.valueOf(now);
+        if(!date.after(nowDate)){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione!");
+            alert.setHeaderText(null);
+            alert.setContentText("Stai cercando di prenotare per la data odierna oppure\n" +
+                    "una data passata.\n" +
+                    "Cambia data e riprova.");
+            alert.getButtonTypes().clear();
+            // Aggiungi solo il tipo di pulsante OK
+            alert.getButtonTypes().add(ButtonType.OK);
+            alert.showAndWait();
+            return false;
+        }
+
+
         try {
             Connection connection = DatabaseConnection.databaseConnection();
             Statement statement = connection.createStatement();
@@ -1376,6 +1459,23 @@ public class Model implements Initializable {
     }
 
     public  boolean prenotaEventoWorker(Date date, Object time){
+        LocalDate now = LocalDate.now();
+        Date nowDate = Date.valueOf(now);
+        if(!date.after(nowDate)){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione!");
+            alert.setHeaderText(null);
+            alert.setContentText("Stai cercando di prenotare la data odierna oppure\n" +
+                    "una data passata.\n" +
+                    "Cambia data e riprova.");
+            alert.getButtonTypes().clear();
+            // Aggiungi solo il tipo di pulsante OK
+            alert.getButtonTypes().add(ButtonType.OK);
+            alert.showAndWait();
+            return false;
+        }
+
+
         //------------------------------CALENDARIO LAVORATORE------------------------------------------------------
         try {
             Connection connection = DatabaseConnection.databaseConnection();
