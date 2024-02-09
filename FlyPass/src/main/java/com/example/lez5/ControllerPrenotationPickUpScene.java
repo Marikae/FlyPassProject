@@ -99,11 +99,12 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
         if(model.isWorker()){
             prenotaEvento.setText("Inserisci slot");
             annullaPrenotaEvento.setText("Rimuovi slot");
-        }
-        if(model.ritiroPrenotato){
-            prenotaEvento.setVisible(false);
-        }else{
-            annullaPrenotaEvento.setVisible(false);
+        }else {
+            if (model.ritiroPrenotato) {
+                prenotaEvento.setVisible(false);
+            } else {
+                annullaPrenotaEvento.setVisible(false);
+            }
         }
 
     }
@@ -131,20 +132,46 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
     }
 
     @FXML
-    private void annullaPrenotaEvento(ActionEvent event){
+    private void annullaPrenotaEvento(ActionEvent event) {
         if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
-
-            if(!model.passaportoPrenotato){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Attenzione");
-                alert.setHeaderText(null);
-                alert.setContentText("Non è stato possibile rilevare nessun passaporto da lei prenotato.");
-                alert.showAndWait();
+            if (!model.annullaPrenotaRitiroPassaportoCittadino()) {
                 return;
             }
 
+            prenotaEvento.setVisible(true);
+            annullaPrenotaEvento.setVisible(false);
 
+            calendar.getChildren().clear();
+            drawCalendar();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Prenotazione annullata");
+            alert.setHeaderText(null);
+            alert.setContentText("La prenotazione è stata annullata con successo");
+            alert.showAndWait();
+
+        } else {
+//------------------------------CALENDARIO LAVORATORE------------------------------------------------------
+
+            if (!model.annullaPrenotaRitiroPassaportoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())) {
+                return;
+            } else {
+                calendar.getChildren().clear();
+                drawCalendar();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Slot cancellato");
+                alert.setHeaderText(null);
+                alert.setContentText("La cancellazione dell'evento è avvenuta correttamente.");
+                alert.showAndWait();
+            }
+        }
+    }
+    /*@FXML
+    private void annullaPrenotaEvento(ActionEvent event){
+        if (!Model.getModel().isWorker()) {
+//------------------------------CALENDARIO CITTADINO------------------------------------------------------
             if(!model.passaportoPrenotato){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Attenzione");
@@ -294,10 +321,38 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
             }
 
         }
-    }
-
+    }*/
 
     @FXML
+    private void prenotaEvento (ActionEvent event) {
+        if (!Model.getModel().isWorker()) {
+//------------------------------CALENDARIO CITTADINO------------------------------------------------------
+            if(!model.prenotaRitiroPassaportoCittadino(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                return;
+            }else{
+                calendar.getChildren().clear();
+                drawCalendar();
+
+                annullaPrenotaEvento.setVisible(true);
+                prenotaEvento.setVisible(false);
+            }
+        } else {
+//------------------------------CALENDARIO LAVORATORE------------------------------------------------------
+            if(!model.prenotaRitiroPassaportoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                return;
+            }else{
+                calendar.getChildren().clear();
+                drawCalendar();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Slot inserito");
+                alert.setHeaderText(null);
+                alert.setContentText("Lo slot è stato inserito correttamente");
+                alert.showAndWait();
+            }
+        }
+    }
+    /*@FXML
     private void prenotaEvento (ActionEvent event) {
         if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
@@ -624,7 +679,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
             }
 
         }
-    }
+    }*/
 
     public void closeConnection(Connection connection, Statement statement, PreparedStatement preparedStatement) throws SQLException {
         //CHIUSURA CONNESSIONI

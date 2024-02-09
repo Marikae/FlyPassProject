@@ -2,8 +2,11 @@ package com.example.lez5;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +17,7 @@ import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.sql.*;
 import java.time.LocalDate;
@@ -24,6 +28,7 @@ public class Model implements Initializable {
     private static Model modelInstance; // statico e protetto da accesso esterno
     private String loginPassword;
     private String loginUserName;
+    String ritiropassaporto = "Prenotazione ritiro passaporto";
 
     public String getLoginUserName() {
         return loginUserName;
@@ -260,6 +265,475 @@ public class Model implements Initializable {
     }
 
     //------------------------------------- DATABESE INSERIMENTO ---------------------------------
+    public boolean annullaPrenotaRitiroPassaportoCittadino() {
+        if(!passaportoPrenotato){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione");
+            alert.setHeaderText(null);
+            alert.setContentText("Non è stato possibile rilevare nessun passaporto da lei prenotato.");
+            alert.showAndWait();
+            return false;
+        }else {
+            try {
+                Connection connection = DatabaseConnection.databaseConnection();
+                Statement statement = connection.createStatement();
+
+                String query = ("UPDATE eventi SET Id_utente_prenotazione = 0, Prenotato = 0 WHERE Id_utente_prenotazione = ? AND TipoServizio = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setInt(1, idUtente);
+                preparedStatement.setString(2,ritiropassaporto);
+
+                preparedStatement.executeUpdate();
+
+                String query2 = "UPDATE citizen SET PrenotazioneRitiro = 0 WHERE id = ?";
+
+                Connection connection2 = DatabaseConnection.databaseConnection();
+                Statement statement2 = connection2.createStatement();
+
+                PreparedStatement preparedStatement2 = connection2.prepareStatement(query2);
+                preparedStatement2.setInt(1, idUtente);
+
+                preparedStatement2.executeUpdate();
+
+                ritiroPrenotato = false;
+
+                //CHIUSURA CONNESSIONE
+                closeConnection(connection2, statement2, preparedStatement2);
+
+                //CHIUSURA CONNESSIONE
+                closeConnection(connection, statement, preparedStatement);
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Prenotazione annullata");
+                alert.setHeaderText(null);
+                alert.setContentText("La prenotazione è stata annullata con successo");
+                alert.showAndWait();
+
+                return true;
+
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            return false;
+        }
+    }
+
+    public boolean prenotaRitiroPassaportoCittadino(Date date, Object time){
+        try {
+            //CONNESSIONE AL DB PER SELEZIONARE L'EVENTO SCELTO DAL CITTADINO (resultset)
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, date);
+            preparedStatement.setObject(2, time);
+            preparedStatement.setString(3, evento.sede.name());
+            preparedStatement.setString(4, ritiropassaporto);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            //Se non esiste alcun evento del tipo selezionato
+            if (!resultSet.next()) {
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attenzione!");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.showAndWait();
+
+                //CHIUSURA CONNESSIONI
+                connection.close();
+                statement.close();
+                preparedStatement.close();
+                resultSet.close();
+                return false;
+            }
+
+            if (!resultSet.getBoolean("Disponibile")) {
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Appuntamento non disponibile");
+                alert.setHeaderText(null);
+                // Creare una VBox personalizzata con il messaggio e la CheckBox
+                VBox vBox = new VBox();
+                vBox.setSpacing(10);
+                vBox.setPadding(new Insets(10, 10, 10, 10));
+                Label messageLabel = new Label("L'appuntamento non è disponibile. Vuoi ricevere una notifica quando sarà disponibile?");
+                CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
+                vBox.getChildren().addAll(messageLabel, notificationCheckBox);
+                // Impostare la VBox come contenuto del DialogPane
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.setContent(vBox);
+                // Aggiungere i pulsanti desiderati
+                dialogPane.getButtonTypes().setAll(ButtonType.OK);
+                // Mostrare l'alert e gestire la risposta
+
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        boolean receiveNotification = notificationCheckBox.isSelected();
+                        System.out.println("Risposta: OK, Ricevi notifica: " + receiveNotification);
+                        //TODO salvarsi i dati per inviare alla notifica!!!
+
+                        if (receiveNotification){
+                            //se l'utente ha selezionato si allora
+                            try {
+                                String query1 = ("INSERT INTO notification (id, data, ora, tipo, sede, stato, utente_id) VALUES (NULL, ?, ?, ?, ?, ?, ?)");
+
+                                Connection connection1 = DatabaseConnection.databaseConnection();
+                                Statement statement1 = connection1.createStatement();
+
+                                PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+
+
+                                preparedStatement1.setString(1, String.valueOf(date));
+                                preparedStatement1.setString(2, String.valueOf(time));
+                                preparedStatement1.setString(3, ritiropassaporto);
+                                preparedStatement1.setString(4, evento.sede.name());
+                                preparedStatement1.setString(5, "non definito");
+                                preparedStatement1.setString(6, getIdCitizen());
+                                preparedStatement1.executeUpdate();
+
+                                connection1.close();
+                                statement1.close();
+                                preparedStatement1.close();
+
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+
+                    }
+                });
+
+                //CHIUSURA CONNESSIONI
+                connection.close();
+                statement.close();
+                preparedStatement.close();
+                resultSet.close();
+                return false;
+            } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
+                if (ritiroPrenotato) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Attenzione");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Hai già prenotato il tuo ritiro!");
+                    alert.showAndWait();
+
+                    //CHIUSURA CONNESSIONI
+                    connection.close();
+                    statement.close();
+                    preparedStatement.close();
+                    resultSet.close();
+                    return false;
+                }
+                try {
+                    Connection connection3 = DatabaseConnection.databaseConnection();
+                    Statement statement3 = connection3.createStatement();
+
+                    String query3 = ("SELECT * FROM eventi " +
+                            "WHERE Id_utente_prenotazione = ?");
+
+                    PreparedStatement preparedStatement3 = connection3.prepareStatement(query3);
+                    preparedStatement3.setInt(1 , idUtente);
+
+                    ResultSet resultSet3 = preparedStatement3.executeQuery();
+
+                    if(!resultSet3.next()){
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Errore!");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Non è stato rilevato nessun appuntamento di prenotazione passaporto.");
+                        alert.showAndWait();
+
+                        connection.close();
+                        statement.close();
+                        preparedStatement.close();
+                        resultSet.close();
+
+                        connection3.close();
+                        statement3.close();
+                        preparedStatement3.close();
+                        resultSet3.close();
+                        return false;
+                    }
+
+                    Date dataPrenotazionePassaporto = resultSet3.getDate("Data");
+
+                    LocalDate dataPrenotazionePassaportoLD = dataPrenotazionePassaporto.toLocalDate().plusDays(30);
+                    LocalDate dataPrenotazioneRitiroLD = date.toLocalDate();
+
+                    //LA DIFFERENZA E' MINORE DI 30 GIORNI
+                    if (!dataPrenotazioneRitiroLD.isAfter(dataPrenotazionePassaportoLD)) {
+                        System.out.println("La differenza è minore di 30 giorni.");
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Errore!");
+                        alert.setHeaderText(null);
+                        alert.setContentText("La differenza è minore di 30 giorni.\n" +
+                                "Ricordati che devi prenotare il passaporto almeno 30 giorni dopo la richiesta di rilascio.\n" +
+                                "Scegli un'altra data e riprova.");
+                        alert.showAndWait();
+
+                        connection.close();
+                        statement.close();
+                        preparedStatement.close();
+                        resultSet.close();
+
+                        connection3.close();
+                        statement3.close();
+                        preparedStatement3.close();
+                        resultSet3.close();
+                        return false;
+                    }
+
+                    connection3.close();
+                    statement3.close();
+                    preparedStatement3.close();
+                    resultSet3.close();
+
+                    String query1 = ("UPDATE eventi SET Prenotato = 1, Id_utente_prenotazione = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
+                    Connection connection1 = DatabaseConnection.databaseConnection();
+                    Statement statement1 = connection1.createStatement();
+
+                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setInt(1, idUtente);
+                    preparedStatement1.setDate(2, date);
+                    preparedStatement1.setObject(3, time);
+                    preparedStatement1.setString(4, evento.sede.name());
+                    preparedStatement1.setString(5, ritiropassaporto);
+
+                    preparedStatement1.executeUpdate();
+
+                    query1 = "UPDATE citizen SET PrenotazioneRitiro = 1 WHERE id = ?";
+
+                    preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setInt(1,idUtente);
+
+                    preparedStatement1.executeUpdate();
+
+                    connection1.close();
+                    statement1.close();
+                    preparedStatement1.close();
+
+                    ritiroPrenotato = true;
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                connection.close();
+                preparedStatement.close();
+                statement.close();
+                resultSet.close();
+
+                return true;
+
+            } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
+                if (resultSet.getInt("Id_utente_prenotazione") == idUtente) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Errore di prenotazione.\n Hai già prenotato questo evento.\n" +
+                            "Per cancellare la tua prenotazione cliccare il tasto \"Annulla prenotazione\"");
+                    alert.showAndWait();
+                } else {
+                    //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                    //ErrorePrenotazione.setText("Errore di prenotazione.\n Evento Già prenotato da un altro utente");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Errore");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Errore di prenotazione.\n Evento Già prenotato da un altro utente");
+                    alert.showAndWait();
+                }
+            }
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public boolean annullaPrenotaRitiroPassaportoWorker(Date date, Object time){
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, date);
+            preparedStatement.setObject(2, time);
+            preparedStatement.setString(3, evento.sede.name());
+            preparedStatement.setString(4, ritiropassaporto);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attention");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.showAndWait();
+
+                //CHIUSURA CONNESSIONI
+                closeConnection(connection, statement, preparedStatement);
+                resultSet.close();
+                return false;
+            }
+
+            if (!resultSet.getBoolean("Disponibile")) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Errore");
+                alert.setHeaderText(null);
+                alert.setContentText("La cancellazione dell'evento non può essere effettuata poichè non esiste\n" +
+                        "alcun evento programmato per questo slot temporale");
+                alert.showAndWait();
+                //--------------------------CANCELLAZIONE APPUNTAMENTO----------------------------------
+            } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
+                // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO
+                if(getLoginUserName().equals(resultSet.getString("Worker"))){
+                    try {
+                        String query1 = ("UPDATE eventi SET Disponibile = 0, Worker = NULL WHERE Data = ? AND Inizio = ?" +
+                                " AND Sede = ? AND TipoServizio = ? ");
+
+                        Connection connection1 = DatabaseConnection.databaseConnection();
+                        Statement statement1 = connection1.createStatement();
+
+                        PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                        preparedStatement1.setDate(1, date);
+                        preparedStatement1.setObject(2, time);
+                        preparedStatement1.setString(3, evento.sede.name());
+                        preparedStatement1.setString(4, ritiropassaporto);
+                        preparedStatement1.executeUpdate();
+                        //CHIUSURA CONNESSIONE
+                        closeConnection(connection1, statement1, preparedStatement1);
+
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    return true;
+                    //Il worker sta cercando di cancellare lo slot di un altro worker
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Slot non cancellabile");
+                    alert.setHeaderText(null);
+                    alert.setContentText("La cancellazione dell'evento non può essere cancellata poichè\n" +
+                            "l'evento non è stato creato da lei");
+                    alert.showAndWait();
+                }
+
+                //----------------------SLOT GIA' PRENOTATO-----------------------------------------
+            } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Slot prenotato");
+                alert.setHeaderText(null);
+                alert.setContentText("Lo slot non può essere cancellato poichè\nè già stato prenotato");
+                alert.showAndWait();
+            }
+            //CHIUSURA CONNESSIONE
+            closeConnection(connection, statement, preparedStatement);
+            resultSet.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public boolean prenotaRitiroPassaportoWorker(Date date, Object time){
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, date);
+            preparedStatement.setObject(2, time);
+            preparedStatement.setString(3, evento.sede.name());
+            preparedStatement.setString(4, ritiropassaporto);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
+                //ErrorePrenotazione.setText("Non è stato possibile rilevare l'appuntamento.\n Cambiare data ed orario e riprovare");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attenzione!");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.showAndWait();
+
+                //CHIUSURA CONNESSIONI
+                connection.close();
+                statement.close();
+                preparedStatement.close();
+                resultSet.close();
+                return false;
+            }
+            //-------------------------CREAZIONE APPUNTAMENTO-----------------------
+            if (!resultSet.getBoolean("Disponibile")) {
+                // IL WORKER SETTA L'EVENTO DISPONIBILE PER LA PRENOTAZIONE
+                try {
+                    String query1 = ("UPDATE eventi SET Disponibile = 1, Worker = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
+                    Connection connection1 = DatabaseConnection.databaseConnection();
+                    Statement statement1 = connection1.createStatement();
+
+                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setString(1, getLoginUserName());
+                    preparedStatement1.setDate(2, date);
+                    preparedStatement1.setObject(3, time);
+                    preparedStatement1.setString(4, evento.sede.name());
+                    preparedStatement1.setString(5, ritiropassaporto);
+                    preparedStatement1.executeUpdate();
+                    connection1.close();
+                    statement1.close();
+                    preparedStatement1.close();
+
+                    closeConnection(connection, statement, preparedStatement);
+                    resultSet.close();
+                    return true;
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                //--------------------------CANCELLAZIONE APPUNTAMENTO----------------------------------
+            } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
+                // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO NELLA FUNZIONE annullaPrenotaEvento
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Slot già disponibile");
+                alert.setHeaderText(null);
+                alert.setContentText("L'evento è già disponibile, per cancellarlo cliccare il tasto \"annulla prenotazione\"");
+                alert.showAndWait();
+                //----------------------SLOT GIA' PRENOTATO-----------------------------------------
+            } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Slot prenotato");
+                alert.setHeaderText(null);
+                alert.setContentText("Lo slot non può essere cancellato poichè\nè già stato prenotato");
+                alert.showAndWait();
+            }
+
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
     public boolean isAlreadyRegistered(String aus7){
         try {
             Connection connection = DatabaseConnection.databaseConnection();
@@ -360,6 +834,538 @@ public class Model implements Initializable {
         }catch (SQLException e) {
             System.out.println(e);
         }
+    }
+
+
+    public boolean annullaPrenotaEventoCittadino(){
+        if(!passaportoPrenotato){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione");
+            alert.setHeaderText(null);
+            alert.setContentText("Non è stato possibile rilevare nessun passaporto da lei prenotato.");
+            alert.showAndWait();
+            return false;
+        }else {
+            try {
+                Connection connection = DatabaseConnection.databaseConnection();
+                Statement statement = connection.createStatement();
+
+                String query = ("UPDATE eventi SET Id_utente_prenotazione = 0, Prenotato = 0 WHERE Id_utente_prenotazione = ?");
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setInt(1, idUtente);
+
+                preparedStatement.executeUpdate();
+
+                String query2 = "UPDATE citizen SET PassaportoPrenotato = 0 WHERE id = ?";
+
+                Connection connection2 = DatabaseConnection.databaseConnection();
+                Statement statement2 = connection2.createStatement();
+
+                PreparedStatement preparedStatement2 = connection2.prepareStatement(query2);
+                preparedStatement2.setInt(1, idUtente);
+
+                preparedStatement2.executeUpdate();
+
+                passaportoPrenotato = false;
+
+                //CHIUSURA CONNESSIONE
+                closeConnection(connection2, statement2, preparedStatement2);
+                //CHIUSURA CONNESSIONE
+                closeConnection(connection, statement, preparedStatement);
+
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            return true;
+        }
+    }
+
+    public boolean annullaPrenotazioneEventoWorker(Date date, Object time){
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, date);
+            preparedStatement.setObject(2, time);
+            preparedStatement.setString(3, evento.sede.name());
+            preparedStatement.setString(4, getService().getName());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attention");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.showAndWait();
+
+                //CHIUSURA CONNESSIONI
+                closeConnection(connection, statement, preparedStatement);
+                resultSet.close();
+                return false;
+            }
+
+            if (!resultSet.getBoolean("Disponibile")) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Errore");
+                alert.setHeaderText(null);
+                alert.setContentText("La cancellazione dell'evento non può essere effettuata poichè non esiste\n" +
+                        "alcun evento programmato per questo slot temporale");
+                alert.showAndWait();
+                //--------------------------CANCELLAZIONE APPUNTAMENTO----------------------------------
+            } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
+                // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO
+                if(getLoginUserName().equals(resultSet.getString("Worker"))){
+                    try {
+                        String query1 = ("UPDATE eventi SET Disponibile = 0, Worker = NULL WHERE Data = ? AND Inizio = ?" +
+                                " AND Sede = ? AND TipoServizio = ? ");
+
+                        Connection connection1 = DatabaseConnection.databaseConnection();
+                        Statement statement1 = connection1.createStatement();
+
+                        PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                        preparedStatement1.setDate(1, date);
+                        preparedStatement1.setObject(2, time);
+                        preparedStatement1.setString(3, evento.sede.name());
+                        preparedStatement1.setString(4, getService().getName());
+                        preparedStatement1.executeUpdate();
+                        //CHIUSURA CONNESSIONE
+                        closeConnection(connection1, statement1, preparedStatement1);
+                        closeConnection(connection, statement, preparedStatement);
+                        resultSet.close();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    //CHIUSURA CONNESSIONE
+                    return true;
+                    //Il worker sta cercando di cancellare lo slot di un altro worker
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Slot non cancellabile");
+                    alert.setHeaderText(null);
+                    alert.setContentText("La cancellazione dell'evento non può essere cancellata poichè\n" +
+                            "l'evento non è stato creato da lei");
+                    alert.showAndWait();
+
+                    //CHIUSURA CONNESSIONE
+                    closeConnection(connection, statement, preparedStatement);
+                    resultSet.close();
+                    return false;
+                }
+
+                //----------------------SLOT GIA' PRENOTATO-----------------------------------------
+            } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Slot prenotato");
+                alert.setHeaderText(null);
+                alert.setContentText("Lo slot non può essere cancellato poichè\nè già stato prenotato");
+                alert.showAndWait();
+            }
+            //CHIUSURA CONNESSIONE
+            closeConnection(connection, statement, preparedStatement);
+            resultSet.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public boolean prenotaEventoCittadino(Date date, Object time){
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, date);
+            preparedStatement.setObject(2, time);
+            preparedStatement.setString(3, evento.sede.name());
+            preparedStatement.setString(4, getService().getName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attenzione!");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.showAndWait();
+                //CHIUSURA CONNESSIONI
+                closeConnection(connection, statement, preparedStatement);
+                resultSet.close();
+                return false;
+            }
+            if (!resultSet.getBoolean("Disponibile")) {
+
+                if(!notificationAlredyExist(date, time)){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Appuntamento non disponibile");
+                    alert.setHeaderText(null);
+                    // Creare una VBox personalizzata con il messaggio e la CheckBox
+                    VBox vBox = new VBox();
+                    vBox.setSpacing(10);
+                    vBox.setPadding(new Insets(10, 10, 10, 10));
+                    Label messageLabel = new Label("L'appuntamento non è disponibile. Vuoi ricevere una notifica quando sarà disponibile?");
+
+                    CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
+                    vBox.getChildren().addAll(messageLabel, notificationCheckBox);
+                    // Impostare la VBox come contenuto del DialogPane
+                    DialogPane dialogPane = alert.getDialogPane();
+                    dialogPane.setContent(vBox);
+                    // Aggiungere i pulsanti desiderati
+                    dialogPane.getButtonTypes().setAll(ButtonType.OK);
+                    // Mostrare l'alert e gestire la risposta
+
+                    alert.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.OK) {
+                            boolean receiveNotification = notificationCheckBox.isSelected();
+                            System.out.println("Risposta: OK, Ricevi notifica: " + receiveNotification);
+
+                            if (receiveNotification){
+                                //se l'utente ha selezionato si allora
+                                try {
+                                    String query1 = ("INSERT INTO notification (id, data, ora, tipo, sede, stato, utente_id) VALUES (NULL, ?, ?, ?, ?, ?, ?)");
+
+                                    Connection connection1 = DatabaseConnection.databaseConnection();
+                                    Statement statement1 = connection1.createStatement();
+
+                                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+
+                                    preparedStatement1.setString(1, String.valueOf(date));
+                                    preparedStatement1.setString(2, String.valueOf(time));
+                                    preparedStatement1.setString(3, getService().getName());
+                                    preparedStatement1.setString(4, evento.sede.name());
+                                    preparedStatement1.setString(5, "non definito");
+                                    preparedStatement1.setString(6, getIdCitizen());
+                                    preparedStatement1.executeUpdate();
+
+                                    //CHIUSURA CONNESSIONI
+                                    closeConnection(connection1, statement1, preparedStatement1);
+
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+
+                        }
+                    });
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Appuntamento non disponibile");
+                    alert.setHeaderText(null);
+                    // Creare una VBox personalizzata con il messaggio e la CheckBox
+                    VBox vBox = new VBox();
+                    vBox.setSpacing(10);
+                    vBox.setPadding(new Insets(10, 10, 10, 10));
+                    Label messageLabel = new Label("L'appuntamento non è disponibile.\n Hai già fatto richiesta per la notifica di avviso\n");
+
+                    //CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
+                    vBox.getChildren().addAll(messageLabel);
+                    // Impostare la VBox come contenuto del DialogPane
+                    DialogPane dialogPane = alert.getDialogPane();
+                    dialogPane.setContent(vBox);
+                    // Aggiungere i pulsanti desiderati
+                    dialogPane.getButtonTypes().setAll(ButtonType.OK);
+                    // Mostrare l'alert e gestire la risposta
+
+                    alert.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.OK) {
+
+                        }
+                    });
+                }
+
+                //Chiusura connessioni
+                closeConnection(connection, statement, preparedStatement);
+                resultSet.close();
+                return false;
+
+            } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
+                if (passaportoPrenotato) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Attenzione!");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Hai già prenotato!\n");
+                    alert.showAndWait();
+
+                    //CHIUSURA CONNESSIONI
+                    closeConnection(connection, statement, preparedStatement);
+                    resultSet.close();
+                    return false;
+                }
+                try {
+                    String query1 = ("UPDATE eventi SET Prenotato = 1, Id_utente_prenotazione = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
+                    Connection connection1 = DatabaseConnection.databaseConnection();
+                    Statement statement1 = connection1.createStatement();
+
+                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setInt(1, idUtente);
+                    preparedStatement1.setDate(2, date);
+                    preparedStatement1.setObject(3, time);
+                    preparedStatement1.setString(4, evento.sede.name());
+                    preparedStatement1.setString(5, getService().getName());
+
+                    preparedStatement1.executeUpdate();
+
+
+                    query1 = "UPDATE citizen SET PassaportoPrenotato = 1 WHERE id = ?";
+
+                    preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setInt(1, idUtente);
+
+                    preparedStatement1.executeUpdate();
+
+                    //CHIUSURA CONNESSIONE
+                    closeConnection(connection1, statement1, preparedStatement1);
+                    closeConnection(connection,statement,preparedStatement);
+                    resultSet.close();
+                    passaportoPrenotato = true;
+                    return true;
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+            } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
+
+                if (resultSet.getInt("Id_utente_prenotazione") == idUtente) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Errore");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Errore di prenotazione.\n Hai già prenotato questo evento");
+                    alert.showAndWait();
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Errore di prenotazione.\n Questo evento è stato già prenotato da un altro utente.\n" +
+                            "Scegli un altro evento e riprova");
+                    alert.showAndWait();
+                }
+            }
+            //CHIUSURA CONNESSIONE
+            closeConnection(connection, statement, preparedStatement);
+            resultSet.close();
+            return false;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return  false;
+    }
+
+
+    public  boolean prenotaEventoWorker(Date date, Object time){
+        //------------------------------CALENDARIO LAVORATORE------------------------------------------------------
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, date);
+            preparedStatement.setObject(2, time);
+            preparedStatement.setString(3, evento.sede.name());
+            preparedStatement.setString(4, getService().getName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attenzione!");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.showAndWait();
+
+                //CHIUSURA CONNESSIONI
+                closeConnection(connection, statement, preparedStatement);
+                resultSet.close();
+                return false;
+            }
+            //-------------------------CREAZIONE APPUNTAMENTO-----------------------
+            if (!resultSet.getBoolean("Disponibile")) {
+                // IL WORKER SETTA L'EVENTO DISPONIBILE PER LA PRENOTAZIONE
+                try {
+                    String query1 = ("UPDATE eventi SET Disponibile = 1, Worker = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
+
+                    Connection connection1 = DatabaseConnection.databaseConnection();
+                    Statement statement1 = connection1.createStatement();
+                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setString(1, getLoginUserName());
+                    preparedStatement1.setDate(2, date);
+                    preparedStatement1.setObject(3, time);
+                    preparedStatement1.setString(4, evento.sede.name());
+                    preparedStatement1.setString(5, getService().getName());
+                    preparedStatement1.executeUpdate();
+
+                    //CHIUSURA CONNESSIONE
+                    closeConnection(connection1, statement1, preparedStatement1);
+                    resultSet.close();
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                //------------------------UPDATE NOTIFICA--------------------------------------
+                //c'è un metodo nel model per l'updateNotification che non funziona perchè mi da errore di Time/LocalTime
+                try {
+                    String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
+                    Connection connection1 = DatabaseConnection.databaseConnection();
+                    Statement statement1 = connection1.createStatement();
+                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setDate(1, date);
+                    preparedStatement1.setObject(2, time);
+                    preparedStatement1.setString(3, getService().getName());
+                    preparedStatement1.setString(4, evento.sede.name());
+                    preparedStatement1.executeUpdate();
+
+                    //CHIUSURA CONNESSIONE
+                    closeConnection(connection1, statement1, preparedStatement1);
+                    closeConnection(connection, statement, preparedStatement);
+                    resultSet.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                return true;
+
+            } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
+                // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO NELLA FUNZIONE annullaPrenotaEvento
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Slot già disponibile");
+                alert.setHeaderText(null);
+                alert.setContentText("L'evento è già disponibile, per cancellarlo cliccare il tasto \"annulla prenotazione\"");
+                alert.showAndWait();
+                //----------------------SLOT GIA' PRENOTATO-----------------------------------------
+            } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Slot prenotato");
+                alert.setHeaderText(null);
+                alert.setContentText("Lo slot non può essere reso disponibile poichè è già stato prenotato da un cittadino");
+                alert.showAndWait();
+            }
+            //CHIUSURA CONNESSIONE
+            closeConnection(connection, statement, preparedStatement);
+            resultSet.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    /*public void prenotaEvento (Date date, Object time){
+
+//------------------------------CALENDARIO LAVORATORE------------------------------------------------------
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, Date.valueOf(EventDatePicker.getValue()));
+            preparedStatement.setObject(2, TimePicker.getValue());
+            preparedStatement.setString(3, model.evento.sede.name());
+            preparedStatement.setString(4, model.getService().getName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attenzione!");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.showAndWait();
+
+                //CHIUSURA CONNESSIONI
+                closeConnection(connection, statement, preparedStatement);
+                resultSet.close();
+                return;
+            }
+            //-------------------------CREAZIONE APPUNTAMENTO-----------------------
+            if (!resultSet.getBoolean("Disponibile")) {
+                // IL WORKER SETTA L'EVENTO DISPONIBILE PER LA PRENOTAZIONE
+                try {
+                    String query1 = ("UPDATE eventi SET Disponibile = 1, Worker = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
+
+                    Connection connection1 = DatabaseConnection.databaseConnection();
+                    Statement statement1 = connection1.createStatement();
+                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setString(1, model.getLoginUserName());
+                    preparedStatement1.setDate(2, Date.valueOf(EventDatePicker.getValue()));
+                    preparedStatement1.setObject(3, TimePicker.getValue());
+                    preparedStatement1.setString(4, model.evento.sede.name());
+                    preparedStatement1.setString(5, model.getService().getName());
+                    preparedStatement1.executeUpdate();
+
+                    //CHIUSURA CONNESSIONE
+                    closeConnection(connection1, statement1, preparedStatement1);
+                    resultSet.close();
+                    calendar.getChildren().clear();
+                    drawCalendar();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                //------------------------UPDATE NOTIFICA--------------------------------------
+                //c'è un metodo nel model per l'updateNotification che non funziona perchè mi da errore di Time/LocalTime
+                try {
+                    String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
+                    Connection connection1 = DatabaseConnection.databaseConnection();
+                    Statement statement1 = connection1.createStatement();
+                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                    preparedStatement1.setDate(1, Date.valueOf(EventDatePicker.getValue()));
+                    preparedStatement1.setObject(2, TimePicker.getValue());
+                    preparedStatement1.setString(3, model.getService().getName());
+                    preparedStatement1.setString(4, model.evento.sede.name());
+                    preparedStatement1.executeUpdate();
+
+
+                    //CHIUSURA CONNESSIONE
+                    closeConnection(connection1, statement1, preparedStatement1);
+
+                    calendar.getChildren().clear();
+                    drawCalendar();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+            } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
+                // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO NELLA FUNZIONE annullaPrenotaEvento
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Slot già disponibile");
+                alert.setHeaderText(null);
+                alert.setContentText("L'evento è già disponibile, per cancellarlo cliccare il tasto \"annulla prenotazione\"");
+                alert.showAndWait();
+                //----------------------SLOT GIA' PRENOTATO-----------------------------------------
+            } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Slot prenotato");
+                alert.setHeaderText(null);
+                alert.setContentText("Lo slot non può essere reso disponibile poichè è già stato prenotato da un cittadino");
+                alert.showAndWait();
+            }
+            //CHIUSURA CONNESSIONE
+            closeConnection(connection, statement, preparedStatement);
+            resultSet.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+
+    }*/
+
+    public void closeConnection(Connection connection, Statement statement, PreparedStatement preparedStatement) throws SQLException {
+        //CHIUSURA CONNESSIONI
+        connection.close();
+        statement.close();
+        preparedStatement.close();
     }
 
     //-----------------------USER DATA SET------------------------------
@@ -717,26 +1723,34 @@ public class Model implements Initializable {
 
         return citizenWhoBooked;
     }
-    /*public boolean notificationAlredyExist(Date dataIn, Time hourIn, String office) throws SQLException {
+
+    public boolean notificationAlredyExist(Date date, Object time) throws SQLException {
         Connection connection = DatabaseConnection.databaseConnection();
-        String query = "SELECT * FROM notification WHERE utente_id = ? AND data = dataIn AND ora = hourIn AND tipo = ? AND sede = office AND stato = 'definito'";
+        String query = "SELECT * FROM notification WHERE utente_id = ? AND data = ? AND ora = ?  AND tipo = ? AND sede = ? AND stato = 'definito'";
         Statement statement = connection.createStatement();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, getIdCitizen());
-        preparedStatement.setString(2, getService().getName());
+        preparedStatement.setDate(2, date);
+        preparedStatement.setObject(3, time);
+        preparedStatement.setString(4, getService().getName());
+        preparedStatement.setString(5, evento.sede.name());
+        //preparedStatement.setString(5, model.getService().getName());
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {//ci sono notifiche già inserite torna true
             connection.close();
             statement.close();
             preparedStatement.close();
+            resultSet.close();
 
             return true;
         } else { //ritorna false se non esistono già dei record
             connection.close();
             statement.close();
             preparedStatement.close();
+            resultSet.close();
 
             return false;
         }
-    }*/
+
+    }
 }
