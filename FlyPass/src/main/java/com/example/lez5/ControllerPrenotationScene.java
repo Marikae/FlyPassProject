@@ -4,12 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -59,6 +60,12 @@ public class ControllerPrenotationScene extends Controller implements Initializa
         }
     }
     private void citizenPrenotation() throws SQLException {
+
+        prenotationLabel.setText("");
+        newNotLabel.setText("");
+        preRitiroLabel.setText("");
+
+
         String preString = model.getCitizenPrenotation();
         if(!preString.equals("Prenotazione ancora da effettuare!\n")){ //prenotazione effettuata
             prenotationLabel.setText(preString);
@@ -93,6 +100,7 @@ public class ControllerPrenotationScene extends Controller implements Initializa
 
     private void workerPrenotation() throws SQLException {
         //String notificationAvaibility = model.getNewNotification();
+        newNotLabel.setText("");
         bookedPrenotation = model.getBookedReservation();
         newNotLabel.setText(bookedPrenotation);
         deleteRitiro.setVisible(false);
@@ -140,11 +148,84 @@ public class ControllerPrenotationScene extends Controller implements Initializa
     }
     @FXML
     void deleteReservation(ActionEvent event) {
-        //boolean b = model.annullaPrenotaEventoCittadino();
+
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Attenzione");
+        alert.setHeaderText("Sei sicuro di voler cancellare la prenotazione?\n" +
+                "Lo slot potrebbe essere cancellato o prenotato da un altro utente");
+
+        // Impostazione dei pulsanti OK e Annulla
+        ButtonType buttonTypeOK = new ButtonType("OK");
+        ButtonType buttonTypeCancel = new ButtonType("Annulla");
+        alert.getButtonTypes().setAll(buttonTypeOK, buttonTypeCancel);
+
+        // Visualizzazione dell'alert e attesa della risposta dell'utente
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == buttonTypeOK) {
+                boolean b = model.annullaPrenotaEventoCittadino();
+
+                if(model.isWorker()){ //lavoratore
+                    try {
+                        workerPrenotation();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else{ //cittadino
+                    try {
+                        citizenPrenotation();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } else if (buttonType == buttonTypeCancel) {
+                Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
+                alert1.setTitle("Azione annullata");
+                alert1.setHeaderText(null);
+                alert1.setContentText("Azione annullata, la prenotazione non ha subito variazioni");
+                alert1.showAndWait();
+            }
+        });
     }
 
     @FXML
     void deleteRitiro(ActionEvent event) {
-       //boolean b = model.annullaPrenotaRitiroPassaportoCittadino();
+
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Attenzione");
+        alert.setHeaderText("Sei sicuro di cancellare la prenotazione del ritiro?\n" +
+                "Lo slot potrebbe essere eliminato o prenotato da un altro utente.");
+
+        // Impostazione dei pulsanti OK e Annulla
+        ButtonType buttonTypeOK = new ButtonType("OK");
+        ButtonType buttonTypeCancel = new ButtonType("Annulla");
+        alert.getButtonTypes().setAll(buttonTypeOK, buttonTypeCancel);
+
+        // Visualizzazione dell'alert e attesa della risposta dell'utente
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == buttonTypeOK) {
+                boolean b = model.annullaPrenotaRitiroPassaportoCittadino();
+
+                if(model.isWorker()){ //lavoratore
+                    try {
+                        workerPrenotation();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else{ //cittadino
+                    try {
+                        citizenPrenotation();
+                        deletePrenotation.setVisible(true);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } else if (buttonType == buttonTypeCancel) {
+                Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
+                alert1.setTitle("Azione annullata");
+                alert1.setHeaderText(null);
+                alert1.setContentText("Azione annullata, la prenotazione del ritiro non ha subito variazioni");
+                alert1.showAndWait();
+            }
+        });
     }
 }

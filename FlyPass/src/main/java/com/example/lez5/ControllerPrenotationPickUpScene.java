@@ -335,6 +335,12 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
 
                 annullaPrenotaEvento.setVisible(true);
                 prenotaEvento.setVisible(false);
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Ritiro prenotato");
+                alert.setHeaderText(null);
+                alert.setContentText("Congratulazioni, il ritiro è stato prenotato correttamente");
+                alert.showAndWait();
             }
         } else {
 //------------------------------CALENDARIO LAVORATORE------------------------------------------------------

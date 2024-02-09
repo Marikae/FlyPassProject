@@ -303,12 +303,6 @@ public class Model implements Initializable {
                 //CHIUSURA CONNESSIONE
                 closeConnection(connection, statement, preparedStatement);
 
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Prenotazione annullata");
-                alert.setHeaderText(null);
-                alert.setContentText("La prenotazione è stata annullata con successo");
-                alert.showAndWait();
-
                 return true;
 
             } catch (SQLException e) {
@@ -838,6 +832,14 @@ public class Model implements Initializable {
 
 
     public boolean annullaPrenotaEventoCittadino(){
+        if(ritiroPrenotato){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Attenzione");
+            alert.setHeaderText(null);
+            alert.setContentText("Per eliminare questo evento, prima eliminare il ritiro.");
+            alert.showAndWait();
+            return false;
+        }
         if(!passaportoPrenotato){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Attenzione");
@@ -1161,7 +1163,6 @@ public class Model implements Initializable {
         }
         return  false;
     }
-
 
     public  boolean prenotaEventoWorker(Date date, Object time){
         //------------------------------CALENDARIO LAVORATORE------------------------------------------------------
@@ -1747,6 +1748,7 @@ public class Model implements Initializable {
             connection.close();
             statement.close();
             preparedStatement.close();
+            resultSet.close();
             resultSet.close();
 
             return false;
