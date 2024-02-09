@@ -135,6 +135,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
         if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
             if(!model.annullaPrenotaEventoCittadino()){
+                ErrorePrenotazione.setText("");
                 return;
             }
 
@@ -148,12 +149,29 @@ public class ControllerCalendarScene extends Controller implements Initializable
             alert.setTitle("Prenotazione annullata");
             alert.setHeaderText(null);
             alert.setContentText("La prenotazione è stata annullata con successo");
+            alert.getButtonTypes().clear();
+            // Aggiungi solo il tipo di pulsante OK
+            alert.getButtonTypes().add(ButtonType.OK);
             alert.showAndWait();
+
+            ErrorePrenotazione.setText("");
 
         } else {
 //------------------------------CALENDARIO LAVORATORE------------------------------------------------------
+            if(EventDatePicker.getValue() == null) {
+                ErrorePrenotazione.setTextFill(Color.RED);
+                ErrorePrenotazione.setText("Nessuna data selezionata");
+                return;
+            }
+
+            if(TimePicker.getValue() == null){
+                ErrorePrenotazione.setTextFill(Color.RED);
+                ErrorePrenotazione.setText("Nessun orario selezionato");
+                return;
+            }
 
             if(!model.annullaPrenotazioneEventoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                ErrorePrenotazione.setText("");
                 return;
             }else{
                 calendar.getChildren().clear();
@@ -163,8 +181,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 alert.setTitle("Slot cancellato");
                 alert.setHeaderText(null);
                 alert.setContentText("La cancellazione dell'evento è avvenuta correttamente.");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
             }
+            ErrorePrenotazione.setText("");
         }
         /*if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
@@ -318,9 +340,23 @@ public class ControllerCalendarScene extends Controller implements Initializable
     }
     @FXML
     private void prenotaEvento (ActionEvent event) {
+        if(EventDatePicker.getValue() == null) {
+            ErrorePrenotazione.setTextFill(Color.RED);
+            ErrorePrenotazione.setText("Nessuna data selezionata");
+            return;
+        }
+
+        if(TimePicker.getValue() == null){
+            ErrorePrenotazione.setTextFill(Color.RED);
+            ErrorePrenotazione.setText("Nessun orario selezionato");
+            return;
+        }
+
+
         if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
             if(!model.prenotaEventoCittadino(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                ErrorePrenotazione.setText("");
                 return;
             }else{
                 calendar.getChildren().clear();
@@ -337,15 +373,18 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         "4) Due fototessere su sfondo bianco\n" +
                         "5) Il passaporto precedente (se ancora in possesso)\n\n\n" +
                         "La lista dei documenti da portare sarà visualizzabile su prenotation alla chiusura di questo avviso");
+                alert.getButtonTypes().clear();
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
 
                 annullaPrenotaEvento.setVisible(true);
                 prenotaEvento.setVisible(false);
             }
-
+            ErrorePrenotazione.setText("");
         } else {
 //------------------------------CALENDARIO LAVORATORE------------------------------------------------------
             if(!model.prenotaEventoWorker(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                ErrorePrenotazione.setText("");
                 return;
             }else{
                 calendar.getChildren().clear();
@@ -355,8 +394,12 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 alert.setTitle("Slot inserito");
                 alert.setHeaderText(null);
                 alert.setContentText("Lo slot è stato inserito correttamente");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
             }
+            ErrorePrenotazione.setText("");
         }
     }
 
