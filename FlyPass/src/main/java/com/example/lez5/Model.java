@@ -271,6 +271,9 @@ public class Model implements Initializable {
             alert.setTitle("Attenzione");
             alert.setHeaderText(null);
             alert.setContentText("Non è stato possibile rilevare nessun passaporto da lei prenotato.");
+            alert.getButtonTypes().clear();
+            // Aggiungi solo il tipo di pulsante OK
+            alert.getButtonTypes().add(ButtonType.OK);
             alert.showAndWait();
             return false;
         }else {
@@ -339,6 +342,9 @@ public class Model implements Initializable {
                 alert.setTitle("Attenzione!");
                 alert.setHeaderText(null);
                 alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
 
                 //CHIUSURA CONNESSIONI
@@ -417,6 +423,9 @@ public class Model implements Initializable {
                     alert.setTitle("Attenzione");
                     alert.setHeaderText(null);
                     alert.setContentText("Hai già prenotato il tuo ritiro!");
+                    alert.getButtonTypes().clear();
+                    // Aggiungi solo il tipo di pulsante OK
+                    alert.getButtonTypes().add(ButtonType.OK);
                     alert.showAndWait();
 
                     //CHIUSURA CONNESSIONI
@@ -444,6 +453,9 @@ public class Model implements Initializable {
                         alert.setTitle("Errore!");
                         alert.setHeaderText(null);
                         alert.setContentText("Non è stato rilevato nessun appuntamento di prenotazione passaporto.");
+                        alert.getButtonTypes().clear();
+                        // Aggiungi solo il tipo di pulsante OK
+                        alert.getButtonTypes().add(ButtonType.OK);
                         alert.showAndWait();
 
                         connection.close();
@@ -473,6 +485,9 @@ public class Model implements Initializable {
                         alert.setContentText("La differenza è minore di 30 giorni.\n" +
                                 "Ricordati che devi prenotare il passaporto almeno 30 giorni dopo la richiesta di rilascio.\n" +
                                 "Scegli un'altra data e riprova.");
+                        alert.getButtonTypes().clear();
+                        // Aggiungi solo il tipo di pulsante OK
+                        alert.getButtonTypes().add(ButtonType.OK);
                         alert.showAndWait();
 
                         connection.close();
@@ -536,6 +551,9 @@ public class Model implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("Errore di prenotazione.\n Hai già prenotato questo evento.\n" +
                             "Per cancellare la tua prenotazione cliccare il tasto \"Annulla prenotazione\"");
+                    alert.getButtonTypes().clear();
+                    // Aggiungi solo il tipo di pulsante OK
+                    alert.getButtonTypes().add(ButtonType.OK);
                     alert.showAndWait();
                 } else {
                     //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
@@ -544,6 +562,9 @@ public class Model implements Initializable {
                     alert.setTitle("Errore");
                     alert.setHeaderText(null);
                     alert.setContentText("Errore di prenotazione.\n Evento Già prenotato da un altro utente");
+                    alert.getButtonTypes().clear();
+                    // Aggiungi solo il tipo di pulsante OK
+                    alert.getButtonTypes().add(ButtonType.OK);
                     alert.showAndWait();
                 }
             }
@@ -577,6 +598,9 @@ public class Model implements Initializable {
                 alert.setTitle("Attention");
                 alert.setHeaderText(null);
                 alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
 
                 //CHIUSURA CONNESSIONI
@@ -591,6 +615,9 @@ public class Model implements Initializable {
                 alert.setHeaderText(null);
                 alert.setContentText("La cancellazione dell'evento non può essere effettuata poichè non esiste\n" +
                         "alcun evento programmato per questo slot temporale");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
                 //--------------------------CANCELLAZIONE APPUNTAMENTO----------------------------------
             } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
@@ -624,6 +651,9 @@ public class Model implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("La cancellazione dell'evento non può essere cancellata poichè\n" +
                             "l'evento non è stato creato da lei");
+                    alert.getButtonTypes().clear();
+                    // Aggiungi solo il tipo di pulsante OK
+                    alert.getButtonTypes().add(ButtonType.OK);
                     alert.showAndWait();
                 }
 
@@ -633,6 +663,9 @@ public class Model implements Initializable {
                 alert.setTitle("Slot prenotato");
                 alert.setHeaderText(null);
                 alert.setContentText("Lo slot non può essere cancellato poichè\nè già stato prenotato");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
             }
             //CHIUSURA CONNESSIONE
@@ -666,6 +699,9 @@ public class Model implements Initializable {
                 alert.setTitle("Attenzione!");
                 alert.setHeaderText(null);
                 alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
 
                 //CHIUSURA CONNESSIONI
@@ -708,6 +744,9 @@ public class Model implements Initializable {
                 alert.setTitle("Slot già disponibile");
                 alert.setHeaderText(null);
                 alert.setContentText("L'evento è già disponibile, per cancellarlo cliccare il tasto \"annulla prenotazione\"");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
                 //----------------------SLOT GIA' PRENOTATO-----------------------------------------
             } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
@@ -715,6 +754,9 @@ public class Model implements Initializable {
                 alert.setTitle("Slot prenotato");
                 alert.setHeaderText(null);
                 alert.setContentText("Lo slot non può essere cancellato poichè\nè già stato prenotato");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
             }
 
@@ -837,6 +879,9 @@ public class Model implements Initializable {
             alert.setTitle("Attenzione");
             alert.setHeaderText(null);
             alert.setContentText("Per eliminare questo evento, prima eliminare il ritiro.");
+            alert.getButtonTypes().clear();
+            // Aggiungi solo il tipo di pulsante OK
+            alert.getButtonTypes().add(ButtonType.OK);
             alert.showAndWait();
             return false;
         }
@@ -845,6 +890,9 @@ public class Model implements Initializable {
             alert.setTitle("Attenzione");
             alert.setHeaderText(null);
             alert.setContentText("Non è stato possibile rilevare nessun passaporto da lei prenotato.");
+            alert.getButtonTypes().clear();
+            // Aggiungi solo il tipo di pulsante OK
+            alert.getButtonTypes().add(ButtonType.OK);
             alert.showAndWait();
             return false;
         }else {
@@ -904,6 +952,9 @@ public class Model implements Initializable {
                 alert.setTitle("Attention");
                 alert.setHeaderText(null);
                 alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
 
                 //CHIUSURA CONNESSIONI
@@ -918,6 +969,9 @@ public class Model implements Initializable {
                 alert.setHeaderText(null);
                 alert.setContentText("La cancellazione dell'evento non può essere effettuata poichè non esiste\n" +
                         "alcun evento programmato per questo slot temporale");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
                 //--------------------------CANCELLAZIONE APPUNTAMENTO----------------------------------
             } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
@@ -952,6 +1006,9 @@ public class Model implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("La cancellazione dell'evento non può essere cancellata poichè\n" +
                             "l'evento non è stato creato da lei");
+                    alert.getButtonTypes().clear();
+                    // Aggiungi solo il tipo di pulsante OK
+                    alert.getButtonTypes().add(ButtonType.OK);
                     alert.showAndWait();
 
                     //CHIUSURA CONNESSIONE
@@ -966,6 +1023,9 @@ public class Model implements Initializable {
                 alert.setTitle("Slot prenotato");
                 alert.setHeaderText(null);
                 alert.setContentText("Lo slot non può essere cancellato poichè\nè già stato prenotato");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
             }
             //CHIUSURA CONNESSIONE
@@ -1000,6 +1060,9 @@ public class Model implements Initializable {
                 alert.setTitle("Attenzione!");
                 alert.setHeaderText(null);
                 alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
                 //CHIUSURA CONNESSIONI
                 closeConnection(connection, statement, preparedStatement);
@@ -1097,6 +1160,9 @@ public class Model implements Initializable {
                     alert.setTitle("Attenzione!");
                     alert.setHeaderText(null);
                     alert.setContentText("Hai già prenotato!\n");
+                    alert.getButtonTypes().clear();
+                    // Aggiungi solo il tipo di pulsante OK
+                    alert.getButtonTypes().add(ButtonType.OK);
                     alert.showAndWait();
 
                     //CHIUSURA CONNESSIONI
@@ -1144,6 +1210,9 @@ public class Model implements Initializable {
                     alert.setTitle("Errore");
                     alert.setHeaderText(null);
                     alert.setContentText("Errore di prenotazione.\n Hai già prenotato questo evento");
+                    alert.getButtonTypes().clear();
+                    // Aggiungi solo il tipo di pulsante OK
+                    alert.getButtonTypes().add(ButtonType.OK);
                     alert.showAndWait();
                 }else{
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -1151,6 +1220,9 @@ public class Model implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("Errore di prenotazione.\n Questo evento è stato già prenotato da un altro utente.\n" +
                             "Scegli un altro evento e riprova");
+                    alert.getButtonTypes().clear();
+                    // Aggiungi solo il tipo di pulsante OK
+                    alert.getButtonTypes().add(ButtonType.OK);
                     alert.showAndWait();
                 }
             }
@@ -1185,6 +1257,9 @@ public class Model implements Initializable {
                 alert.setTitle("Attenzione!");
                 alert.setHeaderText(null);
                 alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
 
                 //CHIUSURA CONNESSIONI
@@ -1243,6 +1318,9 @@ public class Model implements Initializable {
                 alert.setTitle("Slot già disponibile");
                 alert.setHeaderText(null);
                 alert.setContentText("L'evento è già disponibile, per cancellarlo cliccare il tasto \"annulla prenotazione\"");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
                 //----------------------SLOT GIA' PRENOTATO-----------------------------------------
             } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
@@ -1250,6 +1328,9 @@ public class Model implements Initializable {
                 alert.setTitle("Slot prenotato");
                 alert.setHeaderText(null);
                 alert.setContentText("Lo slot non può essere reso disponibile poichè è già stato prenotato da un cittadino");
+                alert.getButtonTypes().clear();
+                // Aggiungi solo il tipo di pulsante OK
+                alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
             }
             //CHIUSURA CONNESSIONE
