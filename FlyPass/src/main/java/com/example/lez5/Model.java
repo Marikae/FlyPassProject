@@ -403,17 +403,16 @@ public class Model implements Initializable {
 
     public boolean annullaPrenotaRitiroPassaportoCittadino() {
 
-        if(!passaportoPrenotato){
+        if(!passaportoPrenotato){ //passaporto non prenotato
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Attenzione");
             alert.setHeaderText(null);
             alert.setContentText("Non è stato possibile rilevare nessun passaporto da lei prenotato.");
             alert.getButtonTypes().clear();
-            // Aggiungi solo il tipo di pulsante OK
             alert.getButtonTypes().add(ButtonType.OK);
             alert.showAndWait();
             return false;
-        }else {
+        }else { //passaporto prenotato allora si può annullare
             try {
                 Connection connection = DatabaseConnection.databaseConnection();
                 Statement statement = connection.createStatement();
@@ -448,6 +447,8 @@ public class Model implements Initializable {
             } catch (SQLException e) {
                 System.out.println(e);
             }
+
+
             return false;
         }
     }
@@ -1531,7 +1532,13 @@ public class Model implements Initializable {
                 }
                 //------------------------UPDATE NOTIFICA--------------------------------------
                 //c'è un metodo nel model per l'updateNotification che non funziona perchè mi da errore di Time/LocalTime
-                try {
+                //TODO AGGIUNTA APPUNTAMENTO PERSONALE
+                //controllo se ci sono notifiche per quella data, setto tutto a definito e seen a 0
+                if(thereAreNotification(date, time)){
+                    setNotificationDefinito(date, time);
+                    setNotificationNotSeen(date, time);
+                }
+                /*try {
                     String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
                     Connection connection1 = DatabaseConnection.databaseConnection();
                     Statement statement1 = connection1.createStatement();
@@ -1548,7 +1555,7 @@ public class Model implements Initializable {
                     resultSet.close();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
-                }
+                }*/
                 return true;
 
             } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
@@ -2166,6 +2173,7 @@ public class Model implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        setNotificationSeen();
     }
 
     public void setNotificationOccupato(Date date, Object time){
@@ -2187,5 +2195,6 @@ public class Model implements Initializable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        setNotificationSeen();
     }
 }
