@@ -131,7 +131,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
     }
 
     @FXML
-    private void annullaPrenotaEvento(ActionEvent event){
+    private void annullaPrenotaEvento(ActionEvent event) throws SQLException {
         if (!Model.getModel().isWorker()) {
 //------------------------------CALENDARIO CITTADINO------------------------------------------------------
             if(!model.annullaPrenotaEventoCittadino()){
@@ -150,9 +150,14 @@ public class ControllerCalendarScene extends Controller implements Initializable
             alert.setHeaderText(null);
             alert.setContentText("La prenotazione è stata annullata con successo");
             alert.getButtonTypes().clear();
-            // Aggiungi solo il tipo di pulsante OK
             alert.getButtonTypes().add(ButtonType.OK);
             alert.showAndWait();
+            //TODO ANNULLAMENTO PRENOTAZIONE CITTADINO
+            //controllo se ci sono notifiche per quella data, setto tutto a disponibile e seen a 0
+            if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                model.setNotificationDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
+                model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
+            }
 
             ErrorePrenotazione.setText("");
 
@@ -175,7 +180,13 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 return;
             }else{
                 calendar.getChildren().clear();
-                drawCalendar();
+
+                //TODO AAGGIUNTA APPUNTAMENTO PERSONALE
+                //controllo se ci sono notifiche per quella data, setto tutto a definito e seen a 0
+                if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                    model.setNotificationDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
+                    model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
+                }
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Slot cancellato");
@@ -185,6 +196,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 // Aggiungi solo il tipo di pulsante OK
                 alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
+                drawCalendar();
             }
             ErrorePrenotazione.setText("");
         }
@@ -339,7 +351,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
         }*/
     }
     @FXML
-    private void prenotaEvento (ActionEvent event) {
+    private void prenotaEvento (ActionEvent event) throws SQLException {
         if(EventDatePicker.getValue() == null) {
             ErrorePrenotazione.setTextFill(Color.RED);
             ErrorePrenotazione.setText("Nessuna data selezionata");
@@ -360,7 +372,13 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 return;
             }else{
                 calendar.getChildren().clear();
-                drawCalendar();
+
+                //TODO PRENOTAZIONE APPUNTAMENTO CITTADINO
+                //controllo se ci sono notifiche per quella data, setto tutto a occupato e seen a 0
+                if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
+                    model.setNotificationOccupato(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
+                    model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
+                }
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Conferma prenotazione!");
@@ -376,7 +394,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 alert.getButtonTypes().clear();
                 alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
-
+                drawCalendar();
                 annullaPrenotaEvento.setVisible(true);
                 prenotaEvento.setVisible(false);
             }
@@ -388,7 +406,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 return;
             }else{
                 calendar.getChildren().clear();
-                drawCalendar();
+
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Slot inserito");
@@ -398,6 +416,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 // Aggiungi solo il tipo di pulsante OK
                 alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
+                drawCalendar();
             }
             ErrorePrenotazione.setText("");
         }

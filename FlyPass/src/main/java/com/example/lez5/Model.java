@@ -2075,4 +2075,117 @@ public class Model implements Initializable {
         }
 
     }
+
+    public void setNotificationNotSeen(Date date, Object time){ //setta la notifica a già vista
+        try {
+            Connection connection1 = DatabaseConnection.databaseConnection();
+            String query1 = ("UPDATE notification SET seen = 0 WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
+            Statement statement1 = connection1.createStatement();
+            PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+            preparedStatement1.setDate(1, date);
+            preparedStatement1.setObject(2, time);
+            preparedStatement1.setString(3, getService().getName());
+            preparedStatement1.setString(4, evento.sede.name());
+            preparedStatement1.executeUpdate();
+
+            connection1.close();
+            statement1.close();
+            preparedStatement1.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        activeNotification();
+    }
+
+    public boolean thereAreNotification(Date date, Object time) throws SQLException { //controlla se ci sono notifiche per una certa data ora sede servizio
+        Connection connection = DatabaseConnection.databaseConnection();
+        String query = "SELECT * FROM notification WHERE data = ? AND ora = ?  AND tipo = ? AND sede = ?";
+        Statement statement = connection.createStatement();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setDate(1, date);
+        preparedStatement.setObject(2, time);
+        preparedStatement.setString(3, getService().getName());
+        preparedStatement.setString(4, evento.sede.name());
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {//ci sono notifiche già inserite torna true
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+            resultSet.close();
+
+            return true;
+        } else { //ritorna false se non esistono già dei record
+            connection.close();
+            statement.close();
+            preparedStatement.close();
+            resultSet.close();
+            resultSet.close();
+
+            return false;
+        }
+    }
+
+    public void setNotificationDefinito(Date date, Object time){
+        try {
+            String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
+            Connection connection1 = DatabaseConnection.databaseConnection();
+            Statement statement1 = connection1.createStatement();
+            PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+            preparedStatement1.setDate(1, date);
+            preparedStatement1.setObject(2, time);
+            preparedStatement1.setString(3, getService().getName());
+            preparedStatement1.setString(4, evento.sede.name());
+            preparedStatement1.executeUpdate();
+
+            connection1.close();
+            statement1.close();
+            preparedStatement1.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void setNotificationNonDefinito(Date date, Object time){
+        try {
+            String query1 = ("UPDATE notification SET stato = 'non definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
+            Connection connection1 = DatabaseConnection.databaseConnection();
+            Statement statement1 = connection1.createStatement();
+            PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+            preparedStatement1.setDate(1, date);
+            preparedStatement1.setObject(2, time);
+            preparedStatement1.setString(3, getService().getName());
+            preparedStatement1.setString(4, evento.sede.name());
+            preparedStatement1.executeUpdate();
+
+            connection1.close();
+            statement1.close();
+            preparedStatement1.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setNotificationOccupato(Date date, Object time){
+        try {
+            String query1 = ("UPDATE notification SET stato = 'occupato' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
+            Connection connection1 = DatabaseConnection.databaseConnection();
+            Statement statement1 = connection1.createStatement();
+            PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+            preparedStatement1.setDate(1, date);
+            preparedStatement1.setObject(2, time);
+            preparedStatement1.setString(3, getService().getName());
+            preparedStatement1.setString(4, evento.sede.name());
+            preparedStatement1.executeUpdate();
+
+            connection1.close();
+            statement1.close();
+            preparedStatement1.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
