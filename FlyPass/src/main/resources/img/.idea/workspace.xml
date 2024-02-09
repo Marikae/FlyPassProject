@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="86a7927f-5369-41fe-bcfc-f31b40359799" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/clessidra.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fistTime.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/lez5/ControllerPrenotationScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/lez5/ControllerPrenotationScene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/lez5/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/lez5/Model.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../com/example/lez5/PrenotationPickUpScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../com/example/lez5/PrenotationPickUpScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../com/example/lez5/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../com/example/lez5/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cambio.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/cambio.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/example/lez5/ControllerPrenotationScene.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../target/classes/com/example/lez5/ControllerPrenotationScene.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/example/lez5/Model.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../target/classes/com/example/lez5/Model.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/example/lez5/PrenotationPickUpScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../target/classes/com/example/lez5/PrenotationPickUpScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/example/lez5/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../target/classes/com/example/lez5/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/img/cambio.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../target/classes/img/cambio.jpg" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2c5fqMHhTrArU0ssCFEWbn0fBAq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/Utente/Desktop/FlyPassProject/FlyPass/src/main/resources/img",
+    "settings.editor.selected.configurable": "LermitageExtraIcons",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="86a7927f-5369-41fe-bcfc-f31b40359799" name="Changes" comment="" />
+      <created>1707406549855</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1707406549855</updated>
+      <workItem from="1707406550912" duration="2000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
