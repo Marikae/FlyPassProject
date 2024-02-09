@@ -800,59 +800,12 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
 
                     for (i = 0; i < 5; i++) {
 
-                        try {
-                            Connection connection = DatabaseConnection.databaseConnection();
-                            Statement statement = connection.createStatement();
-
-                            String query = ("SELECT * FROM eventi " +
-                                    "WHERE Data = ? " +
-                                    "AND Inizio = ? " +
-                                    "AND Sede = ? " +
-                                    "AND TipoServizio = ? ");
-                            PreparedStatement preparedStatement = connection.prepareStatement(query);
-                            preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
-                            preparedStatement.setObject(2, localTime);
-                            preparedStatement.setString(3, model.evento.sede.name());
-                            preparedStatement.setString(4, ritiropassaporto);
-                            ResultSet resultSet = preparedStatement.executeQuery();
-                            if (!resultSet.next()) {
-                                query = "INSERT INTO `eventi` (`Data`, `Inizio`, `Fine`, `Disponibile`, `Prenotato`, `Sede`, `TipoServizio`) VALUES (?, ?, ?, 0, 0, ?, ?)";
-                                preparedStatement = connection.prepareStatement(query);
-                                preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
-                                preparedStatement.setObject(2, localTime);
-                                preparedStatement.setObject(3, localTime.plusHours(1));
-                                preparedStatement.setString(4, model.evento.sede.name());
-                                preparedStatement.setString(5, ritiropassaporto);
-
-                                preparedStatement.executeUpdate();
-
-
-                                query = ("SELECT * FROM eventi " +
-                                        "WHERE Data = ? " +
-                                        "AND Inizio = ? " +
-                                        "AND Sede = ? " +
-                                        "AND TipoServizio = ? ");
-
-
-
-
-                                preparedStatement = connection.prepareStatement(query);
-                                preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
-                                preparedStatement.setObject(2, localTime);
-                                preparedStatement.setString(3, model.evento.sede.name());
-                                preparedStatement.setString(4, ritiropassaporto);
-
-                                resultSet = preparedStatement.executeQuery();
-                                resultSet.next();
-                            }
-
+                        Evento evento = model.creazioneCalendarioRitiro(localTime, Date.valueOf(auxDate.toLocalDate()));
 
                             VBox calendarActivityBox = new VBox();
 
-
-                            String time = resultSet.getTime(2).toString();
-                            if(!resultSet.getBoolean("Disponibile")){
-                                String endTime = resultSet.getTime(2).toString();
+                            String time = evento.getInizio().toString();
+                            if(!evento.isDisponibile()){
                                 Text text = new Text(time + "\nNon prenotabile\n\n");
                                 calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                 calendarActivityBox.setMaxHeight(rectangleWidth * 0.8);
@@ -861,8 +814,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                                 calendarActivityBox.setStyle("-fx-background-color:#e36363");
                                 calendarActivityBox.getChildren().add(text);
 
-                            }else if((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))){
-                                String endTime = resultSet.getTime(2).toString();
+                            }else if(evento.isDisponibile() && !evento.isPrenotato()){
                                 Text text = new Text(time + "\nSlot prenotabile!\n\n");
                                 calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                 calendarActivityBox.setMaxHeight(rectangleWidth * 0.8);
@@ -871,9 +823,8 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                                 calendarActivityBox.getChildren().add(text);
 
 
-                            }else if((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))){
-                                if(resultSet.getInt("Id_utente_prenotazione") == model.idUtente) {
-                                    String endTime = resultSet.getTime(2).toString();
+                            }else if(evento.isDisponibile() && evento.isPrenotato()){
+                                if(evento.getId() == model.idUtente) {
                                     Text text = new Text(time + "\nSlot prenotato   \n da te!\n");
                                     calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                     calendarActivityBox.setMaxHeight(rectangleWidth * 0.8);
@@ -883,7 +834,6 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                                     calendarActivityBox.getChildren().add(text);
                                 }
                                 else{
-                                    String endTime = resultSet.getTime(2).toString();
                                     Text text = new Text(time + "\nSlot già\nprenotato!         \n");
                                     calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                     calendarActivityBox.setMaxHeight(rectangleHeight * 0.05);
@@ -891,23 +841,11 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                                     calendarActivityBox.getChildren().add(text);
                                 }
                             }
-
                             vBoxContainer.getChildren().add(calendarActivityBox); // Aggiungere la VBox al contenitore principale
-
                             localTime = localTime.plusHours(1);
-
-                            connection.close();
-                            statement.close();
-                            preparedStatement.close();
-
-                        }catch (SQLException e) {
-                            System.out.println(e);
-                        }
                     }
 
                     stackPane.getChildren().add(vBoxContainer);
-
-
 
                     Text date = new Text(String.valueOf(dayWrite));
 
@@ -957,60 +895,13 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
 
 
                     for (i = 0; i < 5; i++) {
-
-                        try {
-                            Connection connection = DatabaseConnection.databaseConnection();
-                            Statement statement = connection.createStatement();
-
-                            String query = ("SELECT * FROM eventi " +
-                                    "WHERE Data = ? " +
-                                    "AND Inizio = ? " +
-                                    "AND Sede = ? " +
-                                    "AND TipoServizio = ? ");
-                            PreparedStatement preparedStatement = connection.prepareStatement(query);
-                            preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
-                            preparedStatement.setObject(2, localTime);
-                            preparedStatement.setString(3, model.evento.sede.name());
-                            preparedStatement.setString(4, ritiropassaporto);
-                            ResultSet resultSet = preparedStatement.executeQuery();
-                            if (!resultSet.next()) {
-                                query = "INSERT INTO `eventi` (`Data`, `Inizio`, `Fine`, `Disponibile`, `Prenotato`, `Sede`, `TipoServizio`) VALUES (?, ?, ?, 0, 0, ?, ?)";
-                                preparedStatement = connection.prepareStatement(query);
-                                preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
-                                preparedStatement.setObject(2, localTime);
-                                preparedStatement.setObject(3, localTime.plusHours(1));
-                                preparedStatement.setString(4, model.evento.sede.name());
-                                preparedStatement.setString(5, ritiropassaporto);
-
-                                preparedStatement.executeUpdate();
-
-
-                                query = ("SELECT * FROM eventi " +
-                                        "WHERE Data = ? " +
-                                        "AND Inizio = ? " +
-                                        "AND Sede = ? " +
-                                        "AND TipoServizio = ? ");
-
-
-
-
-                                preparedStatement = connection.prepareStatement(query);
-                                preparedStatement.setDate(1, Date.valueOf(auxDate.toLocalDate()));
-                                preparedStatement.setObject(2, localTime);
-                                preparedStatement.setString(3, model.evento.sede.name());
-                                preparedStatement.setString(4, ritiropassaporto);
-
-                                resultSet = preparedStatement.executeQuery();
-                                resultSet.next();
-                            }
-
+                        Evento evento = model.creazioneCalendarioRitiro(localTime, Date.valueOf(auxDate.toLocalDate()));
 
                             VBox calendarActivityBox = new VBox();
 
 
-                            String time = resultSet.getTime(2).toString();
-                            if(!resultSet.getBoolean("Disponibile")){
-                                String endTime = resultSet.getTime(2).toString();
+                            String time = evento.getInizio().toString();
+                            if(!evento.isDisponibile()){
                                 Text text = new Text(time + "\nNon prenotabile\n\n");
                                 calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                 calendarActivityBox.setMaxHeight(rectangleWidth * 0.8);
@@ -1019,8 +910,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                                 calendarActivityBox.setStyle("-fx-background-color:#e36363");
                                 calendarActivityBox.getChildren().add(text);
 
-                            }else if((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))){
-                                String endTime = resultSet.getTime(2).toString();
+                            }else if(evento.isDisponibile() && !evento.isPrenotato()){
                                 Text text = new Text(time + "\nSlot prenotabile!\n\n");
                                 calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                 calendarActivityBox.setMaxHeight(rectangleWidth * 0.8);
@@ -1028,10 +918,8 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                                 calendarActivityBox.setStyle("-fx-background-color:LIGHTGREEN");
                                 calendarActivityBox.getChildren().add(text);
 
-
-                            }else if((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))){
-                                if(resultSet.getInt("Id_utente_prenotazione") == model.idUtente) {
-                                    String endTime = resultSet.getTime(2).toString();
+                            }else if(evento.isDisponibile() && evento.isPrenotato()){
+                                if(evento.getId() == model.idUtente) {
                                     Text text = new Text(time + "\nSlot prenotato   \n da te!\n");
                                     calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                     calendarActivityBox.setMaxHeight(rectangleWidth * 0.8);
@@ -1041,7 +929,6 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                                     calendarActivityBox.getChildren().add(text);
                                 }
                                 else{
-                                    String endTime = resultSet.getTime(2).toString();
                                     Text text = new Text(time + "\nSlot già\nprenotato!         \n");
                                     calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
                                     calendarActivityBox.setMaxHeight(rectangleHeight * 0.05);
@@ -1049,18 +936,8 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                                     calendarActivityBox.getChildren().add(text);
                                 }
                             }
-
                             vBoxContainer.getChildren().add(calendarActivityBox); // Aggiungere la VBox al contenitore principale
-
                             localTime = localTime.plusHours(1);
-
-                            connection.close();
-                            statement.close();
-                            preparedStatement.close();
-
-                        }catch (SQLException e) {
-                            System.out.println(e);
-                        }
                     }
                     stackPane.getChildren().add(vBoxContainer);
                 }
@@ -1094,8 +971,6 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
         //stage.setFullScreen(true);
         stage.show();
     }
-
-
 
     @FXML
     void goToLogOutScene(ActionEvent event) throws IOException {
