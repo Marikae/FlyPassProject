@@ -696,7 +696,7 @@ public class Model implements Initializable {
     public String getCitizenWhoBooked(String idCode) throws SQLException {
         Connection connection2 = DatabaseConnection.databaseConnection();
         String query2 = "SELECT * FROM citizen WHERE id = ?";
-        Statement statement2 = connection2.createStatement();//PROVA MERGE
+        Statement statement2 = connection2.createStatement();
         PreparedStatement preparedStatement2 = connection2.prepareStatement(query2);
         preparedStatement2.setString(1, idCode);
         ResultSet resultSet2 = preparedStatement2.executeQuery();
