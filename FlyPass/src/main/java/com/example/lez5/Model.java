@@ -671,7 +671,8 @@ public class Model implements Initializable {
         ResultSet resultSet = preparedStatement.executeQuery();
         StringBuilder resultString = new StringBuilder();
         while (resultSet.next()) {
-            String office = resultSet.getString("Sede");
+            String office = "aaaa";
+            office = resultSet.getString("Sede");
             String date = resultSet.getString("Data");
             String hour = resultSet.getString("Inizio");
             String type = resultSet.getString("TipoServizio");
