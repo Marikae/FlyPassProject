@@ -309,7 +309,7 @@ public class Model implements Initializable {
             LocalTime localTime1 = resultSet.getTime("Inizio").toLocalTime().plusHours(1);
 
 
-            //CHIUSURA CONNESSIONE
+
             Evento evento1 = new Evento(resultSet.getInt("Id_utente_prenotazione"),
                     resultSet.getString("Worker"),
                     resultSet.getDate("Data").toLocalDate(),
@@ -319,8 +319,7 @@ public class Model implements Initializable {
                     resultSet.getBoolean("Prenotato"),
                     evento.sede
                     , evento.tipoServizio);
-
-
+            //Chiusura connessione
             closeConnection(connection, statement, preparedStatement);
 
             return evento1;
