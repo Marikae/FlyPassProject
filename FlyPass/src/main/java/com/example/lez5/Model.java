@@ -265,6 +265,146 @@ public class Model implements Initializable {
     }
 
     //------------------------------------- DATABESE INSERIMENTO ---------------------------------
+    public Evento creazioneCalendario(LocalTime localTime, Date date) {
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, date);
+            preparedStatement.setObject(2, localTime);
+            preparedStatement.setString(3, evento.sede.name());
+            preparedStatement.setString(4, getService().getName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                query = "INSERT INTO `eventi` (`Data`, `Inizio`, `Fine`, `Disponibile`, `Prenotato`, `Sede`, `TipoServizio`) VALUES (?, ?, ?, 0, 0, ?, ?)";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setDate(1, date);
+                preparedStatement.setObject(2, localTime);
+                preparedStatement.setObject(3, localTime.plusHours(1));
+                preparedStatement.setString(4, evento.sede.name());
+                preparedStatement.setString(5, getService().getName());
+                preparedStatement.executeUpdate();
+                query = ("SELECT * FROM eventi " +
+                        "WHERE Data = ? " +
+                        "AND Inizio = ? " +
+                        "AND Sede = ? " +
+                        "AND TipoServizio = ? ");
+
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setDate(1, date);
+                preparedStatement.setObject(2, localTime);
+                preparedStatement.setString(3, evento.sede.name());
+                preparedStatement.setString(4, getService().getName());
+
+                resultSet = preparedStatement.executeQuery();
+                resultSet.next();
+            }
+
+            LocalTime localTime1 = resultSet.getTime("Inizio").toLocalTime().plusHours(1);
+
+
+            //CHIUSURA CONNESSIONE
+            Evento evento1 = new Evento(resultSet.getInt("Id_utente_prenotazione"),
+                    resultSet.getString("Worker"),
+                    resultSet.getDate("Data").toLocalDate(),
+                    resultSet.getTime("Inizio").toLocalTime()
+                    , localTime1,
+                    resultSet.getBoolean("Disponibile"),
+                    resultSet.getBoolean("Prenotato"),
+                    evento.sede
+                    , evento.tipoServizio);
+
+
+            closeConnection(connection, statement, preparedStatement);
+
+            return evento1;
+
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return null;
+    }
+
+
+
+
+    public Evento creazioneCalendarioRitiro(LocalTime localTime, Date date) {
+        try {
+            Connection connection = DatabaseConnection.databaseConnection();
+            Statement statement = connection.createStatement();
+
+            String query = ("SELECT * FROM eventi " +
+                    "WHERE Data = ? " +
+                    "AND Inizio = ? " +
+                    "AND Sede = ? " +
+                    "AND TipoServizio = ? ");
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, date);
+            preparedStatement.setObject(2, localTime);
+            preparedStatement.setString(3, evento.sede.name());
+            preparedStatement.setString(4, ritiropassaporto);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                query = "INSERT INTO `eventi` (`Data`, `Inizio`, `Fine`, `Disponibile`, `Prenotato`, `Sede`, `TipoServizio`) VALUES (?, ?, ?, 0, 0, ?, ?)";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setDate(1, date);
+                preparedStatement.setObject(2, localTime);
+                preparedStatement.setObject(3, localTime.plusHours(1));
+                preparedStatement.setString(4, evento.sede.name());
+                preparedStatement.setString(5, ritiropassaporto);
+                preparedStatement.executeUpdate();
+                query = ("SELECT * FROM eventi " +
+                        "WHERE Data = ? " +
+                        "AND Inizio = ? " +
+                        "AND Sede = ? " +
+                        "AND TipoServizio = ? ");
+
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setDate(1, date);
+                preparedStatement.setObject(2, localTime);
+                preparedStatement.setString(3, evento.sede.name());
+                preparedStatement.setString(4, ritiropassaporto);
+
+                resultSet = preparedStatement.executeQuery();
+                resultSet.next();
+            }
+
+            LocalTime localTime1 = resultSet.getTime("Inizio").toLocalTime().plusHours(1);
+
+
+            //CHIUSURA CONNESSIONE
+            Evento evento1 = new Evento(resultSet.getInt("Id_utente_prenotazione"),
+                    resultSet.getString("Worker"),
+                    resultSet.getDate("Data").toLocalDate(),
+                    resultSet.getTime("Inizio").toLocalTime()
+                    , localTime1,
+                    resultSet.getBoolean("Disponibile"),
+                    resultSet.getBoolean("Prenotato"),
+                    evento.sede
+                    , evento.tipoServizio);
+
+
+            closeConnection(connection, statement, preparedStatement);
+
+            return evento1;
+
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return null;
+    }
+
+
+
+
+
+
     public boolean annullaPrenotaRitiroPassaportoCittadino() {
         if(!passaportoPrenotato){
             Alert alert = new Alert(Alert.AlertType.WARNING);
