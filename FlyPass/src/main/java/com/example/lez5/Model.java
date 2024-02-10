@@ -14,13 +14,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class Model implements Initializable {
@@ -1460,15 +1459,25 @@ public class Model implements Initializable {
     }
 
     public  boolean prenotaEventoWorker(Date date, Object time){
-        LocalDate now = LocalDate.now();
-        Date nowDate = Date.valueOf(now);
-        if(!date.after(nowDate)){
+
+        // Ottieni la data corrente in millisecondi
+        long millis = System.currentTimeMillis();
+
+        // Crea un oggetto java.sql.Date dalla data corrente in millisecondi
+        java.sql.Date nowDate = new java.sql.Date(millis);
+
+        LocalTime timeNow = LocalTime.now();
+        // Stampa di debug
+        System.out.println("data di adesso: " + nowDate);
+        System.out.println("data inserita: " + date);
+        System.out.println("ora di adesso: " + timeNow);
+        System.out.println("ora inserita: " + time);
+        //TODO
+        if(date.before(nowDate) && (date.equals(nowDate) && LocalTime.of((Integer) time, 0).isBefore(timeNow))){//se la data non è dopo la data odierta e l'orario non è dopo l'ora di adesso
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Attenzione!");
             alert.setHeaderText(null);
-            alert.setContentText("Stai cercando di prenotare la data odierna oppure\n" +
-                    "una data passata.\n" +
-                    "Cambia data e riprova.");
+            alert.setContentText("Stai aggiungendo una data passata.\nCambia data e riprova.");
             alert.getButtonTypes().clear();
             // Aggiungi solo il tipo di pulsante OK
             alert.getButtonTypes().add(ButtonType.OK);

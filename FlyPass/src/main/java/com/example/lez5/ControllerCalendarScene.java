@@ -153,7 +153,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
             alert.getButtonTypes().add(ButtonType.OK);
             alert.showAndWait();
 
-            //TODO ANNULLAMENTO PRENOTAZIONE CITTADINO
+            //ANNULLAMENTO PRENOTAZIONE CITTADINO
             //controllo se ci sono notifiche per quella data, setto tutto a disponibile e seen a 0
             if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
                 model.setNotificationDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
