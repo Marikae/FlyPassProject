@@ -147,7 +147,7 @@
                      </children></Pane>
                </children>
             </HBox>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="ocean-background" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+            <ScrollPane fx:id="scroll" prefHeight="200.0" prefWidth="200.0" styleClass="ocean-background" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <content>
                   <GridPane fx:id="serviceGrid" prefHeight="0.0" prefWidth="0.0" styleClass="ocean-background" stylesheets="@style.css">
                     <rowConstraints>

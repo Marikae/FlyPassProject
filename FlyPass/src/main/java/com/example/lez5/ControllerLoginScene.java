@@ -111,9 +111,11 @@ public class ControllerLoginScene extends Controller implements Initializable {
 
 
     public void enterMainScene(ActionEvent event) throws IOException {
+
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
+
         // stage.initStyle(StageStyle.TRANSPARENT); // Rimuovi i bordi della finestra
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
         double screenHeight = Screen.getPrimary().getBounds().getHeight();
@@ -123,6 +125,8 @@ public class ControllerLoginScene extends Controller implements Initializable {
         stage.setY((screenHeight - windowHeight) / 2);
         stage.setScene(scene);
         //stage.setFullScreen(true);
+        model.scene = scene;
+        model.stage = stage;
         stage.show();
     }
 

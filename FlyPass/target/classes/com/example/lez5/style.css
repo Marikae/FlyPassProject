@@ -46,3 +46,10 @@
     border-radius: 5px; /* Bordi arrotondati */
 }
 
+.arrotondamento{
+    -fx-background-radius: 17;
+}
+
+.image-view-rounded {
+    -fx-background-radius: 50%;
+}

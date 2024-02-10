@@ -1,5 +1,7 @@
 package com.example.lez5;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -16,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -39,9 +43,20 @@ public class ControllerMainScene extends Controller implements Initializable {
 
     @FXML
     private ImageView prenotationImg;
-
+    @FXML
+    private ScrollPane scroll;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // Ottieni le dimensioni dello schermo
+        double screenWidth = Screen.getPrimary().getBounds().getWidth();
+        double screenHeight = Screen.getPrimary().getBounds().getHeight();
+
+        // Crea un oggetto DoubleProperty per la larghezza dello schermo
+        DoubleProperty screenWidthProperty = new SimpleDoubleProperty(screenWidth);
+
+        // Lega la larghezza dello ScrollPane alla larghezza dello schermo
+        serviceGrid.prefWidthProperty().bind(screenWidthProperty);
 
         if(model.isWorker()){
             //se non è un lavoratore

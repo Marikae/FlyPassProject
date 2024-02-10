@@ -3,10 +3,12 @@ package com.example.lez5;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -59,7 +61,8 @@ public class Model implements Initializable {
 
     public boolean ritiroPrenotato;
     public boolean notification = false;
-
+    public Stage stage;
+    public Scene scene;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
