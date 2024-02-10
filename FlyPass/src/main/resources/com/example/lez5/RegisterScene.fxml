@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="676.0" prefWidth="600.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerRegisterScene">
    <children>
-      <Button fx:id="registerButton" layoutX="313.0" layoutY="480.0" mnemonicParsing="false" onAction="#registration" prefHeight="25.0" prefWidth="89.0" styleClass="bottom" stylesheets="@style.css" text="Registrati" />
+      <Button fx:id="registerButton" layoutX="358.0" layoutY="434.0" mnemonicParsing="false" onAction="#registration" prefHeight="25.0" prefWidth="89.0" styleClass="bottom" stylesheets="@style.css" text="Registrati" />
       <Button fx:id="undoButton" layoutX="28.0" layoutY="25.0" mnemonicParsing="false" onAction="#backToFirstScene" prefHeight="25.0" prefWidth="73.0" styleClass="bottom" stylesheets="@style.css" text="&lt; Indietro" />
       <Label fx:id="nameSinginLabel" layoutX="143.0" layoutY="126.0" text="Nome" textFill="WHITE" />
       <Label fx:id="surnameSinginLabel" layoutX="306.0" layoutY="126.0" text="Cognome" textFill="WHITE" />
@@ -29,12 +29,12 @@
       </Label>
       <Hyperlink fx:id="loginHL" layoutX="257.0" layoutY="549.0" onAction="#EnterLoginScene" prefHeight="24.0" prefWidth="175.0" text="Hai già un'account? Accedi qui." underline="true" />
       <TextField fx:id="email" layoutX="143.0" layoutY="318.0" />
-      <TextField fx:id="password" layoutX="144.0" layoutY="418.0" />
-      <TextField fx:id="confirmPassword" layoutX="309.0" layoutY="418.0" />
+      <TextField fx:id="password" layoutX="143.0" layoutY="388.0" />
+      <TextField fx:id="confirmPassword" layoutX="308.0" layoutY="388.0" />
       <Label layoutX="145.0" layoutY="301.0" text="Email" textFill="WHITE" />
-      <Label layoutX="146.0" layoutY="401.0" text="Password" textFill="WHITE" />
-      <Label layoutX="311.0" layoutY="401.0" text="Conferma password" textFill="WHITE" />
-      <Label fx:id="error" layoutX="132.0" layoutY="521.0" prefHeight="17.0" prefWidth="347.0" textFill="RED" />
+      <Label layoutX="145.0" layoutY="371.0" text="Password" textFill="WHITE" />
+      <Label layoutX="310.0" layoutY="371.0" text="Conferma password" textFill="WHITE" />
+      <Label fx:id="error" layoutX="130.0" layoutY="474.0" prefHeight="64.0" prefWidth="349.0" textFill="RED" />
       <TextField fx:id="num_health_card" layoutX="306.0" layoutY="258.0" />
       <Label layoutX="309.0" layoutY="240.0" styleClass="text-background" stylesheets="@style.css" text="Numero carta sanitaria" />
       <TextField fx:id="cat" layoutX="306.0" layoutY="318.0" />

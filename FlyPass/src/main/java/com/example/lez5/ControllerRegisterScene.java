@@ -81,6 +81,9 @@ public class ControllerRegisterScene extends Controller{
 
         if(date_of_birth.getValue() != null){
             Citizen newUser = new Citizen(name.getText(), num_health_card.getText(), cat.getText(), surname.getText(), date_of_birth.getValue().toString(), place_of_birth.getText(), tax_code.getText(), email.getText(), password.getText());
+            if(checkEmptyFields(newUser) && checkPasswordConfirm()){
+                check = true;
+            }
             if(!model.isSoloCaratteri(nameReg)){
                 error.setText("Il nome non contiene solo caratteri!.");
                 return;
@@ -95,7 +98,6 @@ public class ControllerRegisterScene extends Controller{
             }
             if(!model.checkEmail(email.getText())){
                 error.setText("Formato dell'email invalido.");
-                check = false;
                 return;
             }
 
@@ -105,7 +107,7 @@ public class ControllerRegisterScene extends Controller{
                 return;
             }
             if (!model.checkPassword(passReg)){
-                error.setText("Password troppo debole! \n Inserisci almeno 5 caratteri.");
+                error.setText("Password troppo debole! \nInserisci almeno 5 caratteri.");
                 check = false;
                 return;
             }
@@ -114,9 +116,7 @@ public class ControllerRegisterScene extends Controller{
                 check = false;
                 return;
             }
-            if(checkEmptyFields(newUser) && checkPasswordConfirm()){
-                check = true;
-            }
+
 
 
         }else
@@ -164,7 +164,7 @@ public class ControllerRegisterScene extends Controller{
 
     public boolean checkEmptyFields(Citizen user){
         if(user.getName().isEmpty() || user.getSurname().isEmpty() || user.getBirthday().isEmpty() || user.getBirthPlace().isEmpty() || user.getCodiceFiscale().isEmpty() || user.getEmail().isEmpty() || confirmPassword.getText().isEmpty()){
-            error.setText("C'è una casella vuota."); //casella vuota
+            error.setText("Ci sono una o più campi vuoti."); //casella vuota
             return false;
         }
         return true;
