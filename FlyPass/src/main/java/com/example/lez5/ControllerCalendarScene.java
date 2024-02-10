@@ -158,7 +158,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
             if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
                 model.setNotificationDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
                 model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
-                System.out.println("sono entrato nell'if ci sono ntofiche cittaidno \n");
+                //System.out.println("sono entrato nell'if ci sono ntofiche cittaidno \n");
             }
 
             ErrorePrenotazione.setText("");
@@ -187,7 +187,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 //controllo se ci sono notifiche per quella data, setto tutto a disponibile e seen a 0
                 if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
                     model.setNotificationNonDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
-                    System.out.println("cancellazione da parte del worker\n");
+                    //System.out.println("cancellazione da parte del worker\n");
                 }
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Slot cancellato");

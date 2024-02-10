@@ -533,7 +533,7 @@ public class Model implements Initializable {
                     if (response == ButtonType.OK) {
                         boolean receiveNotification = notificationCheckBox.isSelected();
                         System.out.println("Risposta: OK, Ricevi notifica: " + receiveNotification);
-                        //TODO salvarsi i dati per inviare alla notifica!!!
+
 
                         if (receiveNotification){
                             //se l'utente ha selezionato si allora
