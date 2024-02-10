@@ -257,12 +257,41 @@ public class Model implements Initializable {
         }
         // Estrazione delle parti dal codice fiscale
         String parteNomeCognome = codiceFiscale.substring(0, 6);
+        String parteDataNascita = codiceFiscale.substring(6, 11);
+        String caratteriControllo = codiceFiscale.substring(15);
+
         if(isSoloMaiuscole(parteNomeCognome))
             return  true;
+
+        if (!isSoloNumeri(parteDataNascita)) {
+            return false;
+        }
+
+        // Verifica se la parte relativa ai caratteri di controllo contiene solo caratteri alfanumerici
+        if (!isAlfanumerico(caratteriControllo)) {
+            return false;
+        }
         // Aggiungi ulteriori verifiche, ad esempio i caratteri di controllo
         return  false;
     }
-
+    private boolean isSoloNumeri(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!(c >= '0' && c <= '9')) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean isAlfanumerico(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!(Character.isLetterOrDigit(c))) {
+                return false;
+            }
+        }
+        return true;
+    }
     public boolean isSoloMaiuscole(String input) {
         return input.matches("^[A-Z]+$");
     }
@@ -2199,5 +2228,12 @@ public class Model implements Initializable {
             throw new RuntimeException(e);
         }
         setNotificationSeen();
+    }
+
+    public boolean checkPassword(String passReg) {//controllo forza della password
+        if(passReg.length() >= 5)
+            return true;
+        else
+            return false;
     }
 }

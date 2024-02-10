@@ -66,15 +66,15 @@ public class ControllerRegisterScene extends Controller{
     @FXML
     void registration(ActionEvent event) throws IOException, SQLException {
 
-        String aus1 = name.getText();
-        String aus2 = password.getText();
-        String aus3 = email.getText();
-        String aus4 = num_health_card.getText();
-        LocalDate aus5 = date_of_birth.getValue();
-        String aus6 = cat.getText();
-        String aus7 = tax_code.getText();
-        String aus8 = place_of_birth.getText();
-        String aus9 = surname.getText();
+        String nameReg = name.getText();
+        String passReg = password.getText();
+        String emailReg = email.getText();
+        String nHealthCardReg = num_health_card.getText();
+        LocalDate dateBirthReg = date_of_birth.getValue();
+        String catReg = cat.getText();
+        String taxCodeReg = tax_code.getText();
+        String birthPlaceReg = place_of_birth.getText();
+        String surnameReg = surname.getText();
 
 
         boolean check = false;
@@ -84,39 +84,50 @@ public class ControllerRegisterScene extends Controller{
 
             if(!model.checkEmail(email.getText())){
                 error.setText("Formato dell'email invalido.");
+                check = false;
                 return;
             }
 
-            if (!model.isCodiceFiscaleValid(aus7, aus1, aus9)){
+            if (!model.isCodiceFiscaleValid(taxCodeReg, nameReg, surnameReg)){
                 error.setText("Formato del codice fiscale invalido.");
+                check = false;
                 return;
+            }
+            if (!model.checkPassword(passReg)){
+                error.setText("Password troppo debole! \n Inserisci almeno 5 caratteri.");
+                check = false;
+                return;
+            }
+            if(!model.HealthCardNumberCheck(nHealthCardReg)){
+                error.setText("Formato numero carta sanitaria invalido. \nIl numero deve essere di 20 cifre.");
+                check = false;
+                return;
+            }
+            if(checkEmptyFields(newUser) && checkPasswordConfirm()){
+                check = true;
             }
 
-            if(!model.HealthCardNumberCheck(aus4)){
-                error.setText("Formato numero carta sanitaria invalido. Il numero deve essere di 20 cifre.");
-                return;
-            }
-            if(checkEmptyFields(newUser) && checkPasswordConfirm())
-                check = true;
 
         }else
             error.setText("Ci sono alcuni campi vuoti.");
 
-
-        if(!model.checkAnagrafica(aus5,aus1,aus2,aus3,aus4,aus6,aus7,aus8,aus9)){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Attenzione!");
-            alert.setHeaderText(null);
-            alert.setContentText("Il tuo profilo non rientra nell'anagrafica del sistema.\n" +
-                    "Per maggiori informazioni manda un'email a info@questura.it\n"); //il profilo non rientra nell'anagrafica
-            alert.showAndWait();
-            check = false;
+        if(check){
+            if(!model.checkAnagrafica(dateBirthReg,nameReg,passReg,emailReg,nHealthCardReg,catReg,taxCodeReg,birthPlaceReg,surnameReg)){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Attenzione!");
+                alert.setHeaderText(null);
+                alert.setContentText("Il tuo profilo non rientra nell'anagrafica del sistema.\n" +
+                        "Per maggiori informazioni manda un'email a info@questura.it\n"); //il profilo non rientra nell'anagrafica
+                alert.showAndWait();
+                check = false;
+            }
         }
 
 
+
         if(check){
-            if(!model.isAlreadyRegistered(aus7)) {
-                model.databaseInsertion(aus5, aus1, aus2, aus3, aus4, aus6, aus7, aus8, aus9);
+            if(!model.isAlreadyRegistered(taxCodeReg)) {
+                model.databaseInsertion(dateBirthReg, nameReg, passReg, emailReg, nHealthCardReg, catReg, taxCodeReg, birthPlaceReg, surnameReg);
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("LoginScene.fxml")));
                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
