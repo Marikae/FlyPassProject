@@ -10,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -38,6 +40,17 @@ public class ControllerService extends Controller implements Initializable {
         Image image = new Image(getClass().getResourceAsStream(service.getImgSrc()));
         //this.myListener = myListener;
         img.setImage(image);
+        Rectangle clip = new Rectangle();
+        double arcSize = 20; // Imposta la dimensione dell'arrotondamento degli angoli
+        clip.setArcWidth(arcSize);
+        clip.setArcHeight(arcSize);
+
+        // Imposta le dimensioni del rettangolo come quelle dell'immagine
+        clip.widthProperty().bind(img.fitWidthProperty());
+        clip.heightProperty().bind(img.fitHeightProperty());
+
+        // Applica la maschera di arrotondamento all'ImageView
+        img.setClip(clip);
         //Image image = new Image(getClass().getResourceAsStream(service.getImgSrc()));
         //ImageView imageView = new ImageView(image);
         img.setPreserveRatio(false); // Imposta il rapporto d'aspetto su false
@@ -45,7 +58,6 @@ public class ControllerService extends Controller implements Initializable {
         //imageView.fitHeightProperty().bind(containerPane.heightProperty()); // Fai in modo che l'immagine si adatti all'altezza del contenitore
         img.setSmooth(true); // Opzionale: rende l'immagine più nitida
         img.setCache(true); // Opzionale: abilita la cache per migliorare le prestazioni
-        //scene.getChildren().add(imageView); // Aggiungi l'ImageView al contenitore
 
         name.setText(service.getName());
         description.setText(service.getDescription());
