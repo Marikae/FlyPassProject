@@ -81,7 +81,18 @@ public class ControllerRegisterScene extends Controller{
 
         if(date_of_birth.getValue() != null){
             Citizen newUser = new Citizen(name.getText(), num_health_card.getText(), cat.getText(), surname.getText(), date_of_birth.getValue().toString(), place_of_birth.getText(), tax_code.getText(), email.getText(), password.getText());
-
+            if(!model.isSoloCaratteri(nameReg)){
+                error.setText("Il nome non contiene solo caratteri!.");
+                return;
+            }
+            if(!model.isSoloCaratteri(surnameReg)){
+                error.setText("Il cognome non contiene solo caratteri!.");
+                return;
+            }
+            if(!model.isSoloCaratteri(birthPlaceReg)){
+                error.setText("Il luogo di nascita non contiene solo caratteri!.");
+                return;
+            }
             if(!model.checkEmail(email.getText())){
                 error.setText("Formato dell'email invalido.");
                 check = false;

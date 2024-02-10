@@ -274,7 +274,7 @@ public class Model implements Initializable {
         // Aggiungi ulteriori verifiche, ad esempio i caratteri di controllo
         return  false;
     }
-    private boolean isSoloNumeri(String s) {
+    public boolean isSoloNumeri(String s) {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (!(c >= '0' && c <= '9')) {
@@ -283,7 +283,7 @@ public class Model implements Initializable {
         }
         return true;
     }
-    private boolean isAlfanumerico(String s) {
+    public boolean isAlfanumerico(String s) {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (!(Character.isLetterOrDigit(c))) {
@@ -291,6 +291,16 @@ public class Model implements Initializable {
             }
         }
         return true;
+    }
+    public boolean isSoloCaratteri(String s) {
+        // Verifica se la stringa contiene solo lettere
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!Character.isLetter(c)) {
+                return false; // Se troviamo un carattere diverso da una lettera, restituisci false
+            }
+        }
+        return true; // Se tutti i caratteri sono lettere, restituisci true
     }
     public boolean isSoloMaiuscole(String input) {
         return input.matches("^[A-Z]+$");
