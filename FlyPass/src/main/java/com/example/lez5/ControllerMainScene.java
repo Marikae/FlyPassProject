@@ -78,13 +78,13 @@ public class ControllerMainScene extends Controller implements Initializable {
                 ricordaRitiroLabel.setText("Prenota l'appuntamento per il servizio desiderato.\n" +
                         "Successivamente prenota il ritiro del tuo passaporto.");
             }else if(model.passaportoPrenotato && !model.ritiroPrenotato){
-                statoPrenotazioneERitiro.setText("SERVIZIO: PRENOTATO\t\tRITIRO PASSAPORTO: NON PRENOTATO");
+                statoPrenotazioneERitiro.setText("SERVIZIO: PRENOTATO ✓\t\tRITIRO PASSAPORTO: NON PRENOTATO");
                 ricordaRitiroLabel.setFont(Font.font(20));
                 ricordaRitiroLabel.setText("Ricordati di prenotare il ritiro\n" +
                         "del tuo passaporto!");
             }
             if(model.ritiroPrenotato){
-                statoPrenotazioneERitiro.setText("SERVIZIO: PRENOTATO\t\tRITIRO PASSAPORTO: PRENOTATO");
+                statoPrenotazioneERitiro.setText("SERVIZIO: PRENOTATO ✓\t\tRITIRO PASSAPORTO: PRENOTATO ✓");
                 ricordaRitiroLabel.setText("Hai prenotato sia il servizio\n" +
                         "sia il ritiro.\n" +
                         "Vai alla schermata \"Prenotazioni\" con il pulsante in alto\n" +
