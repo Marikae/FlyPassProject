@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerMainScene">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerMainScene">
    <top>
       <HBox prefHeight="97.0" prefWidth="1247.0" spacing="20.0" styleClass="border-bottom" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
@@ -144,6 +144,7 @@
                      </effect>
                      <children>
                         <Button fx:id="prenotationPickUpButton" layoutX="684.0" layoutY="25.0" mnemonicParsing="false" onAction="#goToPrenotationPickUpScene" prefHeight="31.0" prefWidth="417.0" styleClass="bottom" stylesheets="@style.css" text="Prenota ritiro passaporto" />
+                        <Label fx:id="ricordaRitiroLabel" layoutX="332.0" layoutY="14.0" prefHeight="73.0" prefWidth="337.0" styleClass="text-background" stylesheets="@style.css" />
                      </children></Pane>
                </children>
             </HBox>
@@ -159,7 +160,10 @@
                   <Insets />
                </VBox.margin>
             </ScrollPane>
-            <HBox prefHeight="100.0" prefWidth="200.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="statoPrenotazioneERitiro" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="1300.0" styleClass="text-background" stylesheets="@style.css" text="Stato prenotazione e ritiro" textAlignment="CENTER" />
+               </children></HBox>
          </children>
       </VBox>
    </center>

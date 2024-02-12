@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -32,6 +34,10 @@ import java.util.ResourceBundle;
 public class ControllerMainScene extends Controller implements Initializable {
     @FXML
     private Stage stage;
+    @FXML
+    private Label ricordaRitiroLabel;
+    @FXML
+    private Label statoPrenotazioneERitiro;
     private Scene scene;
     @FXML
     private GridPane serviceGrid;
@@ -58,10 +64,31 @@ public class ControllerMainScene extends Controller implements Initializable {
         // Lega la larghezza dello ScrollPane alla larghezza dello schermo
         serviceGrid.prefWidthProperty().bind(screenWidthProperty);
 
+        ricordaRitiroLabel.setFont(Font.font(13));
+        statoPrenotazioneERitiro.setFont(Font.font(20));
+
         if(model.isWorker()){
             //se non è un lavoratore
             prenotationPickUpButton.setText("Inserisci disponibilità ritiro passaporto");
         }else{
+            if(!model.passaportoPrenotato){
+                statoPrenotazioneERitiro.setText("SERVIZIO: NON PRENOTATO\t\tRITIRO PASSAPORTO: NON PRENOTATO");
+                ricordaRitiroLabel.setText("Prenota l'appuntamento per il servizio desiderato.\n" +
+                        "Successivamente prenota il ritiro del tuo passaporto.");
+            }else if(model.passaportoPrenotato && !model.ritiroPrenotato){
+                statoPrenotazioneERitiro.setText("SERVIZIO: PRENOTATO\t\tRITIRO PASSAPORTO: NON PRENOTATO");
+                ricordaRitiroLabel.setFont(Font.font(20));
+                ricordaRitiroLabel.setText("Ricordati di prenotare il ritiro\n" +
+                        "del tuo passaporto!");
+            }
+            if(model.ritiroPrenotato){
+                statoPrenotazioneERitiro.setText("SERVIZIO: PRENOTATO\t\tRITIRO PASSAPORTO: PRENOTATO");
+                ricordaRitiroLabel.setText("Hai prenotato sia il servizio\n" +
+                        "sia il ritiro.\n" +
+                        "Vai alla schermata \"Prenotazioni\" con il pulsante in alto\n" +
+                        "al centro per vedere le informazioni sulle tue prenotazioni");
+            }
+
             try {
                 if(!model.notificationSeen()) //se ci sono notifiche da vedere allora attiva
                     model.activeNotification();

@@ -53,8 +53,6 @@ public class Model implements Initializable {
 
     private User user;
     private Service service;
-    @FXML
-    private ImageView prenotationImg;
     private boolean worker;
     public int idUtente;
     public boolean passaportoPrenotato;
@@ -223,7 +221,6 @@ public class Model implements Initializable {
             System.out.println(e);
         }
         // Chiudi le risorse
-
         return false;
     }
 
