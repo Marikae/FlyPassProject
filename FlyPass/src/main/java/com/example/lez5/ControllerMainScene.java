@@ -68,7 +68,9 @@ public class ControllerMainScene extends Controller implements Initializable {
         statoPrenotazioneERitiro.setFont(Font.font(20));
 
         if(model.isWorker()){
-            //se non è un lavoratore
+            //se è un lavoratore
+            statoPrenotazioneERitiro.setText("Seleziona il servizio desiderato ed inizia\n" +
+                    "la gestione delle disponibilità.");
             prenotationPickUpButton.setText("Inserisci disponibilità ritiro passaporto");
         }else{
             if(!model.passaportoPrenotato){
