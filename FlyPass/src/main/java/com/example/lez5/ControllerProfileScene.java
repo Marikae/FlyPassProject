@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
@@ -59,10 +60,11 @@ public class ControllerProfileScene extends Controller implements Initializable 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if(model.isWorker()) { //lavoratore
+            //labelSopraForm.setFont(Font.font(18));
             Worker user = (Worker) model.getUser();
-            nameLabel.setText(user.getName());
-            surnameLabel.setText(user.getSurname());
-            emailLabel.setText(user.getEmail());
+            nameLabel.setText("    " + user.getName());
+            surnameLabel.setText("    " + user.getSurname());
+            emailLabel.setText("    " + user.getEmail());
             finalCodFisc.setText("Ufficio:      ");
             taxCodeLabel.setText(user.getOffice().toString());
             //nascondo le altre label
@@ -78,14 +80,14 @@ public class ControllerProfileScene extends Controller implements Initializable 
 
         }else{ //cittadino
             Citizen user = (Citizen) model.getUser();
-            nameLabel.setText(user.getName());
-            surnameLabel.setText(user.getSurname());
-            taxCodeLabel.setText(user.getCodiceFiscale());
-            placeOfBirthLabel.setText(user.getBirthPlace());
-            emailLabel.setText(user.getEmail());
-            birthdayLabel.setText(user.getBirthday());
-            healtCardLabel.setText(user.getHealCard());
-            categoryLabel.setText(user.getCategory());
+            nameLabel.setText("    " + user.getName());
+            surnameLabel.setText("    " + user.getSurname());
+            taxCodeLabel.setText("    " + user.getCodiceFiscale());
+            placeOfBirthLabel.setText("    " + user.getBirthPlace());
+            emailLabel.setText("    " + user.getEmail());
+            birthdayLabel.setText("    " + user.getBirthday());
+            healtCardLabel.setText("    " + user.getHealCard());
+            categoryLabel.setText("    " + user.getCategory());
 
             //controllo notifica
             if(model.notification){

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 public class FlyPassApplication extends Application {
     public void start(Stage stage) throws IOException, SQLException {
+        stage.setResizable(false);
         FXMLLoader fxmlLoader = new FXMLLoader(FlyPassApplication.class.getResource("FirstScene.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);

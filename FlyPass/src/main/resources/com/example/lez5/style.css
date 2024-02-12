@@ -29,6 +29,12 @@
     -fx-text-fill: white;
 }
 
+.text-background-profile {
+    -fx-text-fill: white;
+    -fx-font-size: 26px; /* Aggiunto 'px' per specificare la grandezza del font */
+    -fx-font-family: "Calibri", sans-serif; /* Aggiunto i doppi apici per il nome del font */
+}
+
 .calendar-background{
     -fx-background-color: #850a36;
 }
