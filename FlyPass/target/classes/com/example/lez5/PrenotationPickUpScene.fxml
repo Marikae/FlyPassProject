@@ -181,7 +181,33 @@
                   </Pane>
                </right>
                <bottom>
-                  <Pane prefHeight="167.0" prefWidth="1300.0" BorderPane.alignment="CENTER" />
+                  <Pane prefHeight="167.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <ImageView fx:id="legendaRosso" fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/Rosso.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="legendaVerde" fitHeight="25.0" fitWidth="25.0" layoutX="217.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/Verde.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="legendaAzzurro" fitHeight="25.0" fitWidth="25.0" layoutX="428.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/Azzurro.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="legendaArancione" fitHeight="25.0" fitWidth="25.0" layoutX="631.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/Arancione.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="labelRosso" layoutX="47.0" layoutY="132.0" prefHeight="41.0" prefWidth="160.0" styleClass="text-background" stylesheets="@style.css" text="Label" />
+                        <Label fx:id="labelVerde" layoutX="250.0" layoutY="132.0" prefHeight="41.0" prefWidth="160.0" styleClass="text-background" stylesheets="@style.css" text="Label" />
+                        <Label fx:id="labelAzzurro" layoutX="459.0" layoutY="132.0" prefHeight="41.0" prefWidth="160.0" styleClass="text-background" stylesheets="@style.css" text="Label" />
+                        <Label fx:id="labelArancione" layoutX="666.0" layoutY="132.0" prefHeight="41.0" prefWidth="160.0" styleClass="text-background" stylesheets="@style.css" text="Label" />
+                     </children></Pane>
                </bottom>
                <top>
                   <Pane prefHeight="46.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
