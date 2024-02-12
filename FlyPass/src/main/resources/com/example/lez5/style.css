@@ -53,3 +53,9 @@
 .image-view-rounded {
     -fx-background-radius: 50%;
 }
+
+.bottom-square{
+    -fx-background-color: #417B5A; // ; //#BC5F04;  //#944BBB; // #36827F; // #16627e
+
+    -fx-text-fill: white;
+}
