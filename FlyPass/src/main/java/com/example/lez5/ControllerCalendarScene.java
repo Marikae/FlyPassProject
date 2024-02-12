@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -66,6 +67,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
     @FXML
     private Text month;
     @FXML
+    private Label labelSopraForm;
+    @FXML
     private FlowPane calendar;
     //ArrayList<ZonedDateTime> checkInserimentoPrenotazione = new ArrayList<>();
     private Stage stage;
@@ -114,6 +117,10 @@ public class ControllerCalendarScene extends Controller implements Initializable
             model.putNotification(prenotationImg);
         }
         if(model.isWorker()){
+            labelSopraForm.setFont(Font.font(18));
+            labelSopraForm.setText("Inserisci data e orario per\n" +
+                    "inserire o rimuovere lo slot");
+
             labelRosso.setText("Slot non prenotabile\n" +
                     "da un cittadino");
             labelVerde.setText("Slot prenotabile\n" +

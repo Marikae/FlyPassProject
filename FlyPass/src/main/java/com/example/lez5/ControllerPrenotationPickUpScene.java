@@ -61,6 +61,8 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
     @FXML
     private Label labelArancione;
     @FXML
+    private Label labelSopraForm;
+    @FXML
     private ComboBox<LocalTime> TimePicker;
     @FXML
     private DatePicker EventDatePicker;
@@ -115,6 +117,9 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
         }
 
         if(model.isWorker()){
+            labelSopraForm.setFont(Font.font(18));
+            labelSopraForm.setText("Inserisci data e orario per\n" +
+                    "inserire o rimuovere lo slot");
             labelRosso.setText("Slot non prenotabile\n" +
                     "da un cittadino");
             labelVerde.setText("Slot prenotabile\n" +
