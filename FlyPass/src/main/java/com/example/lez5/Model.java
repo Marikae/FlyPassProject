@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 import java.util.ResourceBundle;
 import java.sql.*;
 import java.time.LocalDate;
@@ -31,36 +31,19 @@ public class Model implements Initializable {
     private String loginPassword;
     private String loginUserName;
     String ritiropassaporto = "Prenotazione ritiro passaporto";
-
-    public String getLoginUserName() {
-        return loginUserName;
-    }
-
-    public void setLoginUserName(String loginUserName) {
-        this.loginUserName = loginUserName;
-    }
-
     //Serve per capire se l'utente sta provando a prenotare o ad inserire disponibilità in un "ritiro passaporto"
     private boolean prenotaPassaportoClicked;
-
-    public boolean isPrenotaPassaportoClicked() {
-        return prenotaPassaportoClicked;
-    }
-
-    public void setPrenotaPassaportoClicked(boolean prenotaPassaportoClicked) {
-        this.prenotaPassaportoClicked = prenotaPassaportoClicked;
-    }
-
     private User user;
     private Service service;
     private boolean worker;
     public int idUtente;
     public boolean passaportoPrenotato;
-
     public boolean ritiroPrenotato;
     public boolean notification = false;
     public Stage stage;
     public Scene scene;
+
+    private Model(){} //costruttore privato così nessuna classe esterna può creare un altro model
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
@@ -145,6 +128,13 @@ public class Model implements Initializable {
     }
 
     //------------------------------ LOGIN ------------------------------------
+    public String getLoginUserName() {
+        return loginUserName;
+    }
+
+    public void setLoginUserName(String loginUserName) {
+        this.loginUserName = loginUserName;
+    }
     public Boolean workerLogin(String username, String password) throws IOException {
         try {
             this.loginPassword = password;
@@ -371,7 +361,13 @@ public class Model implements Initializable {
 
 
 
+    public boolean isPrenotaPassaportoClicked() {
+        return prenotaPassaportoClicked;
+    }
 
+    public void setPrenotaPassaportoClicked(boolean prenotaPassaportoClicked) {
+        this.prenotaPassaportoClicked = prenotaPassaportoClicked;
+    }
     public Evento creazioneCalendarioRitiro(LocalTime localTime, Date date) {
         try {
             Connection connection = DatabaseConnection.databaseConnection();
