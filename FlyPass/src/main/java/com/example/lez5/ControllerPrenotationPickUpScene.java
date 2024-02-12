@@ -45,6 +45,21 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
     private Label descriptionLabel;
     @FXML
     private Label serviceName;
+    private ImageView legendaVerde;
+    @FXML
+    private ImageView legendaArancione;
+    @FXML
+    private ImageView legendaAzzurro;
+    @FXML
+    private ImageView legendaRosso;
+    @FXML
+    private Label labelVerde;
+    @FXML
+    private Label labelRosso;
+    @FXML
+    private Label labelAzzurro;
+    @FXML
+    private Label labelArancione;
     @FXML
     private ComboBox<LocalTime> TimePicker;
     @FXML
@@ -95,22 +110,37 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                 "Ricorda che devi aspettare almeno 30 giorni dalla data di richiesta del passaporto");
         serviceName.setText(ritiropassaporto);
 
-        giorniDistanza.setFont(Font.font(16));
-        giorniDistanza.setText("Ricorda di lasciare 30 giorni \n" +
-                                "di distanza tra la data del tuo\n" +
-                                "primo appuntamento e la data  \n" +
-                                 "del ritiro che stai prenotando\n" +
-                                "ora");
-
-
         if(model.notification){
             model.putNotification(prenotationImg);
         }
 
         if(model.isWorker()){
+            labelRosso.setText("Slot non prenotabile\n" +
+                    "da un cittadino");
+            labelVerde.setText("Slot prenotabile\n" +
+                    "da un cittadino");
+            labelAzzurro.setText("Slot già prenotato\n" +
+                    "da un cittadino");
+            labelArancione.setVisible(false);
+            legendaArancione.setVisible(false);
+
             prenotaEvento.setText("Inserisci slot");
             annullaPrenotaEvento.setText("Rimuovi slot");
         }else {
+            giorniDistanza.setFont(Font.font(16));
+            giorniDistanza.setText("Ricorda di lasciare 30 giorni \n" +
+                    "di distanza tra la data del tuo\n" +
+                    "primo appuntamento e la data  \n" +
+                    "del ritiro che stai prenotando\n" +
+                    "ora");
+
+            labelRosso.setText("Slot non disponibile\n" +
+                    "per la prenotazione");
+            labelVerde.setText("Slot disponibile\n" +
+                    "per la prenotazione");
+            labelAzzurro.setText("Slot già prenotato\n" +
+                    "da un cittadino");
+            labelArancione.setText("Slot prenotato da te");
             if (model.ritiroPrenotato) {
                 prenotaEvento.setVisible(false);
             } else {

@@ -46,6 +46,22 @@ public class ControllerCalendarScene extends Controller implements Initializable
     @FXML
     private DatePicker EventDatePicker;
     @FXML
+    private ImageView legendaVerde;
+    @FXML
+    private ImageView legendaArancione;
+    @FXML
+    private ImageView legendaAzzurro;
+    @FXML
+    private ImageView legendaRosso;
+    @FXML
+    private Label labelVerde;
+    @FXML
+    private Label labelRosso;
+    @FXML
+    private Label labelAzzurro;
+    @FXML
+    private Label labelArancione;
+    @FXML
     private Text year;
     @FXML
     private Text month;
@@ -98,9 +114,24 @@ public class ControllerCalendarScene extends Controller implements Initializable
             model.putNotification(prenotationImg);
         }
         if(model.isWorker()){
+            labelRosso.setText("Slot non prenotabile\n" +
+                    "da un cittadino");
+            labelVerde.setText("Slot prenotabile\n" +
+                    "da un cittadino");
+            labelAzzurro.setText("Slot già prenotato\n" +
+                    "da un cittadino");
+            labelArancione.setVisible(false);
+            legendaArancione.setVisible(false);
             prenotaEvento.setText("Inserisci slot");
             annullaPrenotaEvento.setText("Rimuovi slot");
         } else{
+            labelRosso.setText("Slot non disponibile\n" +
+                    "per la prenotazione");
+            labelVerde.setText("Slot disponibile\n" +
+                    "per la prenotazione");
+            labelAzzurro.setText("Slot già prenotato\n" +
+                    "da un cittadino");
+            labelArancione.setText("Slot prenotato da te");
             if (model.passaportoPrenotato) {
                 prenotaEvento.setVisible(false);
             } else {

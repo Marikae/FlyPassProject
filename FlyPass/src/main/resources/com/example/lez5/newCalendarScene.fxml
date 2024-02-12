@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerCalendarScene">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerCalendarScene">
    <top>
       <HBox prefHeight="97.0" prefWidth="1247.0" spacing="20.0" styleClass="border-bottom" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
@@ -184,7 +184,33 @@
                   </Pane>
                </right>
                <bottom>
-                  <Pane prefHeight="167.0" prefWidth="1300.0" BorderPane.alignment="CENTER" />
+                  <Pane prefHeight="167.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <ImageView fx:id="legendaRosso" fitHeight="24.0" fitWidth="26.0" layoutX="2.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/Rosso.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="legendaVerde" fitHeight="24.0" fitWidth="26.0" layoutX="194.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/Verde.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="legendaAzzurro" fitHeight="24.0" fitWidth="26.0" layoutX="397.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/Azzurro.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="legendaArancione" fitHeight="28.0" fitWidth="27.0" layoutX="569.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../img/Arancione.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="labelRosso" layoutX="37.0" layoutY="129.0" prefHeight="45.0" prefWidth="148.0" styleClass="text-background" stylesheets="@style.css" text="Label" />
+                        <Label fx:id="labelVerde" layoutX="227.0" layoutY="126.0" prefHeight="49.0" prefWidth="158.0" styleClass="text-background" stylesheets="@style.css" text="Label" />
+                        <Label fx:id="labelAzzurro" layoutX="428.0" layoutY="127.0" prefHeight="47.0" prefWidth="129.0" styleClass="text-background" stylesheets="@style.css" text="Label" />
+                        <Label fx:id="labelArancione" layoutX="602.0" layoutY="127.0" prefHeight="49.0" prefWidth="134.0" styleClass="text-background" stylesheets="@style.css" text="Label" />
+                     </children></Pane>
                </bottom>
                <top>
                   <Pane prefHeight="46.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
