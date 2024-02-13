@@ -65,3 +65,7 @@
 
     -fx-text-fill: white;
 }
+.firstSceneSfondo{
+//-fx-background-color: linear-gradient(#16627e, white);
+    -fx-background-color: #231239;
+}

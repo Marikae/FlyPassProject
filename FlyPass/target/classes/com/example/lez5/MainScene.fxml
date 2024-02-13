@@ -16,18 +16,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerMainScene">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="1300.0" styleClass="ocean-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lez5.ControllerMainScene">
    <top>
       <HBox prefHeight="97.0" prefWidth="1247.0" spacing="20.0" styleClass="border-bottom" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="125.0" prefWidth="177.0" spacing="20.0">
                <children>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="44.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../img/logo.png" />
+                        <Image url="@../../../img/loghetto.png" />
                      </image>
                   </ImageView>
-                  <Label prefHeight="17.0" prefWidth="56.0" text="FlyPass" textFill="WHITE" />
+                  <Label prefHeight="17.0" prefWidth="67.0" text="FlyPass" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                </children>
             </HBox>
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
