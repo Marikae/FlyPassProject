@@ -71,7 +71,7 @@ public class Model implements Initializable {
         //Rilascio prima volta
         Service service = new Service();
         service.setName("Rilascio prima volta");
-        service.setDescription("Rilascio del passaporto per la prima volta.");
+        service.setDescription("Rilascio del passaporto \nper la prima volta.");
         service.setImgSrc("/img/rinnovoPass.jpg");
         ls.add(service);
 
@@ -85,35 +85,35 @@ public class Model implements Initializable {
         //Furto o smarrimento
         service = new Service();
         service.setName("Furto o smarrimento");
-        service.setDescription("Rilascio del passaporto per furto o smarrimento.");
+        service.setDescription("Rilascio del passaporto \nper furto o smarrimento.");
         service.setImgSrc("/img/thref.jpg");
         ls.add(service);
 
         //Rilascio detoriamento
         service = new Service();
         service.setName("Rinnovo per detoriamento");
-        service.setDescription("Rilascio del passaporto per detoriamento.");
+        service.setDescription("Rilascio del passaporto \nper detoriamento.");
         service.setImgSrc("/img/detoriamento.jpg");
         ls.add(service);
 
         //passaporto urgente
         service = new Service();
         service.setName("Passaporto urgente");
-        service.setDescription("Rilascio del passaporto urgentemente.");
+        service.setDescription("Rilascio del passaporto \nurgentemente.");
         service.setImgSrc("/img/urgent.jpg");
         ls.add(service);
 
         //prolungamento validità passsaporto
         service = new Service();
-        service.setName("Prolungamento validità passaporto");
-        service.setDescription("prolungamento della validità del passaporto.");
+        service.setName("Prolungamento validità \npassaporto");
+        service.setDescription("prolungamento della \nvalidità del passaporto.");
         service.setImgSrc("/img/exstension.png");
         ls.add(service);
 
         //cambio info personali
         service = new Service();
         service.setName("Cambio info personali");
-        service.setDescription("Iter per il cambio delle informazioni personali.");
+        service.setDescription("Iter per il cambio delle \ninformazioni personali.");
         service.setImgSrc("/img/cambio.jpg");
         ls.add(service);
 

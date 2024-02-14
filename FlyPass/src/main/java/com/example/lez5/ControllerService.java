@@ -7,16 +7,21 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Circle;
+
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+
 
 public class ControllerService extends Controller implements Initializable {
     @FXML
@@ -38,28 +43,27 @@ public class ControllerService extends Controller implements Initializable {
 
     public void setData(Service service){
         Image image = new Image(getClass().getResourceAsStream(service.getImgSrc()));
-        //this.myListener = myListener;
         img.setImage(image);
         Rectangle clip = new Rectangle();
         double arcSize = 20; // Imposta la dimensione dell'arrotondamento degli angoli
         clip.setArcWidth(arcSize);
         clip.setArcHeight(arcSize);
 
-        // Imposta le dimensioni del rettangolo come quelle dell'immagine
         clip.widthProperty().bind(img.fitWidthProperty());
         clip.heightProperty().bind(img.fitHeightProperty());
 
-        // Applica la maschera di arrotondamento all'ImageView
+
+        GaussianBlur blur = new GaussianBlur(3); //effetto sfocatura
+        img.setEffect(blur);
         img.setClip(clip);
-        //Image image = new Image(getClass().getResourceAsStream(service.getImgSrc()));
-        //ImageView imageView = new ImageView(image);
         img.setPreserveRatio(false); // Imposta il rapporto d'aspetto su false
-        //imageView.fitWidthProperty().bind(containerPane.widthProperty()); // Fai in modo che l'immagine si adatti alla larghezza del contenitore
-        //imageView.fitHeightProperty().bind(containerPane.heightProperty()); // Fai in modo che l'immagine si adatti all'altezza del contenitore
         img.setSmooth(true); // Opzionale: rende l'immagine più nitida
         img.setCache(true); // Opzionale: abilita la cache per migliorare le prestazioni
 
+
         name.setText(service.getName());
+
+
         description.setText(service.getDescription());
     }
     @FXML
