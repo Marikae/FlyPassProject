@@ -1150,6 +1150,7 @@ public class Model implements Initializable {
             } catch (SQLException e) {
                 System.out.println(e);
             }
+            
             return true;
         }
     }
