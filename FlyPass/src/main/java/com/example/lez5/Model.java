@@ -105,7 +105,7 @@ public class Model implements Initializable {
 
         //prolungamento validità passsaporto
         service = new Service();
-        service.setName("Prolungamento validità \npassaporto");
+        service.setName("Prolungamento validità passaporto");
         service.setDescription("prolungamento della \nvalidità del passaporto.");
         service.setImgSrc("/img/exstension.png");
         ls.add(service);
