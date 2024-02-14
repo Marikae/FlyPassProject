@@ -2103,7 +2103,7 @@ public class Model implements Initializable {
             PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
             preparedStatement1.setDate(1, date);
             preparedStatement1.setObject(2, time);
-            preparedStatement1.setString(3, getServiceFromAppointment());
+            preparedStatement1.setString(3, getService().getName());
             preparedStatement1.setString(4, evento.sede.name());
             preparedStatement1.executeUpdate();
 
