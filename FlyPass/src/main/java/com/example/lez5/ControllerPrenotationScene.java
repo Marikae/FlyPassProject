@@ -169,7 +169,6 @@ public class ControllerPrenotationScene extends Controller implements Initializa
                 try {
                     if(model.thereAreNotification(model.getDatePrenotation(), model.getHourPrenotation())){
                         model.setNotificationDefinito(model.getDatePrenotation(), model.getHourPrenotation());
-
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);

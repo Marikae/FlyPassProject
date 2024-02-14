@@ -2094,6 +2094,7 @@ public class Model implements Initializable {
         }
     }
 
+
     public void setNotificationDefinito(Date date, Object time){
         try {
             String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
@@ -2102,7 +2103,7 @@ public class Model implements Initializable {
             PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
             preparedStatement1.setDate(1, date);
             preparedStatement1.setObject(2, time);
-            preparedStatement1.setString(3, getService().getName());
+            preparedStatement1.setString(3, getServiceFromAppointment());
             preparedStatement1.setString(4, evento.sede.name());
             preparedStatement1.executeUpdate();
 
@@ -2114,6 +2115,33 @@ public class Model implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
+    private String getServiceFromAppointment() throws SQLException {
+        String service = null;
+        if(!getCitizenPrenotation().equals("Prenotazione ancora da effettuare!\n")) {//se la prenotazione è stata effettuata
+
+            try {
+                Connection connection = DatabaseConnection.databaseConnection();
+                String query = ("SELECT TipoServizio FROM eventi WHERE Id_utente_prenotazione = ?");
+                Statement statement = connection.createStatement();
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, String.valueOf(idUtente));
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    service = preparedStatement.getResultSet().getString("TipoServizio");
+                }
+                connection.close();
+                preparedStatement.close();
+                statement.close();
+                resultSet.close();
+
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+        return service;
+    }
+
     public void setNotificationNonDefinito(Date date, Object time){
         try {
             String query1 = ("UPDATE notification SET stato = 'non definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
