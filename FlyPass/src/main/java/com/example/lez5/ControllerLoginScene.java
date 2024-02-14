@@ -15,6 +15,7 @@ import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.Objects;
 
@@ -111,6 +112,15 @@ public class ControllerLoginScene extends Controller implements Initializable {
 
 
     public void enterMainScene(ActionEvent event) throws IOException {
+        try {
+            if(!model.notificationSeen()) //se ci sono notifiche da vedere allora attiva
+                model.activeNotification();
+            else{
+                model.disativateNotification();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainScene.fxml")));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();

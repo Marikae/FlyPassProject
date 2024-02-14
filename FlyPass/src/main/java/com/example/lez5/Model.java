@@ -1574,24 +1574,7 @@ public class Model implements Initializable {
                     setNotificationDefinito(date, time);
                     setNotificationNotSeen(date, time);
                 }
-                /*try {
-                    String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
-                    Connection connection1 = DatabaseConnection.databaseConnection();
-                    Statement statement1 = connection1.createStatement();
-                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
-                    preparedStatement1.setDate(1, date);
-                    preparedStatement1.setObject(2, time);
-                    preparedStatement1.setString(3, getService().getName());
-                    preparedStatement1.setString(4, evento.sede.name());
-                    preparedStatement1.executeUpdate();
 
-                    //CHIUSURA CONNESSIONE
-                    closeConnection(connection1, statement1, preparedStatement1);
-                    closeConnection(connection, statement, preparedStatement);
-                    resultSet.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }*/
                 return true;
 
             } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
@@ -1624,106 +1607,6 @@ public class Model implements Initializable {
         return false;
     }
 
-    /*public void prenotaEvento (Date date, Object time){
-
-//------------------------------CALENDARIO LAVORATORE------------------------------------------------------
-        try {
-            Connection connection = DatabaseConnection.databaseConnection();
-            Statement statement = connection.createStatement();
-            String query = ("SELECT * FROM eventi " +
-                    "WHERE Data = ? " +
-                    "AND Inizio = ? " +
-                    "AND Sede = ? " +
-                    "AND TipoServizio = ? ");
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setDate(1, Date.valueOf(EventDatePicker.getValue()));
-            preparedStatement.setObject(2, TimePicker.getValue());
-            preparedStatement.setString(3, model.evento.sede.name());
-            preparedStatement.setString(4, model.getService().getName());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Attenzione!");
-                alert.setHeaderText(null);
-                alert.setContentText("Non è stato possibile rilevare l'appuntamento. Cambiare data ed orario e riprovare");
-                alert.showAndWait();
-
-                //CHIUSURA CONNESSIONI
-                closeConnection(connection, statement, preparedStatement);
-                resultSet.close();
-                return;
-            }
-            //-------------------------CREAZIONE APPUNTAMENTO-----------------------
-            if (!resultSet.getBoolean("Disponibile")) {
-                // IL WORKER SETTA L'EVENTO DISPONIBILE PER LA PRENOTAZIONE
-                try {
-                    String query1 = ("UPDATE eventi SET Disponibile = 1, Worker = ? WHERE Data = ? AND Inizio = ? AND Sede = ? AND TipoServizio = ?");
-
-                    Connection connection1 = DatabaseConnection.databaseConnection();
-                    Statement statement1 = connection1.createStatement();
-                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
-                    preparedStatement1.setString(1, model.getLoginUserName());
-                    preparedStatement1.setDate(2, Date.valueOf(EventDatePicker.getValue()));
-                    preparedStatement1.setObject(3, TimePicker.getValue());
-                    preparedStatement1.setString(4, model.evento.sede.name());
-                    preparedStatement1.setString(5, model.getService().getName());
-                    preparedStatement1.executeUpdate();
-
-                    //CHIUSURA CONNESSIONE
-                    closeConnection(connection1, statement1, preparedStatement1);
-                    resultSet.close();
-                    calendar.getChildren().clear();
-                    drawCalendar();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                //------------------------UPDATE NOTIFICA--------------------------------------
-                //c'è un metodo nel model per l'updateNotification che non funziona perchè mi da errore di Time/LocalTime
-                try {
-                    String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
-                    Connection connection1 = DatabaseConnection.databaseConnection();
-                    Statement statement1 = connection1.createStatement();
-                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
-                    preparedStatement1.setDate(1, Date.valueOf(EventDatePicker.getValue()));
-                    preparedStatement1.setObject(2, TimePicker.getValue());
-                    preparedStatement1.setString(3, model.getService().getName());
-                    preparedStatement1.setString(4, model.evento.sede.name());
-                    preparedStatement1.executeUpdate();
-
-
-                    //CHIUSURA CONNESSIONE
-                    closeConnection(connection1, statement1, preparedStatement1);
-
-                    calendar.getChildren().clear();
-                    drawCalendar();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-
-            } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
-                // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO NELLA FUNZIONE annullaPrenotaEvento
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Slot già disponibile");
-                alert.setHeaderText(null);
-                alert.setContentText("L'evento è già disponibile, per cancellarlo cliccare il tasto \"annulla prenotazione\"");
-                alert.showAndWait();
-                //----------------------SLOT GIA' PRENOTATO-----------------------------------------
-            } else if ((resultSet.getBoolean("Disponibile") && resultSet.getBoolean("Prenotato"))) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Slot prenotato");
-                alert.setHeaderText(null);
-                alert.setContentText("Lo slot non può essere reso disponibile poichè è già stato prenotato da un cittadino");
-                alert.showAndWait();
-            }
-            //CHIUSURA CONNESSIONE
-            closeConnection(connection, statement, preparedStatement);
-            resultSet.close();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
-
-    }*/
 
     public void closeConnection(Connection connection, Statement statement, PreparedStatement preparedStatement) throws SQLException {
         //CHIUSURA CONNESSIONI
@@ -1834,7 +1717,60 @@ public class Model implements Initializable {
         }
         return prenotation;
     }
+    public Date getDatePrenotation() throws SQLException {
+        Date dataPrenotazione = null;
+        if(!getCitizenPrenotation().equals("Prenotazione ancora da effettuare!\n")){//se la prenotazione è stata effettuata
 
+            try {
+                Connection connection = DatabaseConnection.databaseConnection();
+                String query = ("SELECT Data FROM eventi WHERE Id_utente_prenotazione = ?");
+                Statement statement = connection.createStatement();
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, String.valueOf(idUtente) );
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    dataPrenotazione = preparedStatement.getResultSet().getDate("Data");
+                }
+                connection.close();
+                preparedStatement.close();
+                statement.close();
+                resultSet.close();
+
+            }catch (SQLException e) {
+                System.out.println(e);
+            }
+
+        }
+
+        return dataPrenotazione;
+    }
+    public Object getHourPrenotation() throws SQLException {
+        Object oraPrenotazione = null;
+        if(!getCitizenPrenotation().equals("Prenotazione ancora da effettuare!\n")){//se la prenotazione è stata effettuata
+
+            try {
+                Connection connection = DatabaseConnection.databaseConnection();
+                String query = ("SELECT Inizio FROM eventi WHERE Id_utente_prenotazione = ?");
+                Statement statement = connection.createStatement();
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, String.valueOf(idUtente) );
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    oraPrenotazione = preparedStatement.getResultSet().getObject("Inizio");
+                }
+                connection.close();
+                preparedStatement.close();
+                statement.close();
+                resultSet.close();
+
+            }catch (SQLException e) {
+                System.out.println(e);
+            }
+
+        }
+
+        return oraPrenotazione;
+    }
     public String getCitizenRitiro() throws SQLException { //ritorna la prenotazione del ritiro passaporto se c'è
         String prenotation = "";
         try {
@@ -1862,18 +1798,6 @@ public class Model implements Initializable {
         return prenotation;
     }
 
-
-    /*public void notification() throws SQLException {
-        //se ci sono notifiche non viste allora appare il pallino verde
-        //altrimenti niente pallino verde ma le notifiche vengono scritte comunque
-        if(notificationSeen() == false){
-            activeNotification();
-        }else{
-            setNotificationSeen(); //setta la notifica a "vista"
-            disativateNotification();
-        }
-
-    }*/
     public void disativateNotification(){
         this.notification = false;
     }

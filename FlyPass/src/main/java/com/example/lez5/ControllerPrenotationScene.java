@@ -15,6 +15,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -162,8 +163,19 @@ public class ControllerPrenotationScene extends Controller implements Initializa
         // Visualizzazione dell'alert e attesa della risposta dell'utente
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType == buttonTypeOK) {
-                boolean b = model.annullaPrenotaEventoCittadino();
 
+                //TODO PRENOTAZIONE APPUNTAMENTO CITTADINO
+                //controllo se ci sono notifiche per quella data, setto tutto a occupato
+                try {
+                    if(model.thereAreNotification(model.getDatePrenotation(), model.getHourPrenotation())){
+                        model.setNotificationDefinito(model.getDatePrenotation(), model.getHourPrenotation());
+
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                boolean b = model.annullaPrenotaEventoCittadino();
                 if(model.isWorker()){ //lavoratore
                     try {
                         workerPrenotation();
@@ -183,6 +195,7 @@ public class ControllerPrenotationScene extends Controller implements Initializa
                 alert1.setHeaderText(null);
                 alert1.setContentText("Azione annullata, la prenotazione non ha subito variazioni");
                 alert1.showAndWait();
+
             }
         });
     }
