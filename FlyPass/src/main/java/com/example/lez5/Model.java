@@ -72,7 +72,7 @@ public class Model implements Initializable {
         Service service = new Service();
         service.setName("Rilascio prima volta");
         service.setDescription("Rilascio del passaporto per la prima volta.");
-        service.setImgSrc("/img/fistTime.jpg");
+        service.setImgSrc("/img/rinnovoPass.jpg");
         ls.add(service);
 
         //Rilascio scadenza
