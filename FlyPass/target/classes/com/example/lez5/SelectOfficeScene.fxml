@@ -163,14 +163,7 @@
                            </font>
                         </Label>
                         <Button fx:id="VeronaButton" layoutX="1056.0" layoutY="111.0" mnemonicParsing="false" onAction="#VeronaSetAndGo" prefHeight="76.0" prefWidth="176.0" styleClass="bottom-square" stylesheets="@style.css" text="Verona" />
-                        <Button fx:id="VeneziaButton" alignment="CENTER" contentDisplay="TOP" layoutX="744.0" layoutY="111.0" mnemonicParsing="false" onAction="#VeneziaSetAndGo" prefHeight="76.0" prefWidth="176.0" styleClass="bottom-square" stylesheets="@style.css" text="Venezia">
-                           <graphic>
-                              <ImageView fitHeight="185.0" fitWidth="212.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../../../../../../Downloads/ven.jpg" />
-                                 </image>
-                              </ImageView>
-                           </graphic></Button>
+                        <Button fx:id="VeneziaButton" alignment="CENTER" contentDisplay="TOP" layoutX="744.0" layoutY="111.0" mnemonicParsing="false" onAction="#VeneziaSetAndGo" prefHeight="76.0" prefWidth="176.0" styleClass="bottom-square" stylesheets="@style.css" text="Venezia" />
                         <Button fx:id="TrevisoButton" layoutX="415.0" layoutY="111.0" mnemonicParsing="false" onAction="#TrevisoSetAndGo" prefHeight="76.0" prefWidth="176.0" styleClass="bottom-square" stylesheets="@style.css" text="Treviso" />
                         <Button fx:id="PadovaButton" layoutX="85.0" layoutY="111.0" mnemonicParsing="false" onAction="#PadovaSetAndGo" prefHeight="76.0" prefWidth="176.0" styleClass="bottom-square" text="Padova" />
                      </children>

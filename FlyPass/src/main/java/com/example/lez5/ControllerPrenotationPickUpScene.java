@@ -156,6 +156,29 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
     }
 
     @FXML
+    private void allertClickOnCalendario(MouseEvent event){
+        if(model.isWorker()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Inserisci dati");
+            alert.setHeaderText(null);
+            alert.setContentText("inserisci data e ora nel form sulla destra\n" +
+                    "per inserire o rimuovere uno slot");
+            alert.getButtonTypes().clear();
+            alert.getButtonTypes().add(ButtonType.OK);
+            alert.showAndWait();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Inserisci dati");
+            alert.setHeaderText(null);
+            alert.setContentText("inserisci data e ora nel form sulla destra\n" +
+                    "per prenotare il giorno selezionato");
+            alert.getButtonTypes().clear();
+            alert.getButtonTypes().add(ButtonType.OK);
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
     void backOneWeek(ActionEvent event) {
         auxDate2 = dateFocus;
         dateFocus = dateFocus.minusWeeks(1);

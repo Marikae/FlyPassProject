@@ -78,6 +78,7 @@ public class ControllerMainScene extends Controller implements Initializable {
                 ricordaRitiroLabel.setText("Prenota l'appuntamento per il servizio desiderato.\n" +
                         "Successivamente prenota il ritiro del tuo passaporto.");
             }else if(model.passaportoPrenotato && !model.ritiroPrenotato){
+                prenotationPickUpButton.setStyle("-fx-background-color:#F6AE2D");
                 statoPrenotazioneERitiro.setText("SERVIZIO: PRENOTATO ✓\t\tRITIRO PASSAPORTO: NON PRENOTATO");
                 ricordaRitiroLabel.setFont(Font.font(20));
                 ricordaRitiroLabel.setText("Ricordati di prenotare il ritiro\n" +

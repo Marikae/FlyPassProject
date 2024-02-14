@@ -279,14 +279,14 @@
                <center>
                   <Pane prefHeight="366.0" prefWidth="989.0" stylesheets="@style.css" BorderPane.alignment="CENTER">
                      <children>
-                        <VBox prefHeight="372.0" prefWidth="983.0">
+                        <VBox onMouseClicked="#allertClickOnCalendario" prefHeight="470.0" prefWidth="983.0">
                            <children>
                               <VBox prefHeight="19.0" prefWidth="983.0" />
                               <FlowPane fx:id="calendar" hgap="10.0" prefHeight="367.0" prefWidth="983.0" stylesheets="@style.css" vgap="5.0" />
                            </children>
                         </VBox>
                         <VBox prefHeight="19.0" prefWidth="983.0" />
-                        <FlowPane fx:id="calendar" hgap="10.0" prefHeight="478.0" prefWidth="989.0" stylesheets="@style.css" vgap="5.0" />
+                        <FlowPane fx:id="calendar" hgap="10.0" onMouseClicked="#allertClickOnCalendario" prefHeight="478.0" prefWidth="989.0" stylesheets="@style.css" vgap="5.0" />
                      </children>
                   </Pane>
                </center>

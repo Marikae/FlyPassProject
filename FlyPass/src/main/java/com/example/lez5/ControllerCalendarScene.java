@@ -2,6 +2,7 @@ package com.example.lez5;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -70,7 +71,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
     private Label labelSopraForm;
     @FXML
     private FlowPane calendar;
-    //ArrayList<ZonedDateTime> checkInserimentoPrenotazione = new ArrayList<>();
     private Stage stage;
     private Scene scene;
     public ControllerCalendarScene(){
@@ -281,7 +281,8 @@ public class ControllerCalendarScene extends Controller implements Initializable
                         "3) La ricevuta del versamento sul C/C postale\n" +
                         "4) Due fototessere su sfondo bianco\n" +
                         "5) Il passaporto precedente (se ancora in possesso)\n\n\n" +
-                        "La lista dei documenti da portare sarà visualizzabile su prenotation alla chiusura di questo avviso");
+                        "La lista dei documenti da portare sarà visualizzabile su prenotation alla chiusura di questo avviso\n\n" +
+                        "RICORDATI DI PRENOTARE IL RITIRO DEL TUO PASSAPORTO");
                 alert.getButtonTypes().clear();
                 alert.getButtonTypes().add(ButtonType.OK);
                 alert.showAndWait();
@@ -333,6 +334,28 @@ public class ControllerCalendarScene extends Controller implements Initializable
         //checkInserimentoPrenotazione.clear();
         calendar.getChildren().clear();
         drawCalendar();
+    }
+    @FXML
+    private void allertClickOnCalendario(MouseEvent event){
+        if(model.isWorker()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Inserisci dati");
+            alert.setHeaderText(null);
+            alert.setContentText("inserisci data e ora nel form sulla destra\n" +
+                    "per inserire o rimuovere uno slot");
+            alert.getButtonTypes().clear();
+            alert.getButtonTypes().add(ButtonType.OK);
+            alert.showAndWait();
+        }else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Inserisci dati");
+            alert.setHeaderText(null);
+            alert.setContentText("inserisci data e ora nel form sulla destra\n" +
+                    "per prenotare il giorno selezionato");
+            alert.getButtonTypes().clear();
+            alert.getButtonTypes().add(ButtonType.OK);
+            alert.showAndWait();
+        }
     }
 
     private void drawCalendar(){
@@ -402,7 +425,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
 
                         VBox calendarActivityBox = new VBox();
 
-
                         String time = evento.getInizio().toString();
                         if (!evento.isDisponibile()) {
                             Text text = new Text(time + "\nNon prenotabile\n\n");
@@ -412,6 +434,7 @@ public class ControllerCalendarScene extends Controller implements Initializable
                             calendarActivityBox.setMaxHeight(rectangleHeight * 0.05);
                             calendarActivityBox.setStyle("-fx-background-color:#e36363");
                             calendarActivityBox.getChildren().add(text);
+
 
                         } else if ((evento.isDisponibile() && !evento.isPrenotato())) {
                             Text text = new Text(time + "\nSlot prenotabile!\n\n");
