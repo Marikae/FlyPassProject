@@ -2116,31 +2116,6 @@ public class Model implements Initializable {
         }
     }
 
-    private String getServiceFromAppointment() throws SQLException {
-        String service = null;
-        if(!getCitizenPrenotation().equals("Prenotazione ancora da effettuare!\n")) {//se la prenotazione è stata effettuata
-
-            try {
-                Connection connection = DatabaseConnection.databaseConnection();
-                String query = ("SELECT TipoServizio FROM eventi WHERE Id_utente_prenotazione = ?");
-                Statement statement = connection.createStatement();
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setString(1, String.valueOf(idUtente));
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
-                    service = preparedStatement.getResultSet().getString("TipoServizio");
-                }
-                connection.close();
-                preparedStatement.close();
-                statement.close();
-                resultSet.close();
-
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
-        }
-        return service;
-    }
 
     public void setNotificationNonDefinito(Date date, Object time){
         try {
