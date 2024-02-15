@@ -71,7 +71,9 @@ public class ControllerMainScene extends Controller implements Initializable {
             //se è un lavoratore
             statoPrenotazioneERitiro.setText("Seleziona il servizio desiderato ed inizia\n" +
                     "la gestione delle disponibilità.");
-            prenotationPickUpButton.setText("Inserisci disponibilità ritiro passaporto");
+            prenotationPickUpButton.setFont(Font.font(20));
+            prenotationPickUpButton.setText("Inserisci disponibilità\n " +
+                    "ritiro passaporto");
         }else{
             if(!model.passaportoPrenotato){
                 statoPrenotazioneERitiro.setText("SERVIZIO: NON PRENOTATO\t\tRITIRO PASSAPORTO: NON PRENOTATO");
