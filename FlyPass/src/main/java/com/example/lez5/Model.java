@@ -845,7 +845,8 @@ public class Model implements Initializable {
                         preparedStatement1.executeUpdate();
                         //CHIUSURA CONNESSIONE
                         closeConnection(connection1, statement1, preparedStatement1);
-
+                        closeConnection(connection, statement, preparedStatement);
+                        resultSet.close();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
@@ -954,6 +955,7 @@ public class Model implements Initializable {
                     preparedStatement1.close();
 
                     closeConnection(connection, statement, preparedStatement);
+                    closeConnection(connection1, statement1, preparedStatement1);
                     resultSet.close();
                     return true;
 
@@ -1560,6 +1562,7 @@ public class Model implements Initializable {
                     preparedStatement1.executeUpdate();
 
                     //CHIUSURA CONNESSIONE
+                    closeConnection(connection, statement, preparedStatement);
                     closeConnection(connection1, statement1, preparedStatement1);
                     resultSet.close();
 
