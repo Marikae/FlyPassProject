@@ -167,8 +167,8 @@ public class ControllerPrenotationScene extends Controller implements Initializa
                 //TODO PRENOTAZIONE APPUNTAMENTO CITTADINO
                 //controllo se ci sono notifiche per quella data, setto tutto a occupato
                 try {
-                    if(model.thereAreNotification(model.getDatePrenotation(), model.getHourPrenotation())){
-                        model.setNotificationDefinito(model.getDatePrenotation(), model.getHourPrenotation());
+                    if(model.thereAreNotification(model.getDatePrenotation(), model.getHourPrenotation(), model.getService().getName())){
+                        model.setNotificationDefinito(model.getDatePrenotation(), model.getHourPrenotation(), model.getService().getName());
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -216,7 +216,15 @@ public class ControllerPrenotationScene extends Controller implements Initializa
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType == buttonTypeOK) {
                 boolean b = model.annullaPrenotaRitiroPassaportoCittadino();
-
+                //TODO PRENOTAZIONE APPUNTAMENTO CITTADINO
+                //controllo se ci sono notifiche per quella data, setto tutto a occupato
+                try {
+                    if(model.thereAreNotification(model.getDatePrenotation(), model.getHourPrenotation(), model.ritiroPassaporto)){
+                        model.setNotificationDefinito(model.getDatePrenotation(), model.getHourPrenotation(), model.ritiroPassaporto);
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 if(model.isWorker()){ //lavoratore
                     try {
                         workerPrenotation();

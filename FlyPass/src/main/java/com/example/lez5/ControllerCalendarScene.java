@@ -267,8 +267,6 @@ public class ControllerCalendarScene extends Controller implements Initializable
                 //controllo se ci sono notifiche per quella data, setto tutto a occupato
                 if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.getService().getName())){
                     model.setNotificationOccupato(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.getService().getName());
-                    //model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
-
                 }
                 drawCalendar();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
