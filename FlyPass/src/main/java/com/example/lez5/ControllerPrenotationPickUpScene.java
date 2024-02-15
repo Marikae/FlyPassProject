@@ -227,9 +227,9 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
 
             //TODO ANNULLAMENTO PRENOTAZIONE CITTADINO
             //controllo se ci sono notifiche per quella data, setto tutto a definito e seen a 0
-            if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
-                model.setNotificationDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
-                model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
+            if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto)){
+                model.setNotificationDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto);
+                model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto);
                 //System.out.println("sono entrato nell'if ci sono ntofiche cittaidno \n");
             }
 
@@ -264,8 +264,8 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
 
                 //TODO ANNULLAMENTO PRENOTAZIONE LAVORATORE
                 //controllo se ci sono notifiche per quella data, setto tutto a disponibile e seen a 0
-                if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
-                    model.setNotificationNonDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
+                if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto)){
+                    model.setNotificationNonDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto);
                     //System.out.println("cancellazione da parte del worker\n");
                 }
             }
@@ -301,8 +301,8 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                 prenotaEvento.setVisible(false);
                 //TODO PRENOTAZIONE APPUNTAMENTO CITTADINO
                 //controllo se ci sono notifiche per quella data, setto tutto a occupato
-                if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue())){
-                    model.setNotificationOccupato(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
+                if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto)){
+                    model.setNotificationOccupato(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto);
                     //model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
 
                 }

@@ -1,6 +1,5 @@
 package com.example.lez5;
 
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -30,7 +29,7 @@ public class Model implements Initializable {
     private static Model modelInstance; // statico e protetto da accesso esterno
     private String loginPassword;
     private String loginUserName;
-    String ritiropassaporto = "Prenotazione ritiro passaporto";
+    public String ritiroPassaporto = "Prenotazione ritiro passaporto";
     //Serve per capire se l'utente sta provando a prenotare o ad inserire disponibilità in un "ritiro passaporto"
     private boolean prenotaPassaportoClicked;
     private User user;
@@ -382,7 +381,7 @@ public class Model implements Initializable {
             preparedStatement.setDate(1, date);
             preparedStatement.setObject(2, localTime);
             preparedStatement.setString(3, evento.sede.name());
-            preparedStatement.setString(4, ritiropassaporto);
+            preparedStatement.setString(4, ritiroPassaporto);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
                 query = "INSERT INTO `eventi` (`Data`, `Inizio`, `Fine`, `Disponibile`, `Prenotato`, `Sede`, `TipoServizio`) VALUES (?, ?, ?, 0, 0, ?, ?)";
@@ -391,7 +390,7 @@ public class Model implements Initializable {
                 preparedStatement.setObject(2, localTime);
                 preparedStatement.setObject(3, localTime.plusHours(1));
                 preparedStatement.setString(4, evento.sede.name());
-                preparedStatement.setString(5, ritiropassaporto);
+                preparedStatement.setString(5, ritiroPassaporto);
                 preparedStatement.executeUpdate();
                 query = ("SELECT * FROM eventi " +
                         "WHERE Data = ? " +
@@ -403,7 +402,7 @@ public class Model implements Initializable {
                 preparedStatement.setDate(1, date);
                 preparedStatement.setObject(2, localTime);
                 preparedStatement.setString(3, evento.sede.name());
-                preparedStatement.setString(4, ritiropassaporto);
+                preparedStatement.setString(4, ritiroPassaporto);
 
                 resultSet = preparedStatement.executeQuery();
                 resultSet.next();
@@ -455,7 +454,7 @@ public class Model implements Initializable {
                 String query = ("UPDATE eventi SET Id_utente_prenotazione = 0, Prenotato = 0 WHERE Id_utente_prenotazione = ? AND TipoServizio = ?");
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setInt(1, idUtente);
-                preparedStatement.setString(2,ritiropassaporto);
+                preparedStatement.setString(2, ritiroPassaporto);
 
                 preparedStatement.executeUpdate();
 
@@ -521,7 +520,7 @@ public class Model implements Initializable {
             preparedStatement.setDate(1, date);
             preparedStatement.setObject(2, time);
             preparedStatement.setString(3, evento.sede.name());
-            preparedStatement.setString(4, ritiropassaporto);
+            preparedStatement.setString(4, ritiroPassaporto);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -583,7 +582,7 @@ public class Model implements Initializable {
 
                                 preparedStatement1.setString(1, String.valueOf(date));
                                 preparedStatement1.setString(2, String.valueOf(time));
-                                preparedStatement1.setString(3, ritiropassaporto);
+                                preparedStatement1.setString(3, ritiroPassaporto);
                                 preparedStatement1.setString(4, evento.sede.name());
                                 preparedStatement1.setString(5, "non definito");
                                 preparedStatement1.setString(6, getIdCitizen());
@@ -706,7 +705,7 @@ public class Model implements Initializable {
                     preparedStatement1.setDate(2, date);
                     preparedStatement1.setObject(3, time);
                     preparedStatement1.setString(4, evento.sede.name());
-                    preparedStatement1.setString(5, ritiropassaporto);
+                    preparedStatement1.setString(5, ritiroPassaporto);
 
                     preparedStatement1.executeUpdate();
 
@@ -798,7 +797,7 @@ public class Model implements Initializable {
             preparedStatement.setDate(1, date);
             preparedStatement.setObject(2, time);
             preparedStatement.setString(3, evento.sede.name());
-            preparedStatement.setString(4, ritiropassaporto);
+            preparedStatement.setString(4, ritiroPassaporto);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -841,7 +840,7 @@ public class Model implements Initializable {
                         preparedStatement1.setDate(1, date);
                         preparedStatement1.setObject(2, time);
                         preparedStatement1.setString(3, evento.sede.name());
-                        preparedStatement1.setString(4, ritiropassaporto);
+                        preparedStatement1.setString(4, ritiroPassaporto);
                         preparedStatement1.executeUpdate();
                         //CHIUSURA CONNESSIONE
                         closeConnection(connection1, statement1, preparedStatement1);
@@ -914,7 +913,7 @@ public class Model implements Initializable {
             preparedStatement.setDate(1, date);
             preparedStatement.setObject(2, time);
             preparedStatement.setString(3, evento.sede.name());
-            preparedStatement.setString(4, ritiropassaporto);
+            preparedStatement.setString(4, ritiroPassaporto);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
                 //ErrorePrenotazione.setTextFill(Color.web("#FF0000"));
@@ -948,7 +947,7 @@ public class Model implements Initializable {
                     preparedStatement1.setDate(2, date);
                     preparedStatement1.setObject(3, time);
                     preparedStatement1.setString(4, evento.sede.name());
-                    preparedStatement1.setString(5, ritiropassaporto);
+                    preparedStatement1.setString(5, ritiroPassaporto);
                     preparedStatement1.executeUpdate();
                     connection1.close();
                     statement1.close();
@@ -1573,9 +1572,9 @@ public class Model implements Initializable {
                 //c'è un metodo nel model per l'updateNotification che non funziona perchè mi da errore di Time/LocalTime
                 //TODO AGGIUNTA APPUNTAMENTO PERSONALE
                 //controllo se ci sono notifiche per quella data, setto tutto a definito e seen a 0
-                if(thereAreNotification(date, time)){
-                    setNotificationDefinito(date, time);
-                    setNotificationNotSeen(date, time);
+                if(thereAreNotification(date, time, getService().getName())){
+                    setNotificationDefinito(date, time, getService().getName());
+                    setNotificationNotSeen(date, time, getService().getName());
                 }
 
                 return true;
@@ -2046,7 +2045,7 @@ public class Model implements Initializable {
 
     }
 
-    public void setNotificationNotSeen(Date date, Object time){ //setta la notifica a già vista
+    public void setNotificationNotSeen(Date date, Object time, String service){ //setta la notifica a già vista
         try {
             Connection connection1 = DatabaseConnection.databaseConnection();
             String query1 = ("UPDATE notification SET seen = 0 WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
@@ -2054,7 +2053,7 @@ public class Model implements Initializable {
             PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
             preparedStatement1.setDate(1, date);
             preparedStatement1.setObject(2, time);
-            preparedStatement1.setString(3, getService().getName());
+            preparedStatement1.setString(3, service);
             preparedStatement1.setString(4, evento.sede.name());
             preparedStatement1.executeUpdate();
 
@@ -2068,14 +2067,14 @@ public class Model implements Initializable {
         activeNotification();
     }
 
-    public boolean thereAreNotification(Date date, Object time) throws SQLException { //controlla se ci sono notifiche per una certa data ora sede servizio
+    public boolean thereAreNotification(Date date, Object time, String service) throws SQLException { //controlla se ci sono notifiche per una certa data ora sede servizio
         Connection connection = DatabaseConnection.databaseConnection();
         String query = "SELECT * FROM notification WHERE data = ? AND ora = ?  AND tipo = ? AND sede = ?";
         Statement statement = connection.createStatement();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setDate(1, date);
         preparedStatement.setObject(2, time);
-        preparedStatement.setString(3, getService().getName());
+        preparedStatement.setString(3, service);
         preparedStatement.setString(4, evento.sede.name());
 
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -2098,7 +2097,7 @@ public class Model implements Initializable {
     }
 
 
-    public void setNotificationDefinito(Date date, Object time){
+    public void setNotificationDefinito(Date date, Object time, String service){
         try {
             String query1 = ("UPDATE notification SET stato = 'definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
             Connection connection1 = DatabaseConnection.databaseConnection();
@@ -2106,7 +2105,7 @@ public class Model implements Initializable {
             PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
             preparedStatement1.setDate(1, date);
             preparedStatement1.setObject(2, time);
-            preparedStatement1.setString(3, getService().getName());
+            preparedStatement1.setString(3, service);
             preparedStatement1.setString(4, evento.sede.name());
             preparedStatement1.executeUpdate();
 
@@ -2120,7 +2119,7 @@ public class Model implements Initializable {
     }
 
 
-    public void setNotificationNonDefinito(Date date, Object time){
+    public void setNotificationNonDefinito(Date date, Object time, String service){
         try {
             String query1 = ("UPDATE notification SET stato = 'non definito' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
             Connection connection1 = DatabaseConnection.databaseConnection();
@@ -2128,7 +2127,7 @@ public class Model implements Initializable {
             PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
             preparedStatement1.setDate(1, date);
             preparedStatement1.setObject(2, time);
-            preparedStatement1.setString(3, getService().getName());
+            preparedStatement1.setString(3, service);
             preparedStatement1.setString(4, evento.sede.name());
             preparedStatement1.executeUpdate();
 
@@ -2142,7 +2141,7 @@ public class Model implements Initializable {
         setNotificationSeen();
     }
 
-    public void setNotificationOccupato(Date date, Object time){
+    public void setNotificationOccupato(Date date, Object time, String service){
         try {
             String query1 = ("UPDATE notification SET stato = 'occupato' WHERE data = ? AND ora = ? AND tipo = ? AND sede = ?");
             Connection connection1 = DatabaseConnection.databaseConnection();
@@ -2150,7 +2149,7 @@ public class Model implements Initializable {
             PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
             preparedStatement1.setDate(1, date);
             preparedStatement1.setObject(2, time);
-            preparedStatement1.setString(3, getService().getName());
+            preparedStatement1.setString(3, service);
             preparedStatement1.setString(4, evento.sede.name());
             preparedStatement1.executeUpdate();
 
