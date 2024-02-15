@@ -299,6 +299,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                 if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), ritiroPassaporto)){
                     model.setNotificationOccupato(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), ritiroPassaporto);
                 }
+
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Ritiro prenotato");
                 alert.setHeaderText(null);
