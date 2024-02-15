@@ -981,11 +981,21 @@ public class Model implements Initializable {
                     closeConnection(connection, statement, preparedStatement);
                     closeConnection(connection1, statement1, preparedStatement1);
                     resultSet.close();
-                    return true;
+                    //return true;
 
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+                //------------------------UPDATE NOTIFICA--------------------------------------
+                //c'è un metodo nel model per l'updateNotification che non funziona perchè mi da errore di Time/LocalTime
+                //TODO AGGIUNTA APPUNTAMENTO PERSONALE
+                //controllo se ci sono notifiche per quella data, setto tutto a definito e seen a 0
+                if(thereAreNotification(date, time, ritiroPassaporto)){
+                    setNotificationDefinito(date, time, ritiroPassaporto);
+                    setNotificationNotSeen(date, time, ritiroPassaporto);
+                }
+
+                return true;
                 //--------------------------CANCELLAZIONE APPUNTAMENTO----------------------------------
             } else if ((resultSet.getBoolean("Disponibile") && !resultSet.getBoolean("Prenotato"))) {
                 // IL WORKER DISABILITA LA DISPONIBILITA' DELL'EVENTO NELLA FUNZIONE annullaPrenotaEvento
