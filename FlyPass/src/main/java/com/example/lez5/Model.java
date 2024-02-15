@@ -2017,7 +2017,7 @@ public class Model implements Initializable {
 
     public boolean notificationAlredyExist(Date date, Object time, String service) throws SQLException {
         Connection connection = DatabaseConnection.databaseConnection();
-        String query = "SELECT * FROM notification WHERE utente_id = ? AND data = ? AND ora = ?  AND tipo = ? AND sede = ? AND stato = 'definito'";
+        String query = "SELECT * FROM notification WHERE utente_id = ? AND data = ? AND ora = ?  AND tipo = ? AND sede = ?";
         Statement statement = connection.createStatement();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, getIdCitizen());
