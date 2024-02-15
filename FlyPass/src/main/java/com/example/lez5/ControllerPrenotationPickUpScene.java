@@ -294,6 +294,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
 
                 annullaPrenotaEvento.setVisible(true);
                 prenotaEvento.setVisible(false);
+
                 //TODO PRENOTAZIONE APPUNTAMENTO CITTADINO
                 //controllo se ci sono notifiche per quella data, setto tutto a occupato
                 if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), ritiroPassaporto)){

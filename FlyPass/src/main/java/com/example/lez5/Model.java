@@ -545,66 +545,84 @@ public class Model implements Initializable {
             }
 
             if (!resultSet.getBoolean("Disponibile")) {
-
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Appuntamento non disponibile");
-                alert.setHeaderText(null);
-                // Creare una VBox personalizzata con il messaggio e la CheckBox
-                VBox vBox = new VBox();
-                vBox.setSpacing(10);
-                vBox.setPadding(new Insets(10, 10, 10, 10));
-                Label messageLabel = new Label("L'appuntamento non è disponibile. Vuoi ricevere una notifica quando sarà disponibile?");
-                CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
-                vBox.getChildren().addAll(messageLabel, notificationCheckBox);
-                // Impostare la VBox come contenuto del DialogPane
-                DialogPane dialogPane = alert.getDialogPane();
-                dialogPane.setContent(vBox);
-                // Aggiungere i pulsanti desiderati
-                dialogPane.getButtonTypes().setAll(ButtonType.OK);
-                // Mostrare l'alert e gestire la risposta
+                if (!notificationAlredyExist(date, time, ritiroPassaporto)) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Appuntamento non disponibile");
+                    alert.setHeaderText(null);
+                    // Creare una VBox personalizzata con il messaggio e la CheckBox
+                    VBox vBox = new VBox();
+                    vBox.setSpacing(10);
+                    vBox.setPadding(new Insets(10, 10, 10, 10));
+                    Label messageLabel = new Label("L'appuntamento non è disponibile. Vuoi ricevere una notifica quando sarà disponibile?");
+                    CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
+                    vBox.getChildren().addAll(messageLabel, notificationCheckBox);
+                    // Impostare la VBox come contenuto del DialogPane
+                    DialogPane dialogPane = alert.getDialogPane();
+                    dialogPane.setContent(vBox);
+                    // Aggiungere i pulsanti desiderati
+                    dialogPane.getButtonTypes().setAll(ButtonType.OK);
+                    // Mostrare l'alert e gestire la risposta
 
                     alert.showAndWait().ifPresent(response -> {
                         if (response == ButtonType.OK) {
-                            try {
-                                if (!notificationAlredyExist(date, time, ritiroPassaporto)) {
-                                    boolean receiveNotification = notificationCheckBox.isSelected();
-                                    System.out.println("Risposta: OK, Ricevi notifica: " + receiveNotification);
+                            boolean receiveNotification = notificationCheckBox.isSelected();
+                            System.out.println("Risposta: OK, Ricevi notifica: " + receiveNotification);
 
 
-                                    if (receiveNotification) {
-                                        //se l'utente ha selezionato si allora
-                                        try {
-                                            String query1 = ("INSERT INTO notification (id, data, ora, tipo, sede, stato, utente_id) VALUES (NULL, ?, ?, ?, ?, ?, ?)");
+                            if (receiveNotification) {
+                                //se l'utente ha selezionato si allora
+                                try {
+                                    String query1 = ("INSERT INTO notification (id, data, ora, tipo, sede, stato, utente_id) VALUES (NULL, ?, ?, ?, ?, ?, ?)");
 
-                                            Connection connection1 = DatabaseConnection.databaseConnection();
-                                            Statement statement1 = connection1.createStatement();
+                                    Connection connection1 = DatabaseConnection.databaseConnection();
+                                    Statement statement1 = connection1.createStatement();
 
-                                            PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
+                                    PreparedStatement preparedStatement1 = connection1.prepareStatement(query1);
 
 
-                                            preparedStatement1.setString(1, String.valueOf(date));
-                                            preparedStatement1.setString(2, String.valueOf(time));
-                                            preparedStatement1.setString(3, ritiroPassaporto);
-                                            preparedStatement1.setString(4, evento.sede.name());
-                                            preparedStatement1.setString(5, "non definito");
-                                            preparedStatement1.setString(6, getIdCitizen());
-                                            preparedStatement1.executeUpdate();
+                                    preparedStatement1.setString(1, String.valueOf(date));
+                                    preparedStatement1.setString(2, String.valueOf(time));
+                                    preparedStatement1.setString(3, ritiroPassaporto);
+                                    preparedStatement1.setString(4, evento.sede.name());
+                                    preparedStatement1.setString(5, "non definito");
+                                    preparedStatement1.setString(6, getIdCitizen());
+                                    preparedStatement1.executeUpdate();
 
-                                            connection1.close();
-                                            statement1.close();
-                                            preparedStatement1.close();
+                                    connection1.close();
+                                    statement1.close();
+                                    preparedStatement1.close();
 
-                                        } catch (SQLException e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                    }
-
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
                                 }
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
                             }
                         }
                     });
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Appuntamento non disponibile");
+                    alert.setHeaderText(null);
+                    // Creare una VBox personalizzata con il messaggio e la CheckBox
+                    VBox vBox = new VBox();
+                    vBox.setSpacing(10);
+                    vBox.setPadding(new Insets(10, 10, 10, 10));
+                    Label messageLabel = new Label("L'appuntamento non è disponibile.\n Hai già fatto richiesta per la notifica di avviso\n");
+
+                    //CheckBox notificationCheckBox = new CheckBox("Ricevi notifica");
+                    vBox.getChildren().addAll(messageLabel);
+                    // Impostare la VBox come contenuto del DialogPane
+                    DialogPane dialogPane = alert.getDialogPane();
+                    dialogPane.setContent(vBox);
+                    // Aggiungere i pulsanti desiderati
+                    dialogPane.getButtonTypes().setAll(ButtonType.OK);
+                    // Mostrare l'alert e gestire la risposta
+
+                    alert.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.OK) {
+
+                        }
+                    });
+                }
 
 
                 //CHIUSURA CONNESSIONI
