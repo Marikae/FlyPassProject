@@ -562,7 +562,7 @@ public class Model implements Initializable {
                 // Aggiungere i pulsanti desiderati
                 dialogPane.getButtonTypes().setAll(ButtonType.OK);
                 // Mostrare l'alert e gestire la risposta
-                if(!notificationAlredyExist(date, time)) {
+                if(!notificationAlredyExist(date, time, ritiroPassaporto)) {
                     alert.showAndWait().ifPresent(response -> {
                         if (response == ButtonType.OK) {
                             boolean receiveNotification = notificationCheckBox.isSelected();
@@ -1332,7 +1332,7 @@ public class Model implements Initializable {
             }
             if (!resultSet.getBoolean("Disponibile")) {
 
-                if(!notificationAlredyExist(date, time)){
+                if(!notificationAlredyExist(date, time, getService().getName())){
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Appuntamento non disponibile");
                     alert.setHeaderText(null);
@@ -2015,7 +2015,7 @@ public class Model implements Initializable {
         return citizenWhoBooked;
     }
 
-    public boolean notificationAlredyExist(Date date, Object time) throws SQLException {
+    public boolean notificationAlredyExist(Date date, Object time, String service) throws SQLException {
         Connection connection = DatabaseConnection.databaseConnection();
         String query = "SELECT * FROM notification WHERE utente_id = ? AND data = ? AND ora = ?  AND tipo = ? AND sede = ? AND stato = 'definito'";
         Statement statement = connection.createStatement();
@@ -2023,7 +2023,7 @@ public class Model implements Initializable {
         preparedStatement.setString(1, getIdCitizen());
         preparedStatement.setDate(2, date);
         preparedStatement.setObject(3, time);
-        preparedStatement.setString(4, getService().getName());
+        preparedStatement.setString(4, service);
         preparedStatement.setString(5, evento.sede.name());
         //preparedStatement.setString(5, model.getService().getName());
         ResultSet resultSet = preparedStatement.executeQuery();
