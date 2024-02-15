@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,9 +16,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
@@ -33,7 +29,7 @@ import javafx.scene.text.Text;
 import java.sql.*;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
-import java.util.*;
+
 public class ControllerPrenotationPickUpScene extends Controller implements Initializable {
     @FXML
     private Button prenotaEvento;
@@ -77,9 +73,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
     //ArrayList<ZonedDateTime> checkInserimentoPrenotazione = new ArrayList<>();
     private Stage stage;
     private Scene scene;
-    public ControllerPrenotationPickUpScene(){
-        super();
-    }
+
     @FXML
     private ImageView prenotationImg;
     ZonedDateTime dateFocus;
@@ -90,8 +84,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
     int currentDate;
     int numberOfWeek;
 
-    String ritiropassaporto = "Prenotazione ritiro passaporto";
-    //public Model model;
+    String ritiroPassaporto = "Prenotazione ritiro passaporto";
 
     LocalTime primoTurno = LocalTime.of(8,0,0);
     LocalTime secondoTurno = LocalTime.of(9,0,0);
@@ -99,7 +92,9 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
     LocalTime quartoTurno = LocalTime.of(11,0,0);
     LocalTime quintoTurno = LocalTime.of(12,0,0);
 
-
+    public ControllerPrenotationPickUpScene(){
+        super();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -110,7 +105,7 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
         drawCalendar();
         descriptionLabel.setText("Scegli un giorno per prenotare il ritiro del tuo passaporto.\n" +
                 "Ricorda che devi aspettare almeno 30 giorni dalla data di richiesta del passaporto");
-        serviceName.setText(ritiropassaporto);
+        serviceName.setText(ritiroPassaporto);
 
         if(model.notification){
             model.putNotification(prenotationImg);
@@ -227,9 +222,9 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
 
             //TODO ANNULLAMENTO PRENOTAZIONE CITTADINO
             //controllo se ci sono notifiche per quella data, setto tutto a definito e seen a 0
-            if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto)){
-                model.setNotificationDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto);
-                model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto);
+            if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), ritiroPassaporto)){
+                model.setNotificationDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), ritiroPassaporto);
+                model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), ritiroPassaporto);
                 //System.out.println("sono entrato nell'if ci sono ntofiche cittaidno \n");
             }
 
@@ -264,8 +259,8 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
 
                 //TODO ANNULLAMENTO PRENOTAZIONE LAVORATORE
                 //controllo se ci sono notifiche per quella data, setto tutto a disponibile e seen a 0
-                if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto)){
-                    model.setNotificationNonDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto);
+                if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), ritiroPassaporto)){
+                    model.setNotificationNonDefinito(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), ritiroPassaporto);
                     //System.out.println("cancellazione da parte del worker\n");
                 }
             }
@@ -301,10 +296,8 @@ public class ControllerPrenotationPickUpScene extends Controller implements Init
                 prenotaEvento.setVisible(false);
                 //TODO PRENOTAZIONE APPUNTAMENTO CITTADINO
                 //controllo se ci sono notifiche per quella data, setto tutto a occupato
-                if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto)){
-                    model.setNotificationOccupato(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), model.ritiroPassaporto);
-                    //model.setNotificationNotSeen(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue());
-
+                if(model.thereAreNotification(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), ritiroPassaporto)){
+                    model.setNotificationOccupato(Date.valueOf(EventDatePicker.getValue()), TimePicker.getValue(), ritiroPassaporto);
                 }
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Ritiro prenotato");
